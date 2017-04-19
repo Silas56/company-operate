@@ -1,0 +1,29 @@
+<div ng-controller="shopAuth">
+    <div class="pt20">
+        <span>法人姓名：</span>{{authInfo.name}}
+    </div>
+    <div class="pt20">
+        <span>身份证号：</span>{{authInfo.idNum}}
+    </div>
+    <div>
+    	<div></div>
+        <div class="pt20">
+            <div><span class="mr210">身份证正面照：</span><span class="mr210">身份证反面照：</span><span>手持证件照：</span></div>
+            <img class="w150 h150 mr150 cursorP" src="{{authInfo.certificateFrontImg}}"  onerror="this.src='../../../img/comfirmDefault.jpg'" ng-click="showBigPic(authInfo.certificateFrontImg,'身份证正面照')" />
+            <img class="w150 h150 mr150 cursorP"  src="{{authInfo.certificateBackImg}}"   onerror="this.src='../../../img/comfirmDefault.jpg'"  ng-click="showBigPic(authInfo.certificateBackImg,'身份证反面照')" >
+            <img class="w150 h150 mr150 cursorP"  src="{{authInfo.handlerCertificateImg}}"   onerror="this.src='../../../img/comfirmDefault.jpg'"  ng-click="showBigPic(authInfo.handlerCertificateImg,'手持证件照')" >
+        </div>
+        <div class="pt20">
+            <div><span class="mr235">营业执照：</span><span class="mr220">税务登记证：</span><span>组织机构代码：</span></div>
+            <img class="w150 h150 mr150 cursorP" src="{{authInfo.businessLicenseImg}}"   onerror="this.src='../../../img/comfirmDefault.jpg'"   ng-click="showBigPic(authInfo.businessLicenseImg,'营业执照')" />
+            <img class="w150 h150 mr150 cursorP"  src="{{authInfo.taxRegCertImg}}"   onerror="this.src='../../../img/comfirmDefault.jpg'"  ng-click="showBigPic(authInfo.taxRegCertImg,'税务登记证')" >
+            <img class="w150 h150 mr150 cursorP"  src="{{authInfo.organizationCode}}"   onerror="this.src='../../../img/comfirmDefault.jpg'"  ng-click="showBigPic(authInfo.organizationCode,'组织机构代码')" >
+        </div>
+        <!--<div class="pt20">
+            <div><span>旅游许可证：</span></div>
+            <img class="w150 h150 cursorP"  src="{{authInfo.tourLicenseImg}}" ng-click="showBigPic(authInfo.tourLicenseImg)" >
+        </div>-->
+
+    </div>
+<!--<script type="text/javascript" src="app/shop/view/picBigShow.js"></script>-->
+</div>

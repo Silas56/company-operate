@@ -1,0 +1,134 @@
+.mainTribe{
+    width: 100%;
+    position: relative;  
+}
+
+ul{
+    list-style: none;   
+}
+.menus{
+   width: 916px;
+   height: 27px;
+   border-bottom: 1px solid #0cb9f3; 
+   margin-top:28px; 
+}
+.menus li{
+    float: left;
+    width: 100px;
+    height: 26px;
+    text-align: center;
+    line-height: 0px;
+}
+.addActive{
+    border-bottom: 4px solid #0cb9f3;
+}
+/*基本信息与设置酋长共用样式*/
+.view-1{
+    margin-top:30px;
+    margin-left: 56px;
+}
+.view-1 p{
+    margin-bottom: 20px
+}
+.view-1 p span{
+    margin-right: 20px;
+    font-size:16px;
+}
+.view-1 p input{
+    width: 400px;
+    height: 36px;
+}
+.view-1 button{
+    width: 120px;
+    height: 36px;
+    border:none;
+    background: #0cb9f3;
+    color:#fff;
+}
+/*设置权限*/
+.view-2 button{
+    width: 120px;
+    height: 36px;
+    border:none;
+    background: #0cb9f3;
+    color:#fff;
+}
+
+.pr92{
+    padding-left: 92px;
+}
+.ft14{
+    font-size: 14px!important
+}
+.ft12{
+    font-size: 12px!important
+}
+.c{
+    color: #a9a9a9
+}
+.ml10{
+    margin-left: 10px;
+}
+.ml22{
+    margin-left: 22px;
+}
+.pl12{
+    padding-left: 12px
+}
+.p2020{
+    padding-top:20px;
+    padding-left: 20px
+}
+.d-font{
+    color:#0cb9f3!important
+}
+.mr20{
+    margin-right: 20px;
+}
+.mr10{
+    margin-right: 10px!important
+}
+.mt30{
+    margin-top: 30px
+}
+.mb20{
+    margin-bottom: 20px
+}
+.bg-w{
+    background: #fff!important
+}
+.d-b{
+    border: 1px solid #0cb9f3!important
+}
+.view-2 .comment{
+    width: 916px;
+    height: 276px;
+    background: #fafafa;
+}
+.font_w{
+    color: #fff
+}
+.default_color{
+    color: #0cb9f3
+}
+.warm{
+    background: #E55634!important
+}
+.border{
+    border-radius: 4px;
+}
+.font_red{
+    color: red;
+    font-size: 13px!important;
+}
+.text-field{
+cursor: pointer;
+}
+.check-box{
+width: 24px;
+height: 18px;
+border-radius: 8px;
+}
+.tree-view li{
+    margin-left: 30px
+}

@@ -1,0 +1,12 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content{width: 700px;height: 500px;}
+</style>
+<div class="text-center" ng-controller="picBigShow">
+	<!--<img src="imgSrc" />-->
+	<div class="pb10">{{imgName}}</div>
+	<img src="../../../img/leftArrow.png" style="padding-right: 20px;" ng-click="changePic(1)" />
+	<img style="width: 400px;height: 400px;" ng-src={{imgSrc}} />
+	<img src="../../../img/rightArrow.png" style="padding-left: 20px;" ng-click="changePic(2)"  />
+	<div class="pt20"><a class="checkA" ng-click="domnloadPic()">下载原图</a></div>
+</div>
+</div>

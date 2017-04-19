@@ -1,0 +1,14 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content{width: 700px;}
+</style>
+<div class="pt30" ng-controller="fundSet">
+	<div class="window-header" style="margin-top: -45px;width: 700px;">店铺费率</div>
+	<div class="pt30">当前服务费率：{{funds.servcieRateSetNow}}%</div>
+	<div class="pt20"><span class="ml14">新服务费率：</span><input type="text" class="w60" ng-model="serviceRateMid"/>%<font class="ml30">输入范围 0 %-99.9%</font></div>
+	<div class="ft-l pt20 ml30" ng-model="setParam.remark">变更理由：</div>
+	<textarea ng-model="setParam.remark" class="mt20" maxlength="200" style="width: 500px;height: 130px;"></textarea>
+	<div class="pt30 text-center">
+		<a class="checkA" style="padding: 6px 37px;" ng-click="set()">设置</a>
+		<a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">关闭</a>
+	</div>
+</div>

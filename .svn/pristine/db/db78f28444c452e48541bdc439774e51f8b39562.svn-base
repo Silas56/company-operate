@@ -1,0 +1,27 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content {
+		width: 700px;
+	}
+</style>
+<div class="pt30" ng-controller="shopBasicInfoEditDialog">
+	<div ng-hide="detail.canFreeze == 'no'">
+		<div class="window-header" style="margin-top: -45px;width: 700px;">冻结店铺</div>
+		<div class="pt20">冻结店铺后，店铺将不再公开展示，请填写冻结理由！限定在200字以内</div>
+		<div class="ft-l pt20">冻结理由：</div>
+		<textarea ng-model="freezeParam.remark" class="mt20" maxlength="200" style="width: 500px;height: 130px;"></textarea>
+		<div class="pt30 text-center">
+			<a class="checkA" style="padding: 6px 37px;" ng-click="editShopStatus()">冻结</a>
+			<a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">返回</a>
+		</div>
+	</div>
+	<div ng-hide="detail.canFreeze == 'yes'">
+		<div class="window-header" style="margin-top: -45px;width: 700px;">激活店铺</div>
+		<div class="pt20">激活店铺后，店铺将公开展示，请填写激活理由！限定在200字以内</div>
+		<div class="ft-l pt20">激活理由：</div>
+		<textarea ng-model="notFreezeParam.remark" maxlength="200" class="mt20" style="width: 500px;height: 130px;"></textarea>
+		<div class="pt30 text-center">
+			<a class="checkA" style="padding: 6px 37px;" ng-click="shopStatus()">激活</a>
+			<a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">返回</a>
+		</div>
+	</div>
+</div>

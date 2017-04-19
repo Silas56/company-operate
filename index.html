@@ -1,0 +1,209 @@
+﻿<!-- 代码了解===================== -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>运管后台</title>
+
+		<!-- CSS 引入弹框的css -->
+		<link rel="stylesheet" href="lib/comp/ngdialog/css/ngDialog.css">
+		<link rel="stylesheet" href="lib/comp/ngdialog/css/ngDialog-theme-default.css">
+		<link rel="stylesheet" href="lib/comp/ngdialog/css/ngDialog-theme-plain.css">
+		<link rel="stylesheet" href="lib/comp/ngdialog/css/ngDialog-custom-width.css">
+		<!-- 引入bootstrap -->
+		<link rel="stylesheet" href="lib/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- 引入公用css -->
+		<link rel="stylesheet" href="css/common.css" />
+		<!-- 引入主体css -->
+		<link rel="stylesheet" href="css/main.css">
+		<!-- 引入shop.css -->
+		<link rel="stylesheet" href="css/shop/shop.css" />
+		<!-- 引入product.css -->
+		<link rel="stylesheet" type="text/css" href="css/product.css">
+		<!-- 不懂 -->
+		<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+		<!-- 引入tribe -->
+		<link rel="stylesheet" type="text/css" href="css/tribe/tribe.css">
+		<link rel="stylesheet" type="text/css" href="css/tribe/showTribe.css">
+		<link rel="stylesheet" type="text/css" href="css/tribe/addTribe.css">
+
+		<!-- javascript -->
+		<!--文本转换-->
+		<script src="lib/common/firstLetter.js"></script>
+		<!-- jquery -->
+		<script src="lib/jquery/jquery-2.1.1.min.js"></script>
+		<!-- 二维码 -->
+		<script type="text/javascript" src="lib/jquery/jquery.qrcode.min.js"></script>
+		<!-- angular -->
+		<script src="lib/angular/angular.js"></script>
+		<!-- 复制链接 -->
+		<script type="text/javascript" src="lib/clipboard.min.js"></script>
+		<!-- angular-route -->
+		<script src="lib/angular/angular-route.js"></script>
+		<!-- angular-animate -->
+		<script src="lib/angular/angular-animate.js"></script>
+		<!-- angular-cookie -->
+		<script src="lib/angular/angular-cookies.js"></script>
+		<!-- 不懂！！！！！！！！！！！！！！！ -->
+		<script type="text/javascript" src="lib/jquery/bootstrap-datetimepicker.js" ></script>
+		<script type="text/javascript" src="lib/jquery/bootstrap-datetimepicker.zh-CN.js" ></script>
+
+		<!-- comp组件-->
+		<!-- 分页组件 -->
+		<script src="lib/comp/pagination/tm.pagination.js"></script>
+		<!-- 弹框组件 -->
+		<script src="lib/comp/ngdialog/js/ngDialog.js"></script>
+		<!-- 图表插件 -->
+		<script src="lib/Chart.js/Chart.js"></script>
+		<!-- bootstrap-tpl -->
+		<script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="lib/angular-chart/angular-chart.js"></script>
+		<script src="lib/common/common.js"></script>
+		<script src="lib/angular-recursion/angular-recursion.js"></script>
+
+
+		<!-- main -->
+		<!-- app.js主要用来添加路由 -->
+		<script type="text/javascript" src="app/app.js"></script>
+		<!-- main.js主要用于设置菜单 -->
+		<script type="text/javascript" src="app/main.js"></script>
+		<!-- 用来处理授权认证和遮罩层overlay -->
+		<script type="text/javascript" src="app/interceptors.js"></script>
+		<!-- 获取用户状态 -->
+		<script type="text/javascript" src="app/dict.js"></script>
+		<!-- 设置权限表 -->
+		<script type="text/javascript" src="app/directive.js"></script>
+
+		<!-- shop -->
+		<!-- shop主页关于搜索和表格渲染 -->
+		<script type="text/javascript" src="app/shop/manage/shopManage.js"></script>
+		<!-- shop查询 -->
+		<script type="text/javascript" src="app/shop/check/shopCheck.js"></script>
+		<!-- shop资金 -->
+		<script type="text/javascript" src="app/shop/func/shopFunc.js"></script>
+		<!-- 编辑shop类型 -->
+		<script type="text/javascript" src="app/shop/func/editShopType.js" ></script>
+		<!-- 增加shop类型 -->
+		<script type="text/javascript" src="app/shop/func/addShopType.js" ></script>
+		<!-- shop详情 -->
+		<script type="text/javascript" src="app/shop/view/shopDetail.js" ></script>
+		<!-- shop基本信息 -->
+		<script type="text/javascript" src="app/shop/view/shopBaseInfo.js"></script>
+		<!-- shop基本信息编辑弹框 -->
+		<script type="text/javascript" src="app/shop/view/shopBasicInfoEditDialog.js" ></script>
+		<!-- shop确认弹框 -->
+		<script type="text/javascript" src="app/shop/view/shopConfirm.js"></script>
+		<!-- 个人照片 -->
+		<script type="text/javascript" src="app/shop/view/shopAuth.js"></script>
+		<!-- 个人账户信息 -->
+		<script type="text/javascript" src="app/shop/view/shopFund.js"></script>
+		<!--个人账户设置-->
+		<script type="text/javascript" src="app/shop/view/fundSet.js" ></script>
+		<!-- 个人账户更改记录 -->
+		<script type="text/javascript" src="app/shop/view/fundChangeRecord.js" ></script>
+		<!-- 店铺状态 -->
+		<script type="text/javascript" src="app/shop/view/dataAudit.js" ></script>
+		<!-- 分销商-->
+		<script type="text/javascript" src="app/shop/view/productDevide.js" ></script>
+		<!-- 供应商 -->
+		<script type="text/javascript" src="app/shop/view/supplier.js" ></script>
+		<script type="text/javascript" src="app/shop/view/picBigShow.js" ></script>
+
+
+		<script type="text/javascript" src="app/account/reconciliation/reconciliation.js" ></script>
+		<script type="text/javascript" src="app/account/reconciliation/reconciliationDeal.js" ></script>
+		<script type="text/javascript" src="app/account/reconciliation/reconciliationCheckResult.js" ></script>
+		<script type="text/javascript" src="app/account/reconciliation/reconciliationToUnfairDeal.js" ></script>
+		<script type="text/javascript" src="app/account/refund/refund.js" ></script>
+		<script type="text/javascript" src="app/account/withdrawals/withdrawals.js" ></script>
+		<script type="text/javascript" src="app/account/refund/refundDetail.js" ></script>
+		<script type="text/javascript" src="app/account/withdrawals/withdrawalsDeal.js" ></script>
+		<script type="text/javascript" src="app/account/withdrawals/withdrawalsResult.js" ></script>
+		<script type="text/javascript" src="app/account/refund/refundFailDetail.js" ></script>
+		<script type="text/javascript" src="app/account/refund/refundDeal.js" ></script>
+		<script type="text/javascript" src="app/account/reconciliation/reconciliationToUnfairDeal.js" ></script>
+
+		<!-- order -->
+		<script type="text/javascript" src="app/order/list/orderList.js" ></script>
+		<script type="text/javascript" src="app/order/organ/orderOrgan.js" ></script>
+		<script type="text/javascript" src="app/order/static/orderStatic.js" ></script>
+		<script type="text/javascript" src="app/order/view/orderView.js"></script>
+		<script type="text/javascript" src="app/order/organ/orderOrganEdit.js"></script>
+		<script type="text/javascript" src="app/order/comment/comment.js"></script>
+		<script type="text/javascript" src="app/order/comment/commentDetail.js"></script>
+		<script type="text/javascript" src="app/order/comment/commentUnable.js"></script>
+		<script type="text/javascript" src="app/order/clearing/clearing.js"></script>
+		<script type="text/javascript" src="app/order/clearingError/clearingError.js"></script>
+		<script type="text/javascript" src="app/order/list/editExport.js"></script>
+
+		<!-- user -->
+		<script type="text/javascript" src="app/user/insideAuthorize/insideAuthorize.js" ></script>
+		<script type="text/javascript" src="app/user/insideStarf/insideStarf.js" ></script>
+		<script type="text/javascript" src="app/user/platformUser/platformUser.js" ></script>
+		<script type="text/javascript" src="app/user/insideStarf/insideRoleView.js"></script>
+		<script type="text/javascript" src="app/user/platformUser/userStatusChange.js"></script>
+		<script type="text/javascript" src="app/user/insideAuthorize/insideAuthorizeEdit.js"></script>
+
+		<!-- product -->
+		<script type="text/javascript" src="app/product/productManage/productIndex.js"></script>
+		<script type="text/javascript" src="app/product/productManage/productDetail.js"></script>
+		<script type="text/javascript" src="app/product/productManage/productChange.js"></script>
+		<!-- tribe -->
+		<script type="text/javascript" src="app/tribe/tribeIndex/tribe.js"></script>
+		<script type="text/javascript" src="app/tribe/addTribe/addTribe.js"></script>
+		<script type="text/javascript" src="app/tribe/showTribe/showTribe.js"></script>
+		<script type="text/javascript" src="app/directive_Permission.js"></script>
+		<!-- tribe弹框 -->
+		<script type="text/javascript" src="app/tribe/showTribe/tribeFreeze.js"></script>
+		<script type="text/javascript" src="app/tribe/showTribe/changeTribe.js"></script>
+		<script type="text/javascript" src="app/tribe/showTribe/tribeActive.js"></script>
+
+
+
+		<!-- datacenter -->
+		<script type="text/javascript" src="app/datacenter/filter/filterWords.js"></script>
+		<script type="text/javascript" src="app/datacenter/filter/addFilterWord.js"></script>
+		<script type="text/javascript" src="app/datacenter/filter/delFilterWord.js"></script>
+
+		<script type="text/javascript" src="app/common_validate.js" ></script>
+
+	</head>
+
+	<!-- apply our angular app -->
+
+	<body ng-app="myApp">
+		<div class="container" ng-controller="main">
+			<div class="header">
+				<div class="menu-div">
+					<div style="margin-left: -40px;">
+						<img src="img/logo.jpg" class="ft-l" />
+						<font class="ft-l" style="margin-top: 30px;">|运营管理</font>
+					</div>
+					<ul class="menu">
+						<li ng-repeat="topMenu in topMenus">
+							<a href="" ng-class="{true: 'menusTopActive', false: 'inactive'}[topMenu.isActive]" ng-click="chickMenu( topMenu.resourceCode )" >{{topMenu.name}}</a>
+
+						</li>
+						<li class="exit ft-r mt25"><span>{{userInfo.nickname}}-<a style="padding: 0;float: right;font-size: 14px;color:#333" href="{{logoutUrl}}">退出</a></span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="content">
+				<div class="content-Left">
+					<ul class="menu-left">
+						<li ng-repeat="menu in menus"><a href="#{{menu.link}}" ng-class="{true: 'menusLeftActive', false: 'inactive'}[menu.isActive]" ng-click="changeLeftMenu($event,$index)">{{menu.name}}</a></li>
+					</ul>
+				</div>
+				<div class="content-Border">
+					<div class="content-Main">
+						<div ng-view></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">Copyright 酷鸟 (Kooniao) 2015.粤ICP备14050259号-1</div>
+
+	</body>
+
+</html>

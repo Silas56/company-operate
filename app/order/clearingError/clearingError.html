@@ -1,0 +1,95 @@
+<div ng-controller="clearingError">
+    <div class="main-header">
+        异常订单
+    </div>
+    <div class="pt20">
+        <span>订单编号：</span><input type="text" ng-model="param.orderCode" class="w230 form-control disp-inline mr10" placeholder="请输入订单编号"/>
+        <span>订单状态：</span>
+        <select ng-model="param.orderStatus" class="form-control disp-inline w230 mr6 ml-4">
+            <option value="" selected>请选择</option>
+            <option value="7">交易关闭-退款成功</option>
+            <option value="8">交易成功</option>
+            <option value="9">交易关闭-仲裁退款成功</option>
+            <option value="10">交易关闭-仲裁退款拒绝</option>
+        </select>
+        <span>结算时间：</span>
+        <input type='text' style="margin-left: -1px;"
+               class="w100 form-control disp-inline p010 startTime"
+               max-date="param.endTime"
+               ng-model="param.startTime"
+               is-open="selectStartTime"
+               ng-click="selectStartTime = !selectStartTime"
+                />
+        <span>-</span>
+        <input type='text'
+               class="w100 form-control disp-inline p010 endTime"
+               min-date="param.startTime"
+               ng-model="param.endTime"
+               is-open="selectEndTime"
+               ng-click="selectEndTime = !selectEndTime"
+                />
+    </div>
+    <div class="pt20">
+        <a class="checkA ft-r" ng-click="onSearch()" style="padding: 6px 25px;">查询</a>
+    </div>
+    <div class="pt74">
+        <div class="clearfix mb10">
+            <a class="ft-r" style="color:#2499c5;" ng-click="onSearch()">刷新数据</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <td class="w210">订单编号</td>
+                    <td class="w180">订单金额</td>
+                    <td class="w226">结算时间</td>
+                    <td class="w170">订单状态</td>
+                    <td class="w160">异常类型</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in lists">
+                    <td>{{item.orderCode}}</td>
+                    <td>￥{{item.orderPrice}}</td>
+                    <td>{{item.handleTime}}</td>
+                    <td>{{item.orderStatusStr}}</td>
+                    <td>{{item.handleStatusStr}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $(".startTime").datetimepicker({
+                format: 'yyyy-mm-dd',
+                autoclose:true,
+                language: 'zh-CN',
+                minView:2
+            }).on('changeDate',function(ev){
+                    $(".endTime").datetimepicker("setStartDate", $(".startTime").val());
+                });;
+            $(".endTime").datetimepicker({
+                format: 'yyyy-mm-dd',
+                autoclose:true,
+                language: 'zh-CN',
+                minView:2
+            }).on('changeDate',function(ev){            
+                    $(".startTime").datetimepicker("setEndDate", $(".endTime").val());
+                });
+
+            // 如果选项被手动清空，则需要重置开始和结束值
+            $('.startTime').datetimepicker().on('show',function(ev){
+                if (!$('.endTime').val()){
+                    $(".startTime").datetimepicker("setEndDate", null);
+                }       
+            });
+            $('.endTime').datetimepicker().on('show',function(ev){
+                if (!$('.startTime').val()){
+                    $(".endTime").datetimepicker("setStartDate", null);
+                }       
+            });
+        })
+    </script>
+</div>

@@ -1,0 +1,229 @@
+<div ng-controller="refund" class="refundForJorden">
+	<div class="main-header">
+        	提现管理
+    </div>
+    <!--<div class="pt20">-->
+    	<!--<span>店铺名称：</span><input type="text" class="w150 form-control disp-inline mr20" ng-model="param.shopName"/>-->
+    	<!--&lt;!&ndash;<span>商家昵称：</span><input type="text" class="w150 form-control disp-inline mr20" ng-model="param.legalName"/>&ndash;&gt;-->
+    	<!--<span>申请时间：</span>-->
+    	<!--<input type='text'-->
+                       <!--class="w110 form-control disp-inline mr4 startTime"-->
+                       <!--max-date="param.endTime"-->
+                       <!--ng-model="param.startTime"-->
+                       <!--is-open="selectStartTime"-->
+                       <!--ng-click="selectStartTime = !selectStartTime"-->
+                        <!--/>-->
+    	<!--<font class="mr4">至</font>-->
+    	<!--<input type='text'-->
+                       <!--class="w110 form-control disp-inline mr4 endTime"-->
+                       <!--min-date="param.startTime"-->
+                       <!--ng-model="param.endTime"-->
+                       <!--is-open="selectEndTime"-->
+                       <!--ng-click="selectEndTime = !selectEndTime"-->
+                        <!--/>-->
+        <!--&lt;!&ndash;&lt;!&ndash;<span>受理编号：</span><input type="text" class="w150 form-control disp-inline mr20" ng-model="param.acceptId"/>&ndash;&gt;&ndash;&gt;-->
+    <!--</div>-->
+    <!--<div class="pt20">-->
+    	<!--<span>业务流水号：</span><input type="text" class="w150 form-control disp-inline mr35"  ng-model="param.bankTradeNo"/>-->
+    	<!--<span>交易渠道：</span>-->
+    	<!--<select ng-model="param.channelCode" class="w150 form-control disp-inline mr20">-->
+			<!--<option value="">全部</option>-->
+			<!--&lt;!&ndash;<option value="ALIPAY">支付宝支付</option>&ndash;&gt;-->
+			<!--&lt;!&ndash;<option value="WXPAY">微信支付</option>&ndash;&gt;-->
+			<!--<option value="UIONPAY">银联支付</option>-->
+			<!--&lt;!&ndash;<option value="JDPAY">京东支付</option>&ndash;&gt;-->
+			<!--&lt;!&ndash;<option value="OFFLINEPAY">线下支付</option>&ndash;&gt;-->
+		<!--</select>-->
+    	<!--<a class="checkA" style="padding: 6px 25px;" ng-click="onSearch()">查询</a>-->
+    <!--</div>-->
+    <div>
+    	<!--<tabset>-->
+        <!--&lt;!&ndash;<tab heading="未处理" ng-click="changeTab('undeal')">-->
+                <!--<table>-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td class="w200">商家昵称</td>-->
+                        <!--<td class="w200">店铺名称</td>-->
+                        <!--<td class="w200">提现金额</td>-->
+                        <!--<td class="w200">提交时间</td>-->
+                        <!--<td class="w200">操作</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="undeal in undeals">-->
+                        <!--<td>{{undeal.applicantName}}</td>-->
+                        <!--<td>{{undeal.shopName}}</td>-->
+                        <!--<td>￥{{undeal.settledAmt | number:2}}</td>-->
+                        <!--<td>{{undeal.applicationTime}}</td>-->
+                        <!--<td class="p15">-->
+                            <!--<a class="col-57A2F0" ng-click="openDeal(undeal.cardholder,undeal.shopName,undeal.settledAmt,undeal.bankCardName,undeal.bankCardNo,undeal.channelSource,undeal.accountId,undeal.settledAmt,undeal.remark,undeal.acceptId,undeal.applicantName)" >处理</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<div class="pt10" style="height: 84px;">-->
+                    <!--<tm-pagination conf="undealpaginationConf"></tm-pagination>-->
+                <!--</div>-->
+        <!--</tab>&ndash;&gt;-->
+
+        <!--<tab heading="店铺体现" ng-click="changeTab('accounted')">-->
+
+            <!--<div>-->
+                <!--<table>-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    	<!--<td class="w200">受理编号</td>-->
+                        <!--<td class="w200">商家昵称</td>-->
+                        <!--<td class="w200">店铺名称</td>-->
+                        <!--<td class="w200">提现金额</td>-->
+                        <!--<td class="w200">申请时间</td>-->
+                        <!--<td class="w200">交易渠道</td>-->
+                        <!--<td class="w200">业务流水号</td>-->
+                        <!--<td class="w200">处理时间</td>-->
+                        <!--<td class="w200">操作</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="cashed in casheds">-->
+                    	<!--<td>{{cashed.acceptId}}</td>-->
+                        <!--<td>{{cashed.applicantName}}</td>-->
+                        <!--<td>{{cashed.shopName}}</td>-->
+                        <!--<td>￥{{cashed.settledAmt | number:2}}</td>-->
+                        <!--<td>{{cashed.applicationTime}}</td>-->
+                        <!--<td>{{cashed.channelSource}}</td>-->
+                        <!--<td>{{cashed.bankTradeNo}}</td>-->
+                        <!--<td>{{cashed.completionTime}}</td>-->
+                        <!--<td class="p10">-->
+                            <!--<a class="col-57A2F0"-->
+                            	  <!--ng-click="openDetail(cashed.cardholder,cashed.shopName,cashed.settledAmt,cashed.bankCardName,cashed.bankCardNo,cashed.channelSource,cashed.accountId,cashed.remark,cashed.applicantName,'success',cashed.bankTradeNo,cashed.counterFee,cashed.acceptId)" >查看详情</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<div class="pt10" style="height: 84px;">-->
+                    <!--<tm-pagination conf="cashEdpaginationConf"></tm-pagination>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</tab>-->
+        <!---->
+        <!--<tab heading="部落体现" ng-click="changeTab('fail')">-->
+
+            <!--<div>-->
+                <!--<table>-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    	<!--<td class="w200">受理编号</td>-->
+                        <!--<td class="w200">商家昵称</td>-->
+                        <!--<td class="w200">店铺名称</td>-->
+                        <!--<td class="w200">提现金额</td>-->
+                        <!--<td class="w200">提交时间</td>-->
+                        <!--<td class="w200">交易渠道</td>-->
+                        <!--<td class="w200">失败原因</td>-->
+                        <!--<td class="w200">处理时间</td>-->
+                        <!--<td class="w200">操作</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="cashFail in cashFails">-->
+                    	<!--<td>{{cashFail.acceptId}}</td>-->
+                        <!--<td>{{cashFail.applicantName}}</td>-->
+                        <!--<td>{{cashFail.shopName}}</td>-->
+                        <!--<td>￥{{cashFail.settledAmt | number:2}}</td>-->
+                        <!--<td>{{cashFail.applicationTime}}</td>-->
+                        <!--<td>{{cashFail.channelSource}}</td>-->
+                        <!--<td>{{cashFail.remark}}</td>-->
+                        <!--<td>{{cashFail.completionTime}}</td>-->
+                        <!--<td class="p10">-->
+                            <!--<a class="col-57A2F0" ng-click="openDetail(cashFail.cardholder,cashFail.shopName,cashFail.settledAmt,cashFail.bankCardName,cashFail.bankCardNo,cashFail.channelSource,cashFail.accountId,cashFail.remark,cashFail.applicantName,'fail',cashFail.bankTradeNo,cashFail.counterFee,cashFail.acceptId)" >查看详情</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<div class="pt10" style="height: 84px;">-->
+                    <!--<tm-pagination conf="cashFailpaginationConf"></tm-pagination>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</tab>-->
+
+    <!--</tabset>-->
+        <!--JOY-->
+        <div class="headers">
+            <ul>
+                <li ng-class="{'refundActive':data.current==1}" ng-click="action.setCurrent(1)">
+                     店铺提现
+                </li>
+                <li ng-class="{'refundActive':data.current==2}" ng-click="action.setCurrent(2)">
+                     部落提现
+                </li>
+            </ul>
+        </div>
+        <div ng-show="data.current == 1" class="bodys">
+            <div class="searchSection">
+                <div class="pt20">
+                    <span>店铺名称：</span><input type="text" class="w150 form-control disp-inline mr20" ng-model="paramForShop.shopName"/>
+                    <span>申请时间：</span>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 startTime"
+                           max-date="paramForShop.endTime"
+                           ng-model="paramForShop.startTime"
+                           is-open="selectStartTime"
+                           ng-click="selectStartTime = !selectStartTime"
+                    />
+                    <font class="mr4">-</font>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 endTime"
+                           min-date="paramForShop.startTime"
+                           ng-model="paramForShop.endTime"
+                           is-open="selectEndTime"
+                           ng-click="selectEndTime = !selectEndTime"
+                    />
+                   <span>处理结果</span>
+                    <select class="w220 form-control disp-inline ml5" ng-model="paramForShop.tribeStatus">
+                        <option value="">全部</option>
+                        <option value="1">已处理</option>
+                        <option value="2">未处理</option>
+                    </select>
+                    <p class="form-control disp-inline ml5">
+                        查询
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div ng-if="data.current == 2" class="bodys">
+            部落提现
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(function(){
+	$(".startTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endTime").datetimepicker("setStartDate", $(".startTime").val());
+		});;
+	$(".endTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startTime").datetimepicker("setEndDate", $(".endTime").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.startTime').datetimepicker().on('show',function(ev){
+        if (!$('.endTime').val()){
+            $(".startTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endTime').datetimepicker().on('show',function(ev){
+        if (!$('.startTime').val()){
+            $(".endTime").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

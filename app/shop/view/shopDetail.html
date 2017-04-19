@@ -1,0 +1,49 @@
+<div ng-controller="shopDetail">
+	<div class="main-header">
+        	{{basicInfo.shopName}} (ID : {{basicInfo.shopCode}})
+    </div>
+    <div>
+    	<a class="checkA ft-r" style="padding: 6px 25px;margin-top: -30px;" ng-href="#{{returnUrl}}" >返回</a>
+    </div>
+	<tabset>
+		<tab heading="基本信息">
+			<div>
+				<ng-include src="'app/shop/view/shopBaseInfo.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+		<tab heading="认证信息" ng-hide="detail.editType == 'manage' && detail.shopType == 2">
+			<div>
+				<ng-include src="'app/shop/view/shopAuth.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+		<tab heading="审核" ng-show="detail.editType == 'check'">
+			<div>
+				<ng-include src="'app/shop/view/shopConfirm.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+		<tab heading="资金账号" ng-show="detail.editType == 'manage'">
+			<div>
+				<ng-include src="'app/shop/view/shopFund.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+
+		<tab heading="资料审核" ng-show="detail.editType == 'manage' && detail.shopType == 1">
+			<div>
+				<ng-include src="'app/shop/view/dataAudit.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+
+		<tab heading="分销商" ng-show="detail.editType == 'manage' && detail.shopType == 1">
+			<div>
+				<ng-include src="'app/shop/view/productDevide.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+
+		<tab heading="供应商" ng-show="detail.editType == 'manage' && detail.shopType == 2">
+			<div>
+				<ng-include src="'app/shop/view/supplier.html'" onload="true"></ng-include>
+			</div>
+		</tab>
+	</tabset>
+
+</div>

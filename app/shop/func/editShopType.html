@@ -1,0 +1,62 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content {
+		width: 900px;
+		background-color: white;
+	}
+	.ngdialog.ngdialog-theme-default .ngdialog-close:before {
+		border: 1px solid #bbb;
+		border-radius: 30px;
+    	color: white;
+   	 	background-color: #bbb;
+	}
+</style>
+<div ng-controller="editShopType">
+	<div class="window-header">
+        	编辑店铺类型
+    </div>
+    <div class="pt20">
+    	<font>店铺类型名称：</font>
+    	<input type="text" class="w150 form-control disp-inline mr35" maxlength="20" ng-model="param.orgSkeletionName" ng-change="wrongFormatFun()" />
+    </div>
+    <div class="pt20">
+    	<div class="ft-l mr4">店铺类型描述：</div>
+    	<textarea class="w240 form-control disp-inline" maxlength="100"  ng-model="param.desciption" style="height: 120px;" ng-change="wrongFormatFun()" />
+    </div>
+    <div class="pt30">
+    	<span>服务费率设置：</span>
+    	<input type="radio" name="money" ng-click = "checkChange('free')" value="1" ng-model="freeServiceRate"/><font class="mr20">免服务费</font>
+    	<input type="radio" name="money" ng-click = "checkChange('notFree')" value="2"  ng-model="freeServiceRate" /><font class="mr20">服务费率</font><div ng-show="service" class="disp-inline"><input type="text" class="w50 mr6" ng-model="serviceRateMid" /><font class="mr6">%</font>输入范围：0.1%~99.9%</div>
+    </div>
+    <div class="pt20">
+    	<div class="ft-l" style="margin-left: 25px;">*变更理由：</div>
+    	<textarea class="w240 form-control disp-inline" ng-model="param.remarks" style="height: 90px;" ng-change="wrongFormatFun()" />
+    </div>
+    <div class="pt20">
+        <table>
+            <thead>
+            <tr>
+            <td class="w160">变更理由</td>
+            <td class="w200">变更</td>
+            <td class="w200">操作人</td>
+            <td class="w135">操作时间</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="shopLogList in shopLogLists">
+            	<td>{{shopLogList.remark}}</td>
+            	<td>{{shopLogList.record}}</td>
+            	<td>{{shopLogList.createdByName}}</td>
+            	<td>{{shopLogList.createLogTime | limitTo : 19}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+    <div class="pt20 text-center">
+    	<button class="checkA mr30" style="padding: 6px 25px;border-radius: 0;position: initial;border-radius: 3px;" ng-click="submit()">确认</button>
+    	<button class="checkA" style="padding: 6px 25px;"  ng-click="closeThisDialog()">取消</button>
+    </div>
+    
+</div>

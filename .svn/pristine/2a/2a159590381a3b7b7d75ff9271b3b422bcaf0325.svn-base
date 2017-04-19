@@ -1,0 +1,32 @@
+<div ng-controller="shopfunc">
+    <div class="main-header">
+        	店铺功能配置
+    </div>
+    <div class="pt20">
+        <div>
+            <a class="w160 form-control disp-inline" style="background-color: #E8E7E4;text-align: center;cursor: pointer;" ng-click="addShopType()">增加店铺类型</a>
+        </div>
+    </div>
+    <div class="pt20">
+        <table>
+            <thead>
+            <tr>
+            <td class="w160">店铺类型名称</td>
+            <td class="w200">描述</td>
+            <td class="w200">服务费率</td>
+            <td class="w135">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="funcInfo in funcInfos">
+            	<td>{{funcInfo.orgSkeletionName}}</td>
+            	<td>{{funcInfo.desciption}}</td>
+            	<td>{{funcInfo.serviceRate}}%</td>
+            	<td><a class="col-57A2F0" ng-click="editShopType(funcInfo.code)">编辑</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

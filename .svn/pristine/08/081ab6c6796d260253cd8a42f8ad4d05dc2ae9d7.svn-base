@@ -1,0 +1,233 @@
+<div ng-controller="shopManage">
+    <div class="main-header">
+        	店铺管理
+    </div>
+    <div class="pt20">
+        <form>
+            <div>
+                <span>店铺状态：</span>
+                <select ng-model="param.shopStatus" class="form-control disp-inline w1365 mr20">
+                    <option value="">全部</option>
+                    <!--<option value="1">审核中</option>-->
+                    <option value="2">正常营业</option>
+                    <!--<option value="3">审核未通过</option>-->
+                    <option value="4">暂停营业</option>
+                    <option value="5">已冻结</option>
+                </select>
+                <span>认证状态：</span>
+                <select ng-model="param.authenticationStatus" class="form-control disp-inline w1365 mr20">
+                    <option value="">全部</option>
+                    <option value="1">未实名认证</option>
+                    <option value="2">已实名认证</option>
+                </select>
+                <span>店铺类型：</span>
+                <select ng-model="param.shopType" class="form-control disp-inline w1365 mr20">
+                    <option value="">全部</option>
+                    <option value="1">酷鸟商家</option>
+                    <option value="2">酷鸟分销商</option>
+                </select>
+                <span>申请渠道：</span>
+                <select ng-model="param.channelType" class="form-control disp-inline w1365">
+                    <option value="">全部</option>
+                    <option value="0">PC</option>
+                    <option value="1">WEBAPP</option>
+                    <option value="2">APP</option>
+                </select>
+            </div>
+            <div class="pt20">
+                <div class="ft-l">
+                <span>店铺名称：</span>
+                <input type="text" ng-model="param.shopName" class="w580 form-control disp-inline">
+                </div>
+            </div>
+            <div class="mt60">
+                <span>法人名称：</span>
+                <input type="text" ng-model="param.legalPerson" class="w160 form-control disp-inline mr22">
+                <span>手机号码：</span>
+                <input type="number" ng-model="param.phone" class="w150 form-control disp-inline mr18">
+                <span>开店时间：</span>
+                <input type='text'
+                       class="w110 form-control disp-inline startCreateTime"
+                       max-date="param.endCreateTime" 
+                       ng-model="param.startCreateTime"
+                       is-open="selectStartCreateTime"
+                       ng-click="selectStartCreateTime = !selectStartCreateTime"
+                        />
+                <span>－</span>
+                <input type='text'
+                       class="w110 form-control disp-inline endCreateTime"
+                       min-date="param.startCreateTime"
+                       ng-model="param.endCreateTime"
+                       is-open="selectEndCreateTime"
+                       ng-click="selectEndCreateTime = !selectEndCreateTime"
+                        />
+            </div>
+            <div class="pt20">
+                <span>商家更新时间：</span>
+                <input type='text'
+                       class="w110 form-control disp-inline startShopUpdatedTime"
+                       max-date="param.endShopUpdatedTime" 
+                       ng-model="param.startShopUpdatedTime"
+                       is-open="selectStartShopUpdatedTime"
+                       ng-click="selectStartShopUpdatedTime = !selectStartShopUpdatedTime"
+                        />
+                <span>－</span>
+                <input type='text'
+                       class="w110 form-control disp-inline endShopUpdatedTime"
+                       min-date="param.startShopUpdatedTime"
+                       ng-model="param.endShopUpdatedTime"
+                       is-open="selectEndShopUpdatedTime"
+                       ng-click="selectEndShopUpdatedTime = !selectEndShopUpdatedTime"
+                        />
+                <span class="ml50">认证时间：</span>
+                <input type='text'
+                       class="w110 form-control disp-inline startAuthenticationTime"
+                       max-date="param.endAuthenticationTime"
+                       ng-model="param.startAuthenticationTime"
+                       is-open="selectStartAuthenticationTime"
+                       ng-click="selectStartAuthenticationTime = !selectStartAuthenticationTime"
+                        />
+                <span>－</span>
+                <input type='text'
+                       class="w110 form-control disp-inline endAuthenticationTime"
+                       min-date="param.startAuthenticationTime"
+                       ng-model="param.endAuthenticationTime"
+                       is-open="selectEndAuthenticationTime"
+                       ng-click="selectEndAuthenticationTime = !selectEndAuthenticationTime"
+                        />
+                <a class="ft-r checkA mr4" ng-click="onSearch()">查询</a>
+            </div>
+        </form>
+    </div>
+    <div class="pt30">
+        <table>
+            <thead>
+            	<tr>
+                <td class="w70">店铺ID</td>
+                <td class="w200">店铺名称</td>
+                <td class="w130">开店时间
+                	<img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('createTime')" ng-show="createDown"/>
+                	<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('createTime')" ng-show="!createDown"/>
+                </td>
+                <td class="w130">商家更新时间
+                	<img style="width: 6px;"  src="../../../img/down.png" class="descImg"  ng-click="descFun('changeTime')" ng-show="changeDown"/>
+                	<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('changeTime')" ng-show="!changeDown"/>
+                </td>
+                <td class="w80">店铺类型</td>
+                <td class="w80">申请渠道</td>
+                <td class="w80">认证状态</td>
+                <td class="w80">店铺状态</td>
+                <td class="w63">操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="shop in shopBeans">
+                    <td>{{shop.shopCode}}</td>
+                    <td>{{shop.shopName}}</td>
+                    <td>{{shop.createdTime | limitTo : 19}}</td>
+                    <td>{{shop.lastUpdatedTime | limitTo : 19}}</td>
+                    <td>{{shop.shopTypeName}}</td>
+                    <td>{{shop.channelName}}</td>
+                    <td>{{shop.authenticationStatusName}}</td>
+                    <td>{{shop.shopStatusName}}</td>
+                    <td>
+                        <a href="#/shop/detail/{{shop.shopCode}}/{{shop.shopType}}/{{shop.shopCode}}/manage" class="col-57A2F0">管理</a>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+<script type="text/javascript">
+	$(function(){
+	$(".startCreateTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endCreateTime").datetimepicker("setStartDate", $(".startCreateTime").val());
+		});
+	$(".endCreateTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startCreateTime").datetimepicker("setEndDate", $(".endCreateTime").val());
+		});
+		
+		
+	$(".startShopUpdatedTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endShopUpdatedTime").datetimepicker("setStartDate", $(".startShopUpdatedTime").val());
+		});;
+	$(".endShopUpdatedTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startShopUpdatedTime").datetimepicker("setEndDate", $(".endShopUpdatedTime").val());
+		});
+		
+	$(".startAuthenticationTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endAuthenticationTime").datetimepicker("setStartDate", $(".startAuthenticationTime").val());
+		});;
+	$(".endAuthenticationTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startAuthenticationTime").datetimepicker("setEndDate", $(".endAuthenticationTime").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.startCreateTime').datetimepicker().on('show',function(ev){
+        if (!$('.endCreateTime').val()){
+            $(".startCreateTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endCreateTime').datetimepicker().on('show',function(ev){
+        if (!$('.startCreateTime').val()){
+            $(".endCreateTime").datetimepicker("setStartDate", null);
+        }       
+    });
+
+    $('.startShopUpdatedTime').datetimepicker().on('show',function(ev){
+        if (!$('.endShopUpdatedTime').val()){
+            $(".startShopUpdatedTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endShopUpdatedTime').datetimepicker().on('show',function(ev){
+        if (!$('.startShopUpdatedTime').val()){
+            $(".endShopUpdatedTime").datetimepicker("setStartDate", null);
+        }       
+    });
+
+    $('.startAuthenticationTime').datetimepicker().on('show',function(ev){
+        if (!$('.endAuthenticationTime').val()){
+            $(".startAuthenticationTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endAuthenticationTime').datetimepicker().on('show',function(ev){
+        if (!$('.startAuthenticationTime').val()){
+            $(".endAuthenticationTime").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

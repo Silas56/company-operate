@@ -1,0 +1,54 @@
+<div ng-controller="refundDetail">
+	<div class="window-header" style="width: 450px;">
+		提现详情
+	</div>
+	<div class="pt20">
+		<div>
+			<span>商家名称：</span>{{tribeData.applicantName}}
+		</div>
+		<div class="pt15">
+			<span>店铺名称：</span>{{tribeData.shopName}}
+		</div>
+		<div class="pt15">
+			<span>提现金额：</span>￥{{tribeData.settledAmt | number:2}}
+		</div>
+		<div class="pt15">
+			<span>申请时间：</span>{{tribeData.applicationTime}}
+		</div>
+		<hr>
+		<div>
+			<span style="font-weight: bold;">交易渠道</span>
+		</div>
+		<div class="pt15">
+			<span>银行：</span>{{tribeData.bankCardName}}
+		</div>
+		<div class="pt15">
+			<span>卡号：</span>{{tribeData.bankCardNo}}
+		</div>
+		<div class="pt15">
+			<span>姓名：</span>{{tribeData.cardholder}}
+		</div>
+		<hr>
+		<div>
+			<span style="font-weight: bold;">处理结果</span>
+		</div>
+		<div class="pt15">
+			<span>处理结果：</span>{{switchStatusTribe(tribeData.status)}}
+		</div>
+		<div class="pt15">
+			<span>银行交易渠道：</span>{{tribeData.channelSource}}
+		</div>
+		<div class="pt15">
+			<span>业务流水号：</span>{{tribeData.bankTradeNo}}
+		</div>
+		<div class="pt15">
+			<span>处理时间：</span>{{tribeData.completionTime}}
+		</div>
+		<div class="pt15">
+			<span>手续费：</span>￥{{tribeData.counterFee | number:2}}
+		</div>
+	</div>
+	<div class="pt30 text-center ">
+		<a class="sureBtn" ng-click="closeThisDialog()">确认</a>
+	</div>
+</div>

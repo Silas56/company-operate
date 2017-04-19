@@ -1,0 +1,18 @@
+<!-- CREATE BY JOY  -->
+<!-- 弹框插件 -->
+<div ng-controller="tribeActive">
+	<div class="window-header" style="width: 450px;">
+		激活用户
+	</div>
+	<div class="tribeDialog">
+		<div class="pt20">
+				<div style="clear: both;"></div>
+				<div class="ft-l">激活理由：</div>
+				<textarea ng-model="activeRemarks" style="width: 292px;height: 100px;" maxlength="200" placeholder="输入限定200字数"></textarea>
+		</div>
+		<div class="pt20 text-center">
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #0cb9f3;color: #fff!important;' ng-click='setTribeStatus()'>设置</a>
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #ccc;color: #fff!important;' ng-click='closeThisDialog()'>取消</a>
+		</div>
+	</div>
+</div>

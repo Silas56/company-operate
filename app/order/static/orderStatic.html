@@ -1,0 +1,195 @@
+<div ng-controller="orderStatic">
+    <div class="main-header">
+        				订单统计
+    </div>
+    <div class="pt20">
+        <div>
+        	<div class="ft-l">
+            <span>统计范围：</span>
+            <select class="w200 form-control disp-inline mr20" ng-change="timeTypeChange()" ng-model="timeType">
+                <option value="1">最近一天</option>
+                <option value="2">最近一周</option>
+                <option value="3">最近一月</option>
+                <option value="4">自定义</option>
+            </select>
+            </div>
+            <div ng-show="dateShow" class="ft-l">
+                <input type='text'
+                           class="form-control w160 disp-inline queryStartTime"
+                           max-date="queryEndTime"
+                           ng-model="queryStartTime"
+                           is-open="selectStartDate"
+                           ng-click="selectStartDate = !selectStartDate"
+                            />
+                <span>-</span>
+                <input type='text'
+                       class="form-control w160 disp-inline mr20 queryEndTime"
+                       min-date="queryStartTime"
+                       ng-model="queryEndTime"
+                       is-open="selectEndDate"
+                       ng-click="selectEndDate = !selectEndDate"
+                        />
+                <span>查询范围只限定180天内</span>
+            </div>
+			<a class="checkA ft-r" ng-click="onSearch()" style="padding: 6px 35px;">查询</a>
+        </div>
+        <div style="padding-top: 60px;">
+            <tabset>
+                <tab heading="销量统计" ng-click="onSearch('salcCount')">
+                    <div class="pt20">
+                        <div class="staticodiv">
+                            <span>统计日期：</span>{{currDate}}
+                            <span class="ml60">新增销售量：</span>{{volumeCount1}}
+                            <span class="ml60">新增支付金额：</span>{{priceSum1 | number:2}}
+                        </div>
+                        <div class="mt25">
+                            <canvas id="canvas" class="chart chart-bar"
+                                     chart-data="data1" chart-labels="labels1"> chart-series="series1"
+                                     
+                            </canvas>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="渠道" ng-click="onSearch('channel')">
+                    <div class="pt20">
+                        <div>
+                                <span>统计日期：</span>{{currDate}}
+                        </div>
+                        <div class="pt15">
+                                <span>订单销量：</span>{{volumeCount1}}
+                        </div>
+                        <div class="pt15">
+                                <span>分销订单：</span>￥{{data2[1]}}
+                        </div>
+                        <div class="pt15">
+                                <span>自销订单：</span>￥{{data2[0]}}
+                        </div>
+                        <div class="pt15">
+                                <span>总金额：</span>￥{{priceSum1 | number:2}}
+                        </div>
+                        <div class="staticCircleDiv mt25">
+                            <canvas  class="chart chart-pie"
+                                    chart-data="data2" chart-labels="labels2">
+                            </canvas>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="店铺" ng-click="onSearch('shop')">
+                    <div class="pt20">
+                        <div>
+                            <div> 
+                                <span>统计日期：</span>{{currDate}}
+                            </div>
+                            <div class="pt15">
+                                <span>店铺类型：</span>
+                                <input type="radio" value="1"  name="shopType" ng-model="shop.shopType" ng-change="requeryShop()">酷鸟商家
+                                <input type="radio" value="2"  name="shopType" ng-model="shop.shopType" ng-change="requeryShop()">酷鸟分销商
+                            </div>
+                            <div class="pt15">
+                                <span ng-class="{'weightSpan':weightSpan1===1}" ng-click="requeryShop('volumeCount',1)" class="cursorP staticHover foot18">销量统计</span>
+                                <span ng-class="{'weightSpan':weightSpan2===1}"  ng-click="requeryShop('priceSum',2)" class="cursorP staticHover foot18">金额统计</span>
+                            </div>
+                        </div>
+                        <div class="pt20">
+                            <canvas  class="chart chart-bar"
+                                    chart-data="data3" chart-labels="labels3"> chart-series="series3"
+                            </canvas>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="产品" ng-click="onSearch('product')">
+                    <div class="pt20">
+                        <div>
+                            <div>
+                                <span>统计日期：</span>{{currDate}}
+                            </div>
+                            <div class="pt15">
+                                <span>产品类型：</span>
+                                <input type="radio" value="1" ng-model="prod.parentId" ng-change="requeryProd()">线路
+                                <input type="radio" value="2" ng-model="prod.parentId" ng-change="requeryProd()">酒店
+                                <input type="radio" value="3" ng-model="prod.parentId" ng-change="requeryProd()">门票
+                                <input type="radio" value="4" ng-model="prod.parentId" ng-change="requeryProd()">潜水
+                                <input type="radio" value="5" ng-model="prod.parentId" ng-change="requeryProd()">休闲娱乐
+                                <input type="radio" value="6" ng-model="prod.parentId" ng-change="requeryProd()">美食
+                                <input type="radio" value="7" ng-model="prod.parentId" ng-change="requeryProd()">购物
+                                <input type="radio" value="8" ng-model="prod.parentId" ng-change="requeryProd()">组合产品
+                            </div>
+                            <div class="pt15">
+                                <span ng-class="{'weightSpan':weightSpan3===1}"  ng-click="requeryProd('volumeCount',3)" class="cursorP staticHover foot18">销量统计</span>
+                                <span ng-class="{'weightSpan':weightSpan4===1}"  ng-click="requeryProd('priceSum',4)" class="cursorP staticHover foot18">金额统计</span>
+                                <span ng-class="{'weightSpan':weightSpan5===1}"  ng-click="requeryProd('joinerCount',5)" class="cursorP staticHover foot18">参与人统计</span>
+                            </div>
+                        </div>
+                        <div class="mt25">
+                            <canvas  class="chart chart-bar"
+                                    chart-data="data4" chart-labels="labels4"> chart-series="series4"
+                            </canvas>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="目的地" ng-click="onSearch('site')">
+                    <div class="pt20">
+                        <div>
+                            <div>
+                                <span>统计日期：</span>{{currDate}}
+                            </div>
+                            <div class="pt15">
+                                <span>产品类型：</span>
+                                <input type="radio" value="1" ng-model="site.parentId" ng-change="requerySite()">线路
+                                <input type="radio" value="2" ng-model="site.parentId" ng-change="requerySite()">酒店
+                                <input type="radio" value="3" ng-model="site.parentId" ng-change="requerySite()">门票
+                                <input type="radio" value="4" ng-model="site.parentId" ng-change="requerySite()">潜水
+                                <input type="radio" value="5" ng-model="site.parentId" ng-change="requerySite()">休闲娱乐
+                                <input type="radio" value="6" ng-model="site.parentId" ng-change="requerySite()">美食
+                                <input type="radio" value="7" ng-model="site.parentId" ng-change="requerySite()">购物
+                                <input type="radio" value="8" ng-model="site.parentId" ng-change="requerySite()">组合产品
+                            </div>
+                            <div class="pt15">
+                                <span ng-class="{'weightSpan':weightSpan6===1}"  ng-click="requerySite('volumeCount',6)" class="cursorP staticHover foot18">销量统计</span>
+                                <span ng-class="{'weightSpan':weightSpan7===1}"  ng-click="requerySite('priceSum',7)" class="cursorP staticHover foot18">金额统计</span>
+                                <span ng-class="{'weightSpan':weightSpan8===1}"  ng-click="requerySite('joinerCount',8)" class="cursorP staticHover foot18">参与人统计</span>
+                            </div>
+                        </div>
+                        <div class="mt25">
+                            <canvas  class="chart chart-bar"
+                                    chart-data="data5" chart-labels="labels5"> chart-series="series5"
+                            </canvas>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(function(){
+	$(".queryStartTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".queryEndTime").datetimepicker("setStartDate", $(".queryStartTime").val());
+		});;
+	$(".queryEndTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".queryStartTime").datetimepicker("setEndDate", $(".queryEndTime").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.queryStartTime').datetimepicker().on('show',function(ev){
+        if (!$('.queryEndTime').val()){
+            $(".queryStartTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.queryEndTime').datetimepicker().on('show',function(ev){
+        if (!$('.queryStartTime').val()){
+            $(".queryEndTime").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

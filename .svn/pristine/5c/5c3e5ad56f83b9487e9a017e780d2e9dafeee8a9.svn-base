@@ -1,0 +1,25 @@
+<!-- CREATE BY JOY  -->
+<!-- 弹框 -->
+<div ng-controller="changeTribe">
+	<div class="window-header" style="width: 450px;">
+		更换酋长
+	</div>
+	<div class="tribeDialog">
+		<div class="pt20">
+				<div class="ft-l">选择用户：</div>
+				<div>
+					<input style="width:292px;" type="text" name="" value="请输入用户手机号码" ng-model="changeTribe.mobile">
+				</div>
+				<p ng-show="warmInfos" style="margin-left: 75px;color: red">请输入11位酷鸟用户的手机号码</p>
+				<p ng-show ="!warmInfos"></p>
+				<div style="clear: both;"></div>
+				<div class="ft-l">更换理由：</div>
+				<textarea ng-model="changeTribe.remarks" style="width: 292px;height: 100px;" maxlength="200" ng-click="setRemark()"></textarea>
+				<p ng-show="warmRemark" style="margin-left: 75px;color: red">更换理由不能为空</p>
+		</div>
+		<div class="pt20 text-center">
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #0cb9f3;color: #fff!important;' ng-click='setTribeStatus()'>设置</a>
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #ccc;color: #fff!important;' ng-click='closeThisDialog()'>取消</a>
+		</div>
+	</div>
+</div>

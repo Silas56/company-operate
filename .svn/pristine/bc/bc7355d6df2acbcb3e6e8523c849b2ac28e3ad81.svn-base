@@ -1,0 +1,37 @@
+<div ng-controller="refundFailDetail">
+	<div class="window-header" style="width: 450px;">
+        	提现详情
+    </div>
+    <div class="pt20">
+    	<div>
+    		<span>商家店铺：</span>{{openDetailParam.cardholder}}
+    	</div>
+    	<div class="pt15">
+    		<span>提取金额：</span>{{openDetailParam.shopName}}
+    	</div>
+    	<div class="pt15">
+    		<span>提现渠道：</span>
+    	</div>	
+    	<div class="pt15">
+    		<span>银行：</span>{{openDetailParam.bankCardName}}
+    	</div>
+    	<div class="pt15">
+    		<span>卡号：</span>{{openDetailParam.bankCardNo}}
+    	</div>
+    	<div class="pt15">
+    		<span>姓名：</span>{{openDetailParam.applicantName}}
+    	</div>
+    	<div class="pt15">
+    		<span>交易渠道：</span>{{openDetailParam.channelSource}}
+    	</div>
+    	<div class="pt15">
+    		<span>业务流水号：</span>{{openDetailParam.accountId}}
+    	</div>
+    	<div class="pt15">
+    		<span>操作说明：</span>{{openDetailParam.remark}}
+    	</div>
+    </div>
+    <div class="pt30 text-center ">
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+    </div>
+</div>

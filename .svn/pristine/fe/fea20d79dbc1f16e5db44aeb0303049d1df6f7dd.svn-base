@@ -1,0 +1,13 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content{width: 500px;}
+</style>
+<div class="pt30" ng-controller="addFilterWord">
+	<div class="window-header" style="margin-top: -45px;width: 500px;">添加滤词</div>
+	<div class="mt20">
+        滤词：<input class="w375" type="text" placeholder="请输入10个字以内的词语，不可出现空格" ng-model="addingFilterWord">
+    </div>
+	<div class="pt30 text-center">
+		<a class="checkA" style="padding: 6px 37px;" ng-click="add()">添加滤词</a>
+		<a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">关闭窗口</a>
+	</div>
+</div>

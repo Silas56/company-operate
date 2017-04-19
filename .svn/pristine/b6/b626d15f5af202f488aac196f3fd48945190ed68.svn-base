@@ -1,0 +1,136 @@
+/**
+ * Created by dengrunquan on 16/4/11.
+ */
+myApp.controller('main',function($scope,$http,ngDialog, $location){
+
+    $scope.logoutUrl = ctx + "gotoLogout";//退出请求url
+    $scope.userInfo = {};//存放用户信息
+    $scope.topMenus = {};//头部导航数据集合
+    $scope.menus = {};//侧部子导航数据集合
+    $scope.menusCounts = 0;
+
+
+    var url = ctx + 'permission/queryUserPermission.json';//权限请求url
+
+    $http.get(url).success(function(response){
+        $scope.userInfo = response.userRef;//当前进入用户信息
+        if(response.treeNodes){ //头部导航是否存在
+            $scope.topMenus = response.treeNodes;   //存在及赋值给topMenus
+            if($scope.topMenus.length >0){      //导航条数目大于0
+                $scope.menus = $scope.topMenus[0].children; //初始默认侧部导航数据集合 为头部第一条导航数据下的子数据集合
+                $scope.setMainPage();//设置当前地址栏地址
+            }
+        }
+        /**
+        else{
+            //
+            showMessage(ngDialog,"对不起，该用户未授权登录，请联系客服人员QQ:800071678！",function(){
+                var loginUrl = ctx + "gotoLogout";
+                window.location = loginUrl;
+            });
+        } **/
+
+    });
+
+    //设置当前地址栏地址
+    $scope.setMainPage = function (forceFirstMenu) {
+        if($scope.menus && $scope.menus.length >0){         //左侧子数据集合存在及左侧子数据集合数据数目大于0
+            var hash = window.location.hash.substring(2);   //截取地址栏上的#后的地址
+            for(var i = 0 ; i < $scope.menus.length;i++){   //循环子数据集合数据
+                var m = $scope.menus[i];
+                m.isActive = (hash === m.link);             //当前子数据样式是否选中 ->获取当前导航的hash值 与 子数据集合link值匹配
+            }
+
+            if(!hash || forceFirstMenu) {   //如果hash值不存在 或者  传入的参为真
+                $location.path('/'+ $scope.menus[0].link);  //当前地址栏跳转到子导航第一条的link值上
+                if( !forceFirstMenu ){
+                    $scope.topMenus[0].isActive = true;//设置头部导航第一个样式选中
+                    $scope.menus[0].isActive = true;    //左侧导航的第一条子导航样式选中
+                }
+            }else if( hash ){       //hash存在
+                for( var i in $scope.topMenus ){    //遍历读取头部导航
+                    for( var m in $scope.topMenus[i].children ){
+                        var child = $scope.topMenus[i].children[m];
+                        if( child.link == hash ){
+                            $scope.topMenus[i].isActive = true;
+                            $scope.topMenus[i].children[m].isActive = true;
+                            $scope.menus = $scope.topMenus[i].children;
+                        }else{
+                            var topMenusIndex = sessionStorage.topMenuIndex,//头部索引
+                                menusIndex = sessionStorage.menusIndex;//左侧索引
+                                $scope.topMenus[topMenusIndex].isActive = true;
+                                $scope.topMenus[topMenusIndex].children[menusIndex].isActive = true;
+                                $scope.menus = $scope.topMenus[topMenusIndex].children;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    //点击头部导航
+    $scope.chickMenu = function (value) {
+        sessionStorage.menusIndex = 0;  //初始左侧导航索引值
+
+        for(var i in $scope.topMenus){  //循环读取头部导航数据
+            var topMenu = $scope.topMenus[i];   //定义变量接受头部导航一条数据
+            topMenu.isActive = (this.topMenu === topMenu);  //头部导航一条数据的样式是否选中 -> 当前控制器topMenu  == 变量
+
+            if(value && topMenu.resourceCode == value){
+                $scope.menus = topMenu.children;
+                $scope.setMainPage(true);
+                $scope.menus[0].isActive = true;
+                sessionStorage.topMenuIndex = i;    //把顶部导航索引存入sessionStorage
+            }
+        }
+    };
+
+    $scope.changeLeftMenu = function(event,index){
+    	$scope.event = event.button;
+    	// 0 左击 1 中键点击
+    	if (1 == $scope.event)
+    	{
+    	    return;
+    	}
+    	// 先让所有的isActive 为false
+    	for(var i = 0 ; i < $scope.menus.length; i++){
+    		$scope.menus[i].isActive = false;
+    	}
+        // 再让当前点击的isActive 为true
+    	this.menu.isActive = true;
+        sessionStorage.menusIndex = index;
+    }
+
+
+
+
+
+    /**
+    if(value == 'shop'){
+        $scope.menus = [
+            {name: "审核管理", url: "shop/check"},
+            {name: "店铺管理", url: "shop/manage"},
+            {name: "功能管理", url: "shop/func"}
+        ];
+    }else if(value == 'user'){
+        $scope.menus = [
+            {name: "平台用户", url: "user/platformUser"},
+            {name: "内部授权", url: "user/insideAuthorize"},
+            {name: "内部角色", url: "user/insideStarf"}
+        ]
+    }else if(value == 'account'){
+        $scope.menus = [
+            {name: "对账", url: "account/reconciliation"},
+            {name: "提现", url: "account/refund"},
+            {name: "退款", url: "account/withdrawals"}
+        ];
+    }
+    else if(value == 'order'){
+        $scope.menus = [
+            {name: "订单列表", url: "order/list"},
+            {name: "订单统计", url: "order/static"},
+            {name: "仲裁退款", url: "order/organ"}
+        ];
+    } **/
+});

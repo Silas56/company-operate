@@ -1,0 +1,30 @@
+<div ng-controller="insideStarf">
+	<div class="main-header">
+        	内部权限角色组
+    </div>
+    <div class="ft-r pt20">
+    	<a class="checkA" style="padding: 6px 25px;" ng-click="roleEditDialog()">添加</a>
+    </div>
+    <div class="pt70">
+        <table>
+            <thead>
+            <tr>
+            <td class="w200">角色名称</td>
+            <td class="w135">角色权限描述</td>
+            <td class="w80">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="role in roleList">
+                    <td>{{role.roleName}}</td>
+                    <td>{{role.memo}}</td>
+                    <td>
+                        <a href="" ng-click="roleEditDialog(role.roleCode)" >编辑</a>
+                        <a href="" ng-click="deleteRoleForShop(role.roleCode)" >删除</a>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

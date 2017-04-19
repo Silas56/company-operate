@@ -1,0 +1,46 @@
+<div ng-controller="reconciliationDeal">
+	<div class="window-header" style="width: 450px;">
+        	对账处理
+    </div>
+    <div>
+    	<!--<div>
+    		<span>商家名称：</span>{{refundBean.legalName}}
+    	</div>-->
+    	<div class="pt15">
+    		<span>交易时间：</span><font>{{toDealParam.tradeTime}}</font>
+    	</div>
+    	<div class="pt15">
+    		<span>业务流水号：</span><font>{{toDealParam.outTradeNo}}</font>
+    	</div>	
+    	<div class="pt15">
+    		<span>订单编号：</span><font>{{toDealParam.orderCode}}</font>
+    	</div>
+    	<div class="pt15">
+            <span>支付凭证号：</span>{{toDealParam.invoiceId}}
+        </div>
+    	<div class="pt15">
+    		<span>订单状态：</span>交易成功
+    	</div>
+    	<div class="pt15">
+    		<span>交易类型：</span>订单支付
+    	</div>
+    	<div class="pt15">
+    		<span>交易渠道：</span><font>{{toDealParam.tradeMethodName}}</font>
+    	</div>
+    	<div class="pt15">
+    		<span>交易金额：</span><font>￥{{toDealParam.tradeAmount | number:2}}</font>
+    	</div>
+    	<div class="pt15">
+    		<span>对账状态：</span>
+    		<input type="radio" name="accountType" value="1" ng-model = "param.checkStatus" ng-click="showDiv(1)"/>对账成功
+    		<input type="radio" name="accountType" value="2" ng-model = "param.checkStatus" ng-click="showDiv(0)"/>对账不平
+    	</div>
+    	<div class="pt15" ng-show="isShowDiv">
+    		<span>手续费：</span>￥<input type="text" ng-model="param.fee" ng-change="feeChange()" class="w160 form-control disp-inline"/>
+    	</div>
+    </div>
+    <div class="pt30 text-center ">
+    	<a class="sureBtn" ng-click="sureSubmit()">确认操作</a>
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+    </div>
+</div>

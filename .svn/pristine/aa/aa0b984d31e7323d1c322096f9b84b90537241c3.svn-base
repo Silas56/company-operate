@@ -1,0 +1,163 @@
+<div class="orderOrganDiv" ng-controller="orderOrgan">
+	<div class="main-header">
+        	仲裁退款
+    </div>
+    <div class="pt20">
+    	<span>订单编号：</span><input type="text" ng-model="param.orderCode" class="form-control disp-inline w226 mr10"/>
+    	<span>店铺名称：</span><input type="text" ng-model="param.shopName" class="w226 form-control disp-inline mr10"/>
+    	<span>产品名称：</span><input type="text" ng-model="param.productName" class="w226 form-control disp-inline"/>
+    </div>
+    <div class="pt20">
+    	<span>申请时间：</span>
+        <input type='text'
+               class="w106 form-control disp-inline ml-4 refundTimeStart"
+               max-date="param.refundTimeEnd"
+               ng-model="param.refundTimeStart"
+               is-open="selectStartConsumeTime"
+               ng-click="selectStartConsumeTime = !selectStartConsumeTime"
+                />
+        <span>-</span>
+        <input type='text'
+               class="w106 form-control disp-inline refundTimeEnd"
+               min-date="param.refundTimeStart"
+               ng-model="param.refundTimeEnd"
+               is-open="selectEndConsumeTime"
+               ng-click="selectEndConsumeTime = !selectEndConsumeTime"
+                />
+    	<span>仲裁申请人</span><font class="ml-4">：</font><input type="text" ng-model="param.contact" class="w226 form-control disp-inline mr25"/>
+    </div>
+    <div class="mt10"><a class="checkA ft-r" ng-click="onSearch()" style="padding: 6px 25px;">查询</a></div>
+    <div style="    padding-top: 54px;">
+    <tabset>
+        <tab heading="未处理" ng-click="changeTab('undeal')">
+            <div class="pt10">
+                <table>
+                    <thead>
+                    <tr>
+                        <td class="w100">订单编号</td>
+                        <td class="w150">产品名称</td>
+                        <td class="w150">套餐规格</td>
+                        <td class="w50">仲裁申请人</td>
+                        <td class="w80">下单时间
+                            <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun1('orderTime','asc')" ng-show="orderTimeDown1"/>
+                            <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun1('orderTime','desc')" ng-show="!orderTimeDown1"/>
+                        </td>
+                        <td class="w120">订单状态</td>
+                        <td class="w80">订单金额</td>
+                        <td class="w50">申请退款时间
+                            <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun1('refundTime','asc')" ng-show="refundTimeDown1"/>
+                            <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun1('refundTime','desc')" ng-show="!refundTimeDown1"/></td>
+                        <td class="w60">申请退款金额</td>
+                        <td class="w90">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orders1">
+                        <td>{{order.orderCode}}</td>
+                        <td>{{order.productName}}</td>
+                        <td>{{order.spec + '¥' + order.price +'*'+order.jonerCount}}</td>
+                        <td>{{order.contact}}</td>
+                        <td>{{order.orderTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{order.orderStatusDec}}</td>
+                        <td>￥{{order.orderAmount | number:2}}</td>
+                        <td>{{order.refundTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>￥{{order.refundAmount | number:2}}</td>
+                        <td class="p15">
+                            <a href="#/order/view/{{order.orderCode}}/{{order.orderStatus}}/organ/{{order.distributionOrder}}">查看订单</a>
+                            <a ng-click="organEditDialog(order.orderCode,order.orderStatus,order.refundCode,'edit',order.orderStatus,order.refundReason,order.refundReasonDes,order.sellerRejectReasonDes,order.shopName)" >仲裁处理</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pt10" style="height: 84px;">
+                    <tm-pagination conf="paginationConf1"></tm-pagination>
+                </div>
+            </div>
+        </tab>
+
+        <tab heading="已处理" ng-click="changeTab('deal')">
+
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td class="w70">订单编号</td>
+                        <td class="w100">产品名称</td>
+                        <td class="w100">套餐规格</td>
+                        <td class="w80">下单时间
+                            <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun2('orderTime','asc')" ng-show="orderTimeDown2"/>
+                            <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun2('orderTime','desc')" ng-show="!orderTimeDown2"/>
+                        </td>
+                        <td class="w60">仲裁申请人</td>
+                        <td class="w100">订单状态</td>
+                        <td class="w80">订单总额</td>
+                        <td class="w60 p10">申请退款金额</td>
+                        <td class="w50 p5">仲裁申请时间
+                            <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun2('refundTime','asc')" ng-show="refundTimeDown2"/>
+                            <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun2('refundTime','desc')" ng-show="!refundTimeDown2"/></td>
+                        <td class="w60">仲裁处理人</td>
+                        <td class="w80">实际退款金额</td>
+                        <td class="w90">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orders2">
+                        <td>{{order.orderCode}}</td>
+                        <td>{{order.productName}}</td>
+                        <td>{{order.spec + '¥' + order.price +'*'+order.jonerCount}}</td>
+                        <td>{{order.orderTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{order.contact}}</td>
+                        <td>{{order.orderStatusDec}}</td>
+                        <td>￥{{order.orderAmount | number:2}}</td>
+                        <td>￥{{order.refundAmount | number:2}}</td>
+                        <td>{{order.refundTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{order.arbitratorName}}</td>
+                        <td>￥{{order.arbitrateRefundAmount| number:2}}</td>
+                        <td class="p10">
+                            <a href="#/order/view/{{order.orderCode}}/{{order.orderStatus}}/organ/{{order.distributionOrder}}">查看订单</a>
+                            <a ng-click="organEditDialog(order.orderCode,order.orderStatus,order.refundCode,'view',order.refundReason,order.refundReasonDes,order.sellerRejectReasonDes,order.shopName)" >仲裁备注</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pt10" style="height: 84px;">
+                    <tm-pagination conf="paginationConf2"></tm-pagination>
+                </div>
+            </div>
+        </tab>
+
+    </tabset>
+    </div>
+<script type="text/javascript">
+	$(function(){
+	$(".refundTimeStart").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".refundTimeEnd").datetimepicker("setStartDate", $(".refundTimeStart").val());
+		});;
+	$(".refundTimeEnd").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".refundTimeStart").datetimepicker("setEndDate", $(".refundTimeEnd").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.refundTimeStart').datetimepicker().on('show',function(ev){
+        if (!$('.refundTimeEnd').val()){
+            $(".refundTimeStart").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.refundTimeEnd').datetimepicker().on('show',function(ev){
+        if (!$('.refundTimeStart').val()){
+            $(".refundTimeEnd").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

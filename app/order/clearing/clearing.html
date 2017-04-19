@@ -1,0 +1,74 @@
+<div ng-controller="clearing">
+    <div class="main-header">
+        订单结算
+    </div>
+    <div class="pt20">
+        <span>订单编号：</span><input ng-model="param.orderCode" type="text" class="w235 form-control disp-inline mr10" placeholder="请输入订单编号"/>
+        <span>商家店铺：</span><input ng-model="param.shopNameOrShopCode" type="text" class="w235 form-control disp-inline mr10" placeholder="请输入店铺名称"/>
+    </div>
+    <div class="pt20">
+        <span>订单所属：</span>
+        <select ng-model="param.saleType" class="form-control disp-inline w235 mr10 ml-4">
+            <option value="0">全部</option>
+            <option value="1">自销订单</option>
+            <option value="2">分销订单</option>
+        </select>
+        <span>结算时间：</span>
+        <select ng-model="param.queryType" ng-change="timeTypeChange()" class="form-control disp-inline w235 mr10 ml-4">
+            <option value="1">近3天</option>
+            <option value="2">近7天</option>
+            <option value="3">近30天</option>
+            <option value="4">选择月份</option>
+        </select>
+        <div ng-show="dateShow" style="display: inline-block;">
+            <select ng-model="selectedYears" ng-change="yChange()" class="form-control disp-inline mr6 ml-4" style="width:84px;">
+                <option ng-repeat="y in years" >{{y}}</option>
+            </select>
+            <select ng-model="selectedMonths" ng-change="mChange()" ng-options="m for m in months" class="form-control disp-inline mr6 ml-4" style="width:66px;">
+            </select>
+        </div>
+        <a class="checkA ft-r" ng-click="onSearch()" style="padding: 6px 25px;">查询</a>
+    </div>
+    <div class="pt74">
+        <div class="clearfix mb10">
+
+            <span class="ft-l">统计时间：{{timeRange}}</span>
+            <!-- <span ng-click="export()" class="ft-r pointer" style="color:#2499c5;">下载数据</span> -->
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <td class="w100">订单编号</td>
+                    <td class="w140">产品名称</td>
+                    <td class="w110">商家名称</td>
+                    <td class="w60">订单所属</td>
+                    <td class="w90">结算时间</td>
+                    <td class="w80">订单金额</td>
+                    <td class="w80">实结金额</td>
+                    <td class="w80">退款金额</td>
+                    <td class="w70">佣金金额</td>
+                    <td class="w50">服务费比例</td>
+                    <td class="w70">服务费</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in lists">
+                    <td>{{item.orderCode}}</td>
+                    <td>{{item.productName}}</td>
+                    <td>{{item.shopName}}</td>
+                    <td>{{item.saleTypeStr}}</td>
+                    <td>{{item.handleTime}}</td>
+                    <td>￥{{(item.orderPrice).toFixed(2)}}</td>
+                    <td>￥{{(item.balance).toFixed(2)}}</td>
+                    <td>￥{{(item.refundAmount).toFixed(2)}}</td>
+                    <td>{{item.saleType == 1 ? '-' : '￥'+item.actualCommission}}</td>
+                    <td>{{item.serviceRate}}%</td>
+                    <td>￥{{(item.serviceFee).toFixed(2)}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

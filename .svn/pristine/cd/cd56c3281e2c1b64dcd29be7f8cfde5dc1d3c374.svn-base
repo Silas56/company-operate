@@ -1,0 +1,33 @@
+<style>
+	.ngdialog-content {
+		width: 900px !important;
+		background-color: white !important;
+	}
+	.ngdialog.ngdialog-theme-default .ngdialog-close:before {
+		border: 1px solid #bbb;
+		border-radius: 30px;
+    	color: white;
+   	 	background-color: #bbb;
+	}
+</style>
+<div ng-controller="addShopType">
+	<div class="window-header">
+        	添加店铺类型
+    </div>
+    <div class="pt20">
+    	<font>店铺类型名称：</font>
+    	<input type="text" class="w150 form-control disp-inline mr35" maxlength="20" ng-model="param.orgSkeletionName" ng-change="wrongFormatFun()" />
+    	<font>店铺类型描述：</font>
+    	<input type="text" class="w240 form-control disp-inline" maxlength="100" ng-model="param.desciption" ng-change="wrongFormatFun()" />
+    </div>
+    <div class="pt30">
+    	<span>服务费率设置：</span>
+    	<input type="radio" name="money" checked="checked" ng-click = "checkChange('free')"/><font class="mr20">免服务费</font>
+    	<input type="radio" name="money" ng-click = "checkChange('notFree')"/><font class="mr20">服务费率</font><div ng-show="service" class="disp-inline"><input type="text" class="w50 mr6" ng-model="param.serviceRate"/><font class="mr6">%</font>输入范围：0.1%~99.9%</div>
+    </div>
+    <div class="pt20 text-center">
+    	<button class="checkA mr30" style="padding: 6px 25px;border-radius: 0;position: initial;border-radius: 3px;" ng-click="submit()">确认</button>
+    	<button class="checkA" style="padding: 6px 25px;"  ng-click="closeThisDialog()">取消</button>
+    </div>
+    
+</div>

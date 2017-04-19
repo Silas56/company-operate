@@ -1,0 +1,12 @@
+myApp.controller('refundDetail', function($scope, $http, ngDialog,$rootScope) {
+    $rootScope.tribeData = $rootScope.tribeDatas;
+    if($rootScope.tribeData.status==1){
+        $rootScope.tribeData.status = "未处理";
+    }else if($rootScope.tribeData.status==2){
+        $rootScope.tribeData.status = "银行处理中";
+    }else if($rootScope.tribeData.status==3){
+        $rootScope.tribeData.status = "处理失败";
+    }else if($rootScope.tribeData.status==4){
+        $rootScope.tribeData.status = "处理成功";
+    }
+})

@@ -1,0 +1,178 @@
+<div ng-controller="refund" class="refundForJorden">
+	<div class="main-header">
+        	提现管理
+    </div>
+    <div>
+        <!--JOY-->
+        <div class="headers">
+            <ul>
+                <li ng-class="{'refundActive':data.current==1}" ng-click="action.setCurrent(1)">
+                     店铺提现
+                </li>
+                <li ng-class="{'refundActive':data.current==2}" ng-click="action.setCurrent(2)">
+                     部落提现
+                </li>
+            </ul>
+        </div>
+        <div ng-show="data.current == 1" class="bodys">
+            <div class="searchSection">
+                <div>
+                    <span>店铺名称：</span><input type="text" class="w216 form-control disp-inline mr20" ng-model="paramForShop.shopName"/>
+                    <span>申请时间：</span>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 startTime"
+                           max-date="paramForShop.endTime"
+                           ng-model="paramForShop.startTime"
+                           is-open="selectStartTime"
+                           ng-click="selectStartTime = !selectStartTime"
+                    />
+                    <font class="mr4">-</font>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 endTime"
+                           min-date="paramForShop.startTime"
+                           ng-model="paramForShop.endTime"
+                           is-open="selectEndTime"
+                           ng-click="selectEndTime = !selectEndTime"
+                    />
+                   <span>处理结果</span>
+                    <select class="w220 form-control disp-inline ml5" ng-model="paramForShop.status">
+                        <option value="">全部</option>
+                        <option value="1">未处理</option>
+                        <option value="2">银行处理中</option>
+                        <option value="3">处理失败</option>
+                        <option value="4">处理成功</option>
+                    </select>
+                    <p class="shopSearchs" ng-click="searchShopList()" style="cursor: pointer">
+                        查询
+                    </p>
+                </div>
+
+            </div>
+            <table style="clear: both;margin-top:78px">
+                <thead>
+                <tr>
+                    <td class="w200">受理编号</td>
+                    <td class="w110">申请人</td>
+                    <td class="w110">店铺名称</td>
+                    <td class="w110">提现金额</td>
+                    <td class="w80">申请时间</td>
+                    <td class="w110">交易渠道</td>
+                    <td class="w110">处理结果</td>
+                    <td class="w110">处理时间</td>
+                    <td class="w84">操作</td>
+                </tr>
+                </thead>
+                <tr ng-repeat="shop in refundForShopLists">
+                    <td>{{shop.acceptId}}</td>
+                    <td>{{shop.applicantName}}</td>
+                    <td>{{shop.shopName}}</td>
+                    <td>￥{{shop.settledAmt | number:2}}</td>
+                    <td>{{shop.applicationTime}}</td>
+                    <td>{{shop.channelSource}}</td>
+                    <td>{{results.status}}</td>
+                    <td>{{shop.completionTime}}</td>
+                    <td class="default_color" ng-click="openShopDetail(shop)" style="cursor: pointer">查看详情</td>
+                </tr>
+            </table>
+            <div class="pt10" style="height: 84px;margin-left: 181px;">
+                <tm-pagination conf="paginationConfForShop"></tm-pagination>
+            </div>
+        </div>
+        <div ng-show="data.current == 2" class="bodys">
+            <div class="searchSection">
+                <div>
+                    <span>部落名称：</span><input type="text" class="w216 form-control disp-inline mr20" ng-model="paramForTribe.shopName"/>
+                    <span>申请时间：</span>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 startTime"
+                           max-date="paramForTribe.endTime"
+                           ng-model="paramForTribe.startTime"
+                           is-open="selectStartTime"
+                           ng-click="selectStartTime = !selectStartTime"
+                    />
+                    <font class="mr4">-</font>
+                    <input type='text'
+                           class="w110 form-control disp-inline mr4 endTime"
+                           min-date="paramForTribe.startTime"
+                           ng-model="paramForTribe.endTime"
+                           is-open="selectEndTime"
+                           ng-click="selectEndTime = !selectEndTime"
+                    />
+                    <span>处理结果</span>
+                    <select class="w220 form-control disp-inline ml5" ng-model="paramForTribe.tribeStatus">
+                        <option value="">全部</option>
+                        <option value="1">未处理</option>
+                        <option value="2">银行处理中</option>
+                        <option value="3">处理失败</option>
+                        <option value="4">处理成功</option>
+                    </select>
+                    <p class="shopSearchs" ng-click="searchTribeList()" style="cursor: pointer">
+                        查询
+                    </p>
+                </div>
+
+            </div>
+            <table style="clear: both;margin-top:78px;">
+                <thead>
+                <tr>
+                    <td class="w200">受理编号</td>
+                    <td class="w110">申请人</td>
+                    <td class="w110">店铺名称</td>
+                    <td class="w110">提现金额</td>
+                    <td class="w80">申请时间</td>
+                    <td class="w110">交易渠道</td>
+                    <td class="w110">处理结果</td>
+                    <td class="w110">处理时间</td>
+                    <td class="w84">操作</td>
+                </tr>
+                </thead>
+                <tr ng-repeat="tribe in refundForTribeLists">
+                    <td>{{tribe.acceptId}}</td>
+                    <td>{{tribe.applicantName}}</td>
+                    <td>{{tribe.shopName}}</td>
+                    <td>￥{{tribe.settledAmt | number:2}}</td>
+                    <td>{{tribe.applicationTime}}</td>
+                    <td>{{tribe.channelSource}}</td>
+                    <td>{{resultsForTribe.status}}</td>
+                    <td>{{tribe.completionTime}}</td>
+                    <td class="default_color" ng-click="openTribeDetail(tribe)" style="cursor: pointer">查看详情</td>
+                </tr>
+            </table>
+            <div class="pt10" style="height: 84px;margin-left: 181px;">
+                <tm-pagination conf="paginationConfForTribe"></tm-pagination>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(function(){
+	$(".startTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endTime").datetimepicker("setStartDate", $(".startTime").val());
+		});;
+	$(".endTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startTime").datetimepicker("setEndDate", $(".endTime").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.startTime').datetimepicker().on('show',function(ev){
+        if (!$('.endTime').val()){
+            $(".startTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endTime').datetimepicker().on('show',function(ev){
+        if (!$('.startTime').val()){
+            $(".endTime").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

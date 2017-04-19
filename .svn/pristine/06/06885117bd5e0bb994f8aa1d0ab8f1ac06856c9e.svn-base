@@ -1,0 +1,217 @@
+<style>
+	.tab-content{
+		padding: 20px 0 20px 0;
+	}
+</style>
+<div ng-controller="orderView">
+    <div class="fs">
+        <span>订单详情页</span>
+        <a class="checkA ft-r" style="padding: 6px 25px;" ng-href="#{{returnUrl}}" >返回</a>
+    </div>
+    <!-- 订单详情-->
+    <div class="mt30">
+        <tabset>
+            <tab heading="订单详情">
+                <div class="orderViewDiv">
+                    <div class="main-header">
+        				订单信息
+    				</div>
+    				<div class="pt20 ft-r" style="color: #fff;margin-top: -30px;font-size: 16px;background-color: #2599c6;padding: 8px 25px;">
+                            {{order.orderStatusName}}
+                    </div>
+                    <div>
+                        <div class="pt20">
+                            <span>订单编号：</span>{{order.operateOrderContactBean.orderCode}}
+                        </div>
+                        <div class="pt20">
+                            <span ng-show="!showDevide">店铺名称：</span><span ng-show="showDevide">分销店铺：</span>{{order.operateOrderOtherInfo.distributionSources}}
+                        </div>
+                        <div class="pt20" ng-show="showDevide">
+                            <span>供应商名称：</span>{{order.operateOrderOtherInfo.shopName}}
+                        </div>
+                        <div class="pt20">
+                            <span>联系人姓名：</span>{{order.operateOrderContactBean.contact}}
+                            <span class="ml130">手机：</span>{{order.operateOrderContactBean.mobile}}
+                        </div>
+                        <div class="pt20">
+                            <span>下单时间：</span>{{order.operateOrderContactBean.orderTime}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt30">
+                    <div class="main-header">
+        				参与人信息
+    				</div>
+                    <div class="pt20">
+                        <table>
+                            <thead>
+                            <td class="w150">姓名</td>
+                            <td class="w150">手机号</td>
+                            <td class="w150">证件类型</td>
+                            <td class="w150">证件号码</td>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="operateOrderPlayerInfo in order.operateOrderPlayerInfoList">
+                                <td>{{operateOrderPlayerInfo.name}}</td>
+                                <td>{{operateOrderPlayerInfo.mobile}}</td>
+                                <td>{{operateOrderPlayerInfo.certTypeName}}</td>
+                                <td>{{operateOrderPlayerInfo.certNo}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="pt30">
+                    <div class="main-header">
+        				商品信息
+    				</div>
+                    <div class="pt20">
+                        <table>
+                            <thead>
+                            <td class="w360">产品名称</td>
+                            <td class="w200">产品编号</td>
+                            <td class="w240">规格</td>
+                            <td class="w100">单价</td>
+                            <td class="w90">数量</td>
+                            <td class="w120">总价</td>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="operateOrderProductInfo in order.operateOrderProductInfoList">
+                                <td>{{operateOrderProductInfo.productName}}</td>
+                                <td>{{operateOrderProductInfo.outPrdCode}}</td>
+                                <td>{{operateOrderProductInfo.spec}}</td>
+                                <td>￥{{operateOrderProductInfo.price | number:2}}</td>
+                                <td>{{operateOrderProductInfo.num}}</td>
+                                <td>{{operateOrderProductInfo.totalPrice | number:2}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="pt30">
+                    <div class="main-header">
+        				退款信息
+    				</div>
+                    <div class="pt20">
+                        <div class="pt20">
+                            <span>申请退款金额：</span>￥{{order.operateOrderRefundInfo.applyRefundAmount | number:2}}
+                        </div>
+                        <div class="pt20" ng-show="hasArbitrateAmount">
+                            <span>退款金额：</span><span ng-show="hasRefundMoney1">￥{{order.operateOrderRefundInfo.arbitrateAmount | number:2}}</span>
+                        </div>
+                        <div class="pt20" ng-show="!hasArbitrateAmount">
+                            <span>退款金额：</span><span ng-show="hasRefundMoney2">￥{{order.operateOrderRefundInfo.refundAmount | number:2}}</span>
+                        </div>
+                        <div class="pt20" ng-show="hasSellerRefundMemo">
+                            <span>退款备注：</span>{{order.operateOrderRefundInfo.sellerRefundMemo}}
+                        </div>
+                        <div class="pt20" ng-show="hasArbitrationRefundMemo">
+                            <span>仲裁退款备注：</span>{{order.operateOrderRefundInfo.arbitrationRefundMemo}}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt30" ng-show="showDevide">
+                    <div class="main-header">
+        				分销信息
+    				</div>
+                    <div class="pt20">
+                        <div class="pt20">
+                            <span>佣金：</span>￥{{order.operateOrderOtherInfo.expectedCommission | number:2}}
+                        </div>
+                        <div class="pt20">
+                            <span>结算状态：</span>{{order.operateOrderOtherInfo.commissionSettledStatus}}
+                        </div>
+                        <!--<div class="pt20">
+                            <span>分销来源：</span>{{order.operateOrderOtherInfo.distributionSources}}
+                        </div>-->
+                    </div>
+                </div>
+            </tab>
+            <tab heading="交易记录">
+                <div>
+                    <div class="main-header">
+        				交易记录
+    				</div>
+                    <div class="pt20">
+                        <table>
+                            <thead>
+                            <td class="w170">交易时间</td>
+                            <td class="w110">交易渠道</td>
+                            <td class="w120">交易状态</td>
+                            <td class="w540">交易流水号</td>
+                            <td class="w160">交易金额</td>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="payLog in order.operateOrderSerialInfo">
+                            <td>{{payLog.payTime}}</td>
+                            <td>{{payLog.payment}}</td>
+                            <td>{{payLog.statusName}}</td>
+                            <td>{{payLog.tradeSerialNo}}</td>
+                            <td>￥{{payLog.payAmount| number:2}}</td>
+                        	</tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="pt30">
+                    <div class="main-header">
+        				退款记录
+    				</div>
+                    <div class="pt20">
+                        <table>
+                            <thead>
+                            <td class="w150">退款类型</td>
+                            <td class="w190">交易时间</td>
+                            <td class="w110">交易渠道</td>
+                            <td class="w130">退款状态</td>
+                            <td class="w375">交易流水号</td>
+                            <td class="w160">交易金额</td>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="refundLogs in order.operateOrderRefundArbitrationList">
+                            <td>{{refundLogs.payType}}</td>
+                            <td>{{refundLogs.payTime}}</td>
+                            <td>{{refundLogs.payment}}</td>
+                            <td>{{refundLogs.statusName}}</td>
+                            <td>{{refundLogs.tradeSerialNo}}</td>
+                            <td>￥{{refundLogs.payAmount | number:2 }}</td>
+                        	</tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="操作日志">
+                <div>
+                    <table>
+                        <thead>
+                        <td class="w70">序号</td>
+                        <td class="w120">操作时间</td>
+                        <td class="w100">操作人</td>
+                        <td class="w140">操作类型</td>
+                        <td class="w350">操作记录</td>
+                        <td class="w330">操作备注</td>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="operateOrderOperationLog in order.operateOrderOperationLogList">
+                            <td>{{$index+1}}</td>
+                            <td>{{operateOrderOperationLog.operationTime}}</td>
+                            <td>{{operateOrderOperationLog.operator}}</td>
+                            <td>{{operateOrderOperationLog.operationType}}</td>
+                            <td>{{operateOrderOperationLog.operationRecord}}</td>
+                            <td>{{operateOrderOperationLog.operationMemo}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+
+</div>

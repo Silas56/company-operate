@@ -1,0 +1,173 @@
+myApp.controller('productIndex', function($scope, $http, ngDialog) {
+
+    $scope.productSpecialList = ''; //初始化
+    //获取产品分类列表
+
+    var productClassUrl = ctx + 'common/getPrdTypes.json';
+
+    //获取产品列表
+    var url = ctx + 'product/querySPUList.json';
+
+
+    $http.get(productClassUrl).success(function(res) {
+        $scope.productClassList = res.prdTypes; //产品类型数据集合
+    })
+
+    //获取产品分类列表
+
+
+    //获取产品种类列表
+
+    var productSpecialUrl = ctx + 'common/getPrdTypesById.json';
+
+    $scope.productChange = function(typeId) {
+        if (typeof typeId === 'number') {
+            $http.get(productSpecialUrl, {
+                params: {
+                    parentId: typeId
+                }
+            }).success(function(res) {
+                $scope.productSpecialList = res.prdTypes;
+            })
+        } else {
+            $scope.productSpecialList = '';
+            return false;
+        }
+    };
+
+
+    //分页空间配置项
+
+    $scope.paginationConf = {
+        itemsPerPage: 10,
+        currentPage: 1
+    };
+
+    $scope.param = {};
+    $scope.param.productName = ''; //产品名称
+    $scope.param.shopName = ''; //所属商家
+    $scope.param.tribeName = ''; //部落名称
+    $scope.param.parentId = ''; //产品一级分类
+    $scope.param.categoryId = ''; //产品种类id
+    $scope.param.visitStatus = ''; //产品状态
+
+    //分页空间配置项
+
+
+    //搜索查询
+    $scope.search = function() {
+        $scope.param.productName = $scope.productName == undefined ? '' : $scope.productName; //产品名称
+        $scope.param.shopName = $scope.shopName == undefined ? '' : $scope.shopName; //所属商家
+        $scope.param.tribeName = $scope.tribeName == undefined ? '' : $scope.tribeName; //部落名称
+
+        $scope.param.parentId = $scope.productClassVal ? $scope.productClassVal.typeId : ''; //产品一级分类
+        $scope.param.categoryId = $scope.productSpecial ? $scope.productSpecial.typeId : ''; //产品种类id
+        console.log($scope.productClassVal);
+        if ($scope.visitStatus == 1) {
+            $scope.param.visitStatus = 1; //产品状态
+        } else if ($scope.visitStatus == 2) {
+            $scope.param.visitStatus = 2; //产品状态
+        }
+
+        if ($scope.param.productName.length > 50 || $scope.param.shopName > 50 || $scope.param.tribeName > 50) {
+            showMessage(ngDialog, '产品名称，所属商家，部落名称不得超过50字');
+        } else {
+            $scope.onsearch();
+        }
+    }
+
+
+    $scope.onsearch = function() {
+        $scope.param.pageNum = $scope.paginationConf.currentPage;
+        $scope.param.pageSize = $scope.paginationConf.itemsPerPage;
+
+        $http.get(url + '?pageNum=' + $scope.param.pageNum + '&pageSize=' + $scope.param.pageSize + '&productName=' + $scope.param.productName + '&shopName=' + $scope.param.shopName + '&tribeName=' + $scope.param.tribeName + '&parentId=' + $scope.param.parentId + '&categoryId=' + $scope.param.categoryId + '&visitStatus=' + $scope.param.visitStatus).success(function(res) {
+            $scope.param.pageNum = $scope.paginationConf.currentPage;
+            $scope.param.pageSize = $scope.paginationConf.itemsPerPage;
+            if (res.list) {
+                // console.log(res);
+                $scope.datas = res.list;
+                $scope.paginationConf = {
+                    currentPage: $scope.param.pageNum,
+                    totalItems: res.total,
+                    itemsPerPage: $scope.param.pageSize,
+                    pagesLength: 8,
+                    perPageOptions: [10, 20, 30, 40, 50],
+                    onChange: function() {}
+                };
+            } else {
+                $scope.paginationConf = {
+                    currentPage: $scope.param.pageNum,
+                    totalItems: 0,
+                    itemsPerPage: $scope.param.pageSize,
+                    pagesLength: 8,
+                    perPageOptions: [10, 20, 30, 40, 50],
+                    onChange: function() {}
+                }
+            }
+        })
+    }
+
+    //获取产品种类列表
+
+
+    $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onsearch)
+
+
+    $scope.changeStatus = function(status) {
+        if (status == 1) {
+            return '上架';
+        } else if (status == 2) {
+            return '下架';
+        } else {
+            return '未知'
+        }
+    }
+
+    $scope.isFreeze = function(status) {
+        if (status == 1) {
+            return '冻结';
+        } else if (status == 2) {
+            return '解除冻结';
+        } else {
+            return '未知状态'
+        }
+    }
+
+    $scope.openwin = function(user, status) {
+        console.log(user);
+        if (status) {
+            if (status == 1) {
+                $scope.formData = { 'productCode': user.code, 'optType': 1, 'shopCode': user.shopCode }
+            } else if (status == 2) {
+                $scope.formData = { 'productCode': user.code, 'optType': 2, 'shopCode': user.shopCode }
+            }
+            var result = ngDialog.open({
+                template: 'app/product/productManage/productChange.html',
+                scope: $scope,
+                closeByDocument: false
+            });
+        }
+    }
+
+
+
+    $scope.copy = function() {
+        var clipboard = new Clipboard('.copy_link');
+        clipboard.on('success', function() {
+            alert('复制成功');
+            clipboard.destroy();
+        })
+    }
+
+    // 二维码
+    $scope.qrcode = function(index, link) {
+        var dom = document.getElementById('qrcode_' + index);
+        angular.element(dom).empty().qrcode({
+            render: "canvas", //table方式 
+            width: 150, //宽度 
+            height: 150, //高度 
+            text: link //任意内容 
+        });
+    }
+})

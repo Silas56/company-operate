@@ -1,0 +1,178 @@
+<div ng-controller="orderList">
+	<div class="main-header">
+        	订单列表
+            <span ng-click="exportEditDialog()" class="ft-r" style="color:#2499c5; cursor: pointer; font-size: 14px;line-height: 30px;">导出数据</span>
+    </div>
+    <div class="pt20">
+    	<span>订单编号：</span><input type="text" ng-model="param.orderCode" class="w235 form-control disp-inline mr6"/>
+    	<span>店铺名称：</span><input type="text" ng-model="param.shopName" class="w235 form-control disp-inline mr6"/>
+    	<span>下单时间：</span>
+        <input type='text' style="margin-left: -1px;"
+               class="w100 form-control disp-inline p010 orderTimeStart"
+               max-date="param.orderTimeEnd"
+               ng-model="param.orderTimeStart"
+               is-open="selectOrderStartTime"
+               ng-click="selectOrderStartTime = !selectOrderStartTime"
+                />
+        <span>-</span>
+        <input type='text'
+               class="w100 form-control disp-inline p010 orderTimeEnd"
+               min-date="param.orderTimeStart"
+               ng-model="param.orderTimeEnd"
+               is-open="selectOrderEndTime"
+               ng-click="selectOrderEndTime = !selectOrderEndTime"
+                />
+    </div>
+    <div class="pt20">
+    	<span>订单状态：</span>
+        <select ng-model="param.orderStatus" class="form-control disp-inline w235 mr6 ml-4">
+            <option value="" selected>请选择</option>
+            <option value="1">待支付-待确认</option>
+            <option value="2">待支付-已确认</option>
+            <option value="3">已取消</option>
+            <option value="4">已支付-已确认</option>
+            <option value="5">交易关闭-等待退款</option>
+            <option value="6">交易关闭-仲裁退款中</option>
+            <option value="7">交易关闭-退款成功</option>
+            <option value="8">交易成功</option>
+            <option value="9">交易关闭-仲裁退款成功</option>
+            <option value="10">交易关闭-仲裁退款拒绝</option>
+            <option value="11">交易成功-退款成功</option>
+            <option value="12">交易成功-仲裁退款中</option>
+            <option value="13">交易成功-仲裁退款拒绝</option>
+        </select>
+    	<span>订单性质：</span>
+        <select ng-model="param.distributionType" class="form-control disp-inline w235 mr6 ml-4" >
+            <option value="" selected>全部</option>
+            <option value="1">分销订单</option>
+            <option value="2">自营订单</option>
+        </select>
+    	<span class="ml14">联系人：</span><input type="text" ng-model="param.joiner" class="form-control disp-inline w200 m3w214">
+    </div>
+    <div class="pt20">
+    	<span>产品名称：</span><input type="text" ng-model="param.productName" class="form-control disp-inline w235 mr6">
+    	<span class="ml-4">消费时间：</span>
+        <input type='text'
+               class="w110 form-control disp-inline consumeTimeStart"
+               max-date="param.consumeTimeEnd"
+               ng-model="param.consumeTimeStart"
+               is-open="selectStartConsumeTime"
+               ng-click="selectStartConsumeTime = !selectStartConsumeTime"
+                />
+        <span>-</span>
+        <input type='text'
+               class="w110 form-control disp-inline consumeTimeEnd"
+               min-date="param.consumeTimeStart"
+               ng-model="param.consumeTimeEnd"
+               is-open="selectEndConsumeTime"
+               ng-click="selectEndConsumeTime = !selectEndConsumeTime"
+                />
+    	<a class="checkA ft-r mt10 mt44" ng-click="onSearch()" style="padding: 6px 25px;">查询</a>
+    </div>
+    <div class="pt74">
+    	<table>
+            <thead>
+                <tr>
+                    <td class="w100">订单编号</td>
+                    <td class="w150">产品名称</td>
+                    <td class="w150">店铺名称</td>
+                    <td class="w50 p5">订单性质</td>
+                    <td class="w80">下单时间
+                        <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('orderTime','asc')" ng-show="orderTimeDown"/>
+                        <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('orderTime','desc')" ng-show="!orderTimeDown"/>
+                    </td>
+                    <td class="w120">联系人</td>
+                    <td class="w80 p5">订单状态</td>
+                    <td class="w50 p5">消费时间</td>
+                    <td class="w60 p10">订单总额
+                        <img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('orderAmount','asc')" ng-show="orderAmountDown"/>
+                        <img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('orderAmount','desc')" ng-show="!orderAmountDown"/>
+                    </td>
+                    <td class="w90">操作</td>
+                </tr>
+            </thead>
+            <tbody>
+            	<tr ng-repeat="order in orders">
+                <td>{{order.orderCode}}</td>
+                <td>{{order.productName}}</td>
+                <td>{{order.shopName}}</td>
+                <td>{{order.distributionType==1?'分销订单':'自营订单'}}</td>
+                <td>{{order.orderTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{order.joiner}}</td>
+                <td>{{order.orderStatusDec}}</td>
+                <td>{{order.consumeTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{order.orderAmount | number:2}}</td>
+                <td class="p10">
+                    <a href="#/order/view/{{order.orderCode}}/{{order.orderStatus}}/list/{{order.distributionType}}">查看订单</a>
+<!--                     <a ng-show="order.refundStatus == 1" ng-click="organEditDialog(order.orderCode,order.orderStatus,order.refundCode,'edit',order.orderStatus)" >仲裁处理</a> -->
+                    <a ng-show="order.orderStatus == 10 || order.orderStatus == 9 || order.refundStatus == 2 || order.refundStatus == 3" ng-click="organEditDialogView(order.orderCode,order.orderStatus,order.refundCode,'view')" >仲裁备注</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(function(){
+	$(".orderTimeStart").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".orderTimeEnd").datetimepicker("setStartDate", $(".orderTimeStart").val());
+		});;
+	$(".orderTimeEnd").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".orderTimeStart").datetimepicker("setEndDate", $(".orderTimeEnd").val());
+		});
+		
+		
+	$(".consumeTimeStart").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".consumeTimeEnd").datetimepicker("setStartDate", $(".consumeTimeStart").val());
+		});;
+	$(".consumeTimeEnd").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".consumeTimeStart").datetimepicker("setEndDate", $(".consumeTimeEnd").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.orderTimeStart').datetimepicker().on('show',function(ev){
+        if (!$('.orderTimeEnd').val()){
+            $(".orderTimeStart").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.orderTimeEnd').datetimepicker().on('show',function(ev){
+        if (!$('.orderTimeStart').val()){
+            $(".orderTimeEnd").datetimepicker("setStartDate", null);
+        }       
+    });
+
+    $('.consumeTimeStart').datetimepicker().on('show',function(ev){
+        if (!$('.consumeTimeEnd').val()){
+            $(".consumeTimeStart").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.consumeTimeEnd').datetimepicker().on('show',function(ev){
+        if (!$('.consumeTimeStart').val()){
+            $(".consumeTimeEnd").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

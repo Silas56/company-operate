@@ -1,0 +1,125 @@
+<div ng-controller="comment">
+	<div class="main-header">
+        	订单评价
+    </div>
+    <div class="pt20">
+    	<span>订单编号：</span><input type="text" ng-model="param.orderCode" class="w235 form-control disp-inline mr6" placeholder="请输入订单编号"/>
+    	<span>时间范围：</span>
+        <input type='text' style="margin-left: -1px;"
+               class="w100 form-control disp-inline p010 orderTimeStart"
+               max-date="param.endTime"
+               ng-model="param.startTime"
+               is-open="selectStartTime"
+               ng-click="selectStartTime = !selectStartTime"
+                />
+        <span>至</span>
+        <input type='text'
+               class="w100 form-control disp-inline p010 orderTimeEnd"
+               min-date="param.startTime"
+               ng-model="param.endTime"
+               is-open="selectEndTime"
+               ng-click="selectEndTime = !selectEndTime"
+                />
+    </div>
+    <div class="pt20">
+    	<span>评论状态：</span>
+        <select ng-model="param.status" class="form-control disp-inline w235 mr6 ml-4">
+            <option value="0">全部</option>
+            <option value="1">显示</option>
+            <option value="2">隐藏</option>
+        </select>
+        <span>商家店铺：</span><input type="text" ng-model="param.shopParam" class="w235 form-control disp-inline mr6" placeholder="请输入店铺名称或者编号"/>
+    	<a class="checkA ft-r mt10 mt44" ng-click="onSearch()" style="padding: 6px 25px;">查询</a>
+    </div>
+    <div class="pt74">
+    	<table>
+            <thead>
+                <tr>
+                    <td class="w200">订单编号</td>
+                    <td class="w160">商家名称</td>
+                    <td class="w80">评价人</td>
+                    <td class="w160 p5">评价时间</td>
+                    <td class="w160 p5">评价状态</td>
+                    <td class="w160">操作</td>
+                </tr>
+            </thead>
+            <tbody>
+            	<tr ng-repeat="comment in comments">
+                <td>{{comment.orderCode}}</td>
+                <td>{{comment.shopName}}</td>
+                <td>{{comment.userName}}</td>
+                <td>{{comment.commentTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{comment.status == 1?'显示':'隐藏'}}</td>
+                <td class="p10">
+                    <a href="#/order/commentDetail/{{comment.code}}">查看详情</a>
+                    <a ng-if='comment.status == 1' ng-click="setUnable(comment.code)" >设置失效</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+    <script type="text/javascript">
+	$(function(){
+	$(".orderTimeStart").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".orderTimeEnd").datetimepicker("setStartDate", $(".orderTimeStart").val());
+		});;
+	$(".orderTimeEnd").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".orderTimeStart").datetimepicker("setEndDate", $(".orderTimeEnd").val());
+		});
+		
+		
+	$(".consumeTimeStart").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".consumeTimeEnd").datetimepicker("setStartDate", $(".consumeTimeStart").val());
+		});;
+	$(".consumeTimeEnd").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".consumeTimeStart").datetimepicker("setEndDate", $(".consumeTimeEnd").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.orderTimeStart').datetimepicker().on('show',function(ev){
+        if (!$('.orderTimeEnd').val()){
+            $(".orderTimeStart").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.orderTimeEnd').datetimepicker().on('show',function(ev){
+        if (!$('.orderTimeStart').val()){
+            $(".orderTimeEnd").datetimepicker("setStartDate", null);
+        }       
+    });
+
+    $('.consumeTimeStart').datetimepicker().on('show',function(ev){
+        if (!$('.consumeTimeEnd').val()){
+            $(".consumeTimeStart").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.consumeTimeEnd').datetimepicker().on('show',function(ev){
+        if (!$('.consumeTimeStart').val()){
+            $(".consumeTimeEnd").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

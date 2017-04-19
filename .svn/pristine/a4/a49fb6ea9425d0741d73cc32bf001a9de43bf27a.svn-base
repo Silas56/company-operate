@@ -1,0 +1,38 @@
+<div ng-controller="insideAuthorizeEdit">
+    <div>
+    	<div class="window-header" ng-show="editData.editType == 'create'" style="width: 450px;">
+    		新增授权
+    	</div>
+    	<div class="window-header" ng-show="editData.editType == 'edit'" style="width: 450px;">
+    		编辑授权
+    	</div>
+        <div class="pt40" ng-show="editData.editType == 'create'">
+            <span style="margin-left: 2px;">* 授权用户：</span>
+            <input type="hidden" ng-model="formData.userOutCode">
+            <input class="form-control w160 disp-inline" type="text" ng-model="formData.mobile" ng-change="getUserOutCode()">
+        </div>
+        <div class="pt10" ng-show="editData.editType == 'edit'">
+            <span class="ml45">账号：</span><font class="ml10">{{editData.userOutCode}}</font>
+        </div>
+        
+        <div class="pt10">
+            <span style="margin-left: 35px;">* 姓名：</span>
+            <input class="form-control w160 disp-inline" maxlength="20" type="text" ng-model="formData.callName" ng-click="editName()">
+        </div>
+        <!--<div class="pt10" ng-show="editData.editType == 'edit'">
+            <span class="ml45">* 姓名：</span><font class="ml10">{{editData.callName}}</font>
+        </div>-->
+        
+        <div class="pt10">
+            <span style="margin-left: 35px;">* 角色：</span>
+            <select class="w160 form-control disp-inline" ng-model="formData.roleCode" ng-options="role.roleCode as role.roleName for role in roleList">
+                <option value="" >请选择</option>
+            </select>
+        </div>
+        <div class="pt30 text-center">
+            <a class='checkA' style='padding: 6px 37px;' ng-click='saveAuthorize()'>确定</a>
+            <a class='checkA' style='padding: 6px 37px;' ng-click='closeThisDialog()'>取消</a>
+        </div>
+
+    </div>
+</div>

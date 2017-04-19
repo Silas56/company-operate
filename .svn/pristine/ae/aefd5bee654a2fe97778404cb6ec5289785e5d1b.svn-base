@@ -1,0 +1,56 @@
+<div ng-controller="reconciliationToUnfairDeal">
+	<div class="window-header" style="width: 450px;">
+        	对账处理
+    </div>
+    <div class="pt20">
+    	<div>
+    		<span>交易时间：</span>{{toUnfairDealParam.tradeTime}}
+    	</div>
+    	<div class="pt15">
+    		<span>业务流水号：</span>{{toUnfairDealParam.outTradeNo}}
+    	</div>	
+    	<div class="pt15">
+    		<span>订单编号：</span>{{toUnfairDealParam.orderCode}}
+    	</div>
+    	<div class="pt15">
+            <span>支付凭证号：</span>{{toUnfairDealParam.invoiceId}}
+        </div>
+    	<div class="pt15">
+    		<span>订单状态：</span>交易成功
+    	</div>
+    	<div class="pt15">
+    		<span>交易类型：</span>订单支付
+    	</div>
+    	<div class="pt15">
+    		<span>交易渠道：</span>
+    		<div class="disp-inline" ng-hide="channelHide"><font class="mr16">{{toUnfairDealParam.tradeMethodName}}</font><a class="col-57A2F0" ng-click="changeDivHide('channel',1)">调整</a></div>
+    		<div class="disp-inline"  ng-hide="channelShow">
+    			<select class="w160 form-control disp-inline mr16" ng-model="tradeMethod" >
+    				<option value="ALIPAY">支付宝支付</option>
+    				<option value="WXPAY">微信支付</option>
+    				<option value="UIONPAY">银联支付</option>
+    				<!--<option value="JDPAY">京东支付</option>-->
+    				<!--<option value="OFFLINEPAY">线下支付</option>-->
+    			</select>
+    			<a class="col-57A2F0" ng-click="channelSure()">保存</a>
+    			<a class="col-57A2F0" ng-click="changeDivHide('channel',0)">返回</a>
+    		</div>
+    	</div>
+    	<div class="pt15">
+    		<span>交易金额：</span>
+    		<div class="disp-inline" ng-hide="amountHide"><font class="mr16">￥{{amountInputParam.inputValue | number:2}}</font><a class="col-57A2F0" ng-click="changeDivHide('amount',1)">调整</a></div>
+    		<div class="disp-inline" ng-hide="amountShow">
+    			<input type="text" ng-model="tradeAmount" class="mr16">
+    				<a class="col-57A2F0" ng-click="amountSure()">保存</a>
+    				<a class="col-57A2F0" ng-click="changeDivHide('amount',0)">返回</a>
+    		</div>
+    	</div>
+    	<div class="pt15">
+    		<span>手续费：</span><input type="text" ng-model='param.fee' />
+    	</div>
+    </div>
+    <div class="pt30 text-center ">
+    	<a class="sureBtn" ng-click="submit()">确认对账</a>
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+    </div>
+</div>

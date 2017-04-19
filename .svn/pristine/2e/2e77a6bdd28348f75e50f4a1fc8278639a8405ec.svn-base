@@ -1,0 +1,64 @@
+<div ng-controller="refundDetail">
+	<div class="window-header" style="width: 450px;">
+		提现详情
+	</div>
+	<div class="pt20">
+		<div>
+			<span>受理编号：</span>{{openDetailParam.acceptId}}
+		</div>
+		<div class="pt15">
+			<span>店铺名称：</span>{{openDetailParam.shopName}}<span class="ml30">申请人：{{openDetailParam.applicantName}}</span>
+		</div>
+		<div class="pt15">
+			<span>提现金额：</span>￥{{openDetailParam.settledAmt | number:2}}
+		</div>  
+		<div class="pt15">
+			<span style="font-size: 20px;font-weight: bold;">提现渠道</span>
+		</div>
+		<div class="pt15">
+			<span>银行：</span>{{openDetailParam.bankCardName}}
+		</div>
+		<div class="pt15">
+			<span>卡号：</span>{{openDetailParam.bankCardNo}}
+		</div>
+		<div class="pt15">
+			<span>姓名：</span>{{openDetailParam.cardholder}}
+		</div>
+		<div class="pt15">
+			<span style="font-size: 20px;font-weight: bold;">处理结果</span>
+		</div>
+		<div class="pt15">
+			<span ng-show="success" >处理结果：</span><span ng-show="success" class="col-red">提现成功！</span>
+			<span ng-show="fail" >处理结果：</span><span ng-show="fail" class="col-red">提现失败！</span>
+		</div>
+		<div ng-show="success" >
+		<div class="pt15">
+			<span>交易渠道：</span>{{openDetailParam.channelSource}}
+		</div>
+		<div class="pt15">
+			<span>业务流水号：</span>{{openDetailParam.bankTradeNo}}
+		</div>
+		<div class="pt15" ng-show="success">
+			<span>手续费：</span>￥{{openDetailParam.counterFee | number:2}}
+		</div>
+		<!--<div class="pt15">
+			<span>操作备注：</span>
+			<textarea class="h120 noborderTa" maxlength="200" style="width: 400px;border: 0px !important;" ng-model="openDetailParam.remark" readonly></textarea>
+		</div>-->
+		</div>
+		<div ng-show="fail" >
+		<div class="pt15">
+			<span>交易渠道：</span>{{openDetailParam.channelSource}}
+		</div>
+		<div class="pt15">
+			<span>业务流水号：</span>{{openDetailParam.bankTradeNo}}
+		</div>
+		<div class="pt15">
+			<span>失败原因：</span>{{openDetailParam.remark}}
+		</div>
+		</div>
+	</div>
+	<div class="pt30 text-center ">
+		<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+	</div>
+</div>

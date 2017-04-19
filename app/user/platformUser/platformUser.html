@@ -1,0 +1,52 @@
+<div ng-controller="platformUser">
+	<div class="main-header">
+        	平台用户
+    </div>
+    <div class="pt20">
+    	<div class="ft-l">
+            <span>手机：</span>
+            <input type="number" ng-model="param.loginName"   class="w150 form-control disp-inline mr20"/>
+            <span>昵称：</span>
+            <input type="text" ng-model="param.realName" class="w150 form-control disp-inline mr25"/>
+    	    <span>状态：</span>
+            <select ng-model="param.status" class="form-control disp-inline w150 mr30 ml-4" >
+                <option value="" selected>全部</option>
+                <option value="1">激活</option>
+                <option value="2">冻结</option>
+            </select>
+    	</div>
+    	<a class="checkA ft-l" ng-click="onSearch()" style="padding: 6px 35px;">搜索</a>
+    </div>
+    <div class="pt60">
+        <table>
+            <thead>
+            <tr>
+            <td class="w200">用户ID</td>
+            <td class="w200">手机</td>
+            <td class="w200">昵称</td>
+            <td class="w200">状态</td>
+            <td class="w200">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in userList">
+                <td>{{user.userCode}}</td>
+                <td>{{user.loginName}}</td>
+                <td>{{user.realName}}</td>
+                <td>
+                    <span ng-show="user.status == 2" style="color:red">{{user.statusName}}</span>
+                    <span ng-show="user.status == 1" style="color:green">{{user.statusName}}</span>
+                </td>
+                <td>
+                    <a class="col-57A2F0" href="" ng-click="changeStatus(user.userCode,user.status)" ng-show="user.status == 1">冻结</a>
+                    <a class="col-57A2F0" href="" ng-click="changeStatus(user.userCode,user.status)" ng-show="user.status == 2">激活</a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <div class="pt10" style="height: 84px;">
+        <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

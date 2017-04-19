@@ -1,0 +1,79 @@
+<style>
+.ngdialog.ngdialog-theme-default .ngdialog-content{
+	width: 550px;
+}	
+</style>
+<div ng-controller="orderOrganEdit">
+    <div class="window-header" style="width: 550px;">
+        	仲裁处理
+    </div>
+    <div style="padding: 15px 20px 20px 6px;">
+        <div>
+            <span>订单编号：</span>{{order.operateOrderContactBean.orderCode}}
+        </div>
+        <div>
+            <span>订单金额：</span>{{order.operateOrderProductInfoList[0].totalPrice | number:2}}
+        </div>
+        <div>
+            <span>联系方式：</span><span class="mr10">{{order.operateOrderContactBean.contact}}</span>{{order.operateOrderContactBean.mobile}}
+        </div>
+        <div>
+            <span>申请仲裁退款金额：</span>{{order.operateOrderRefundInfo.applyRefundAmount | number:2}}
+        </div>
+        <div class="pt25">
+            <span>退款原因：</span>{{order.operateOrderRefundInfo.refundReason}}
+        </div>
+        <div>
+            <span>退款描述：</span>{{order.operateOrderRefundInfo.refundReasonDes}}
+        </div>
+        <div>
+            <span>商家名称：</span>{{order.operateOrderOtherInfo.shopName}}
+        </div>
+        <div>
+            <span>商家备注：</span>{{order.operateOrderRefundInfo.sellerRefundMemo}}
+        </div>
+        <!-- 仲裁处理 -->
+        <div ng-show="editData.editType=='edit'">
+            <div class="pt25">
+                <span>仲裁处理：</span>
+                <input type="radio" value="1" ng-click="agreeRefundChange('agree')" ng-model="organData.approveResult" /><font class="mr30">同意退款</font>
+                <input type="radio" value="2" ng-click="agreeRefundChange('disagree')"  ng-model="organData.approveResult"><font class="mr30">拒绝退款</font>
+            </div>
+            <div class="pt20" ng-hide="moneyHide">
+                <span>退款金额：</span>
+                <input type="number" ng-model="organData.arbitrateRefundAmount" class="w380 h35 grayBorder">
+            </div>
+            <div class="pt20">
+                <div class="ft-l">*仲裁备注：</div>
+                <textarea ng-model="organData.approveDes" class="w377 h120 grayBorder" maxlength="200"></textarea>
+            </div>
+            <div class="pt20">
+            	<a class="orderOrganEditEnsure" ng-click="refundOrgan()">确认</a>
+            	<a class="orderOrganEditClose" ng-click="closeThisDialog()">关闭窗口</a>
+            </div>
+        </div>
+        <!-- 仲裁备注-->
+        <div ng-show="editData.editType=='view'">
+            <div>
+                <span>仲裁处理：</span>{{order.operateOrderRefundInfo.refundReasonDes}}
+            </div>
+            <div>
+                <span>仲裁退款金额：</span>{{order.operateOrderRefundInfo.arbitrateAmount | number:2}}
+            </div>
+            <div>
+                <span>仲裁备注：</span>{{order.operateOrderRefundInfo.arbitrationRefundMemo}}
+            </div>
+            <div>
+                <span>操作人：</span>{{order.operateOrderRefundInfo.arbitrationOperatorName}}
+            </div>
+            <div>
+                <span>操作时间：</span>{{order.operateOrderRefundInfo.lastUpdatedTime| date:'yyyy-MM-dd'}}
+            </div>
+            <div class="pt20 text-center">
+                <a class="orderOrganEditClose" ng-click="closeThisDialog()">关闭窗口</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>

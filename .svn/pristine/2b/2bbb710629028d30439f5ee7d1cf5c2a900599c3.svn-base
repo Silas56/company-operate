@@ -1,0 +1,40 @@
+<div ng-controller="reconciliationCheckResult">
+	<div class="window-header" style="width: 450px;">
+        	对账处理
+    </div>
+    <div class="pt20">
+    	<div>
+    		<span>交易时间：</span>{{toResultParam.tradeTime}}
+    	</div>
+    	<div class="pt15">
+    		<span>业务流水号：</span>{{toResultParam.outTradeNo}}
+    	</div>	
+    	<div class="pt15">
+    		<span>订单编号：</span>{{toResultParam.orderCode}}
+    	</div>
+    	<div class="pt15">
+    		<span>支付凭证号：</span>{{toResultParam.invoiceId}}
+    	</div>
+    	<div class="pt15">
+    		<span>订单状态：</span>交易成功
+    	</div>
+    	<div class="pt15">
+    		<span>交易类型：</span>订单支付
+    	</div>
+    	<div class="pt15">
+    		<span>交易渠道：</span>{{detailBean.tradeMethodName}}
+    	</div>
+    	<div class="pt15">
+    		<span>交易金额：</span>￥{{detailBean.tradeAmount | number:2}}
+    	</div>
+    	<div class="pt15">
+    		<span>对账状态：</span>{{detailBean.checkStatusName}}
+    	</div>
+    	<div class="pt15">
+    		<span>收单服务费：</span>￥{{detailBean.fee | number:2}}
+    	</div>
+    </div>
+    <div class="pt30 text-center ">
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+    </div>
+</div>

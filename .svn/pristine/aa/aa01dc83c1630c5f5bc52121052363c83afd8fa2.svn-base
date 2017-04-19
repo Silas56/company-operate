@@ -1,0 +1,107 @@
+/**
+ * Created by dengrunquan on 16/4/11.
+ */
+myApp.controller('main',function($scope,$http,ngDialog, $location){
+
+    $scope.logoutUrl = ctx + "gotoLogout";
+    $scope.userInfo = {};
+    $scope.topMenus = {};
+    $scope.menus = {};
+    $scope.menusCounts = 0;
+
+
+    var url = ctx + 'permission/queryUserPermission.json';
+
+    $scope.setMainPage = function (forceFirstMenu) {
+        if($scope.menus && $scope.menus.length >0){
+            var hash = window.location.hash.substring(2);
+            for(var i = 0 ; i < $scope.menus.length;i++){
+                var m =$scope.menus[i]; 
+            	m.isActive = (hash === m.link);
+            }
+
+            if(!hash || forceFirstMenu) {
+                $scope.menus[0].isActive = true;
+                $location.path('/'+ $scope.menus[0].link);
+            }
+        }
+    }
+    $http.get(url).success(function(response){
+        $scope.userInfo = response.userRef;
+        if(response.treeNodes){
+            $scope.topMenus = response.treeNodes;
+            if($scope.topMenus.length >0){
+                $scope.menus = $scope.topMenus[0].children;
+                $scope.setMainPage();
+            }
+        }
+        /**
+        else{
+            //
+            showMessage(ngDialog,"对不起，该用户未授权登录，请联系客服人员QQ:800071678！",function(){
+                var loginUrl = ctx + "gotoLogout";
+                window.location = loginUrl;
+            });
+        } **/
+
+    });
+
+
+    $scope.chickMenu = function (value) {
+        for(var i in $scope.topMenus){
+            var topMenu = $scope.topMenus[i];
+            topMenu.isActive = (this.topMenu === topMenu);
+            if(value && topMenu.resourceCode == value){
+                $scope.menus = topMenu.children;
+                $scope.setMainPage(true);
+            }
+        }
+    };
+    
+    $scope.changeLeftMenu = function(event){
+    	$scope.event = event.button;
+    	// 0 左击 1 中键点击
+    	if (1 == $scope.event)
+    	{
+    	    return;
+    	}
+    	// 先让所有的isActive 为false
+    	for(var i = 0 ; i < $scope.menus.length; i++){
+    		$scope.menus[i].isActive = false;
+    	}
+        // 再让当前点击的isActive 为true
+    	this.menu.isActive = true;
+    }
+    
+
+
+
+
+    /**
+    if(value == 'shop'){
+        $scope.menus = [
+            {name: "审核管理", url: "shop/check"},
+            {name: "店铺管理", url: "shop/manage"},
+            {name: "功能管理", url: "shop/func"}
+        ];
+    }else if(value == 'user'){
+        $scope.menus = [
+            {name: "平台用户", url: "user/platformUser"},
+            {name: "内部授权", url: "user/insideAuthorize"},
+            {name: "内部角色", url: "user/insideStarf"}
+        ]
+    }else if(value == 'account'){
+        $scope.menus = [
+            {name: "对账", url: "account/reconciliation"},
+            {name: "提现", url: "account/refund"},
+            {name: "退款", url: "account/withdrawals"}
+        ];
+    }
+    else if(value == 'order'){
+        $scope.menus = [
+            {name: "订单列表", url: "order/list"},
+            {name: "订单统计", url: "order/static"},
+            {name: "仲裁退款", url: "order/organ"}
+        ];
+    } **/
+});

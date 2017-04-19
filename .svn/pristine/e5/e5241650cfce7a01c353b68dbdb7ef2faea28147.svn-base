@@ -1,0 +1,253 @@
+myApp.controller('addTribe',function($scope,$rootScope,$http,$location,ngDialog){
+	$scope.tribeParams={};
+	$scope.tree;
+	var url = "operateManage/api/tribe/queryTribePermission.json";
+	$http.get(url).success(function(res){
+// console.log(res.children)
+		$scope.tree =res.children;
+	})
+
+    $scope.savaData=function(){
+        var allTrue = [];
+        var allInput = angular.element(document.getElementsByTagName('input'));
+            
+            for(var i=0;i<allInput.length;i++){
+                if(allInput[i].checked===true){
+// console.log(allInput.eq(i).attr("id"))
+                var id = allInput.eq(i).attr("id");
+                allTrue.push(id);
+
+                }
+
+            };
+// console.log(allTrue,"allTrue")
+            $scope.tribeParams.perCodeList =allTrue;
+            if( allTrue.length===0){
+            	showMessage(ngDialog,"支持多个权限，最少选中一项");
+            	$scope.actions.setCurrent(2);
+            	return;
+            }
+            
+    };  
+    $scope.itemCheckedChanged = function(item){
+		var buildSubTree=function(node){
+			if (node.children.length>0){
+				var nodes=node.children;
+				for(var i=0;i<nodes.length;i++){
+					nodes[i].$$isChecked=node.$$isChecked;
+					buildSubTree(nodes[i]);
+				}
+			}
+		}
+
+      var buidParentTree=function(node){
+        var currentNode=document.getElementById(node.resourceCode);
+        var parentNode=angular.element(currentNode).scope().$parent.$parent.$parent.$parent.$parent;
+        // 选中节点
+        if(item.$$isChecked==true){
+         	if(parentNode.$parent&&parentNode.item&&!parentNode.item.$$isChecked){           
+	            parentNode.item.$$isChecked=true;
+	            buidParentTree(parentNode.item); 
+          	}
+        }else{
+          if(parentNode.$parent
+          	&&parentNode.item){
+            var nodes=parentNode.item.children;
+            for(var i=0;i<nodes.length;i++){
+              if(nodes[i].$$isChecked){
+                return;
+              }
+            }
+            parentNode.item.$$isChecked=false;
+            buidParentTree(parentNode.item); 
+          }
+        }
+      };
+      buildSubTree(item);
+      buidParentTree(item);
+     
+    };
+    // 注明：改成使用递归，效果很好
+    $scope.renderAllList=function(){
+     	function getAllInput(node){
+	        if(node.length>0){
+	          for(var i=0;i<node.length;i++){
+	            node[i].$$isChecked=true;
+	            if(node[i].children.length>0){
+	              nodeChild=node[i].children;
+	              getAllInput(nodeChild)
+	            }
+	          }
+	        }else{
+// console.log("没有子节点")
+	        }
+      }
+      var nodeTrees = $scope.tree;
+      getAllInput(nodeTrees)
+
+    }
+
+
+
+// 控制tab切换
+	$scope.data={
+			current:"1",
+			childCurrent :"1",
+		};
+	$scope.actions={
+			setCurrent:function(param){
+				$scope.data.current=param;
+			},
+			setChildCurrent:function(params){
+				$scope.data.childCurrent = params
+			}
+	};
+	//提示信息
+	$scope.warmInfo=false;
+	$scope.flag = true;
+	$scope.flagForDomain=true;
+// ip由后台提供
+	var defaultHttp="http://www.";
+	var defaultIp =".kooniao.com";
+	$scope.checkName=false;
+	$scope.checkDomainNames=true;
+	$scope.checkDomainNamesFalse=false;
+
+// 判断部落名称对不对
+$scope.checkTribeName=function(){
+	
+	
+	if($scope.tribeParams.tribeName){
+		var pattern =/^[A-Za-z\u4e00-\u9fa5]+$/;
+		var len =$scope.tribeParams.tribeName.length;
+// console.log(len)
+//		判断中英文字符
+		if(!pattern.test($scope.tribeParams.tribeName)){
+			$scope.checkName=true;
+			$scope.flag=false;
+		}else if(len>0&&len<21){
+			$scope.checkName=false;
+			$scope.flag=true;
+		}else{
+			$scope.checkName=true;
+			$scope.flag=false;
+		}
+	}else{
+		$scope.checkName=true;
+		$scope.flag=false;
+	}
+	console.log($scope.flag);
+	
+}
+$scope.checkDomainName=function(){
+	
+	if($scope.tribeParams.domainName){
+		var pattern1 =/^[A-Za-z0-9]+$/;
+		if(!pattern1.test($scope.tribeParams.domainName)){
+			$scope.checkDomainNames=false;
+			$scope.checkDomainNamesFalse=true;
+			$scope.flagForDomain=false;
+		}else{
+			$scope.checkDomainNames=true;
+			$scope.checkDomainNamesFalse=false;
+			$scope.flagForDomain=true;
+		}
+
+	}else{
+		$scope.checkDomainNames=false;
+		$scope.checkDomainNamesFalse=true;
+		$scope.flagForDomain=false;
+	}
+	console.log($scope.flagForDomain)
+
+};
+
+
+$scope.checkFlag=function(){
+	console.log($scope.flag,$scope.flagForDomain);
+	if($scope.tribeParams.domainName==undefined){
+		$scope.checkDomainNames=false;
+		$scope.checkDomainNamesFalse=true;
+		$scope.flag=false;
+        $scope.flagForDomain=false;
+	};
+    $scope.checkResult($scope.flag&&$scope.flagForDomain);
+}
+$scope.checkResult = function (bool) {
+    if(bool == false){
+        showMessage(ngDialog,"请输入正确的部落名称和域名");
+        $scope.actions.setCurrent(1);
+        return;
+    }
+}
+
+// 收集需要post的数据
+	
+	$scope.tribeParams.defaultMobile ="请输入11位酷鸟用户的手机号码";
+	$scope.setTribe = function(){
+		$scope.tribeParams.defaultMobile = "";
+	}
+	$scope.saveNewUser=function(){
+		
+// 如果没有修改默认，则认为POST为空
+		$scope.tribeParams.defaultMobile=$scope.tribeParams.defaultMobile =="请输入11位酷鸟用户的手机号码"?null:$scope.tribeParams.defaultMobile;
+		if(!(/^1[3|4|5|8][0-9]\d{8}$/.test($scope.tribeParams.defaultMobile))){ 
+			$scope.warmInfo=true; 
+			return;
+					
+		}else {
+            $scope.warmInfo=false;
+        }
+//判断用户存不存在 
+		var checkedUrl = "/operateManage/api/user/getUserByMobile?mobile="+$scope.tribeParams.defaultMobile+"";
+		$http.get(checkedUrl).then(function(res){
+		    console.log(res.status,"判断用户是否存在");
+			if(res.data.code==100){
+                $scope.tribeParams.domainNames = defaultHttp+$scope.tribeParams.domainName+defaultIp;
+				$scope.tribeParams.defaultMobile=res.data.userBean.mobile;
+				var url = "/operateManage/api/tribe/createTribe.json";
+				$http.post(url,{
+                    defaultMobile:$scope.tribeParams.defaultMobile,
+                    domainName:$scope.tribeParams.domainNames,
+                    perCodeList:$scope.tribeParams.perCodeList,
+                    tribeName:$scope.tribeParams.tribeName
+                })
+				.then(
+					function(res){
+                        console.log(res,"creatTribe");
+						if(res.data.code==100){
+							showMessage(ngDialog,"创建部落成功");
+							$location.path('/tribe/tribeIndex');
+						}else {
+
+                        }
+					},
+					function(err){
+// console.log(err)
+					}
+				)
+
+			}
+			else if(res.data.code==102){
+				showMessage(ngDialog,"你查找的用户不存在");
+				$scope.actions.setCurrent(3);
+				return;
+			}
+		},function(err){
+// console.log(err)
+		})
+		
+
+		// $scope.tribeParams.perCodeList = $scope.getPermissionData;
+		$scope.tribeParams.tribeName = $scope.tribeParams.tribeName;
+
+
+ console.log("创建部落需要发送的数据",$scope.tribeParams);
+
+
+		
+		 
+	}
+	$scope.justice="disable";
+	return $scope;
+})

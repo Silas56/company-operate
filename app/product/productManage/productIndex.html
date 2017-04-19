@@ -1,0 +1,80 @@
+<div ng-controller="productIndex">
+    <div class="main-header">
+        产品管理列表
+    </div>
+    <div class="pt20">
+        <div>
+            <span>产品名称：</span>
+            <input type="text" class="w220 form-control disp-inline mr10" maxlength="50" ng-model="productName">
+            <span>所属商家：</span>
+            <input type="text" class="w220 form-control disp-inline mr10" maxlength="50" ng-model="shopName">
+            <span>所属部落：</span>
+            <input type="text" class="w220 form-control disp-inline mr10" maxlength="50" ng-model="tribeName">
+        </div>
+        <div class="mt20">
+            <span>产品类型：</span>
+            <select class="form-control disp-inline w106 mr10" ng-model="productClassVal" ng-options="productClass.typeName for productClass in productClassList" ng-change="productChange(productClassVal.typeId)">
+                <option value="" selected>产品分类</option>
+
+            </select>
+            <select class="form-control disp-inline w106 mr6 ml-4" ng-model="productSpecial" ng-options="productSpecial.typeName for productSpecial in productSpecialList">
+                <option value="" selected>产品种类</option>
+                <!-- <option ng-repeat="productSpecial in productSpecialList">{{productSpecial.typeName}}</option> -->
+            </select>
+            <span>产品状态：</span>
+            <select class="form-control disp-inline w220" ng-model="visitStatus">
+                <option value="0" selected="selected">全部</option>
+                <option value="1">上架</option>
+                <option value="2">下架</option>
+            </select>
+            <a class="ft-r checkA ml-4 mb30 mr25" ng-click="search()">查询</a>
+        </div>
+        <table class="clear" style='width:100%;'>
+            <thead>
+                <tr>
+                    <td style='width:10%;'>产品ID</td>
+                    <td style='width:10%;'>产品名称</td>
+                    <td style='width:9%;'>所属商家</td>
+                    <td style="width:9%">所属部落</td>
+                    <td style='width:8%;'>类型</td>
+                    <td style='width:12%;'>价格</td>
+                    <td style='width:7%;'>库存</td>
+                    <td style='width:5%;'>销量</td>
+                    <td style='width:10%'>是否开启分销</td>
+                    <td style='width:10%;'>产品状态</td>
+                    <td style='width:10%;'>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat='data in datas' ng-init='a=1'>
+                    <td><span style="padding:0 4px;">{{data.code}}</span></td>
+                    <td class='productName' ng-mouseenter="isShow=true;qrcode($index,data.spuaddr)" ng-mouseleave="isShow=false">
+                        <span>{{data.name}}</span>
+                        <img class='angle' src="img/angle.png">
+                        <div class="productCode" ng-show="isShow">
+                            <!-- <img src="img/picCode.png"> -->
+                            <div id='qrcode_{{$index}}' style='margin:6px auto;'></div>
+                            <a href="javascript:;" data-clipboard-text="{{data.spuaddr}}" class='copy_link' ng-click="copy()">复制产品链接</a>
+                        </div>
+                    </td>
+                    <td>{{data.ownShop}}</td>
+                    <td>{{data.ownTribe}}</td>
+                    <td>{{data.category}}</td>
+                    <td>￥<span>{{data.minPrice}}</span>~<span>{{data.maxPrice}}</span></td>
+                    <td>{{data.stock}}</td>
+                    <td>{{data.saleVolume}}</td>
+                    <td>{{changeDistribute(data.distributeStatus)}}</td>
+                    <td>{{changeStatus(data.spuVisitStatus)}}</td>
+                    <td>
+                        <a class='order-look' href="#/product/productManage/productDetail/{{data.code}}/{{data.shopCode}}">查看</a>
+                        <br />
+                        <a class='freeze' ng-click="openwin(data,data.spuVisitStatus)">{{isFreeze(data.spuVisitStatus)}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

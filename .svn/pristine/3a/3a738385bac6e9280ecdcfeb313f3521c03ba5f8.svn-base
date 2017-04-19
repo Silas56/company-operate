@@ -1,0 +1,21 @@
+<!-- CREATE BY JOY  -->
+<!-- 弹框插件 -->
+<div ng-controller="tribeFreeze">
+	<div class="window-header" style="width: 450px;">
+		冻结部落
+	</div>
+	<div class="tribeDialog">
+		<div>
+				<div class="ft-l pb20">冻结部落后，该部落将停止使用！
+</div>
+				<p></p>
+				<div style="clear: both;"></div>
+				<div class="ft-l">冻结理由:</div>
+				<textarea ng-model="freezeRemarks" style="width: 292px;height: 100px;" maxlength="200" ng-click="editFreezeRemarks()"></textarea>
+		</div>
+		<div class="pt20 text-center">
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #0cb9f3;color: #fff!important;' ng-click='setTribeStatus()'>设置</a>
+			<a class='checkA' style='padding: 6px 37px;margin-right: 10px;border:none;background: #ccc;color: #fff!important;' ng-click='closeThisDialog()'>取消</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+<!--
+shopOutCode<String> : 店铺外部编码 roleCode<String> : 角色编码-更新操作必填
+    * }
+    *roleName<String> : 角色名称 *memo<String> : 角色备注
+        currLink<String> : 当前浏览器访问地址 resourceCodes<List<String>>{ : 资源编码列表
+        -->
+<style type="text/css">
+	.ngdialog.ngdialog-theme-default .ngdialog-content{
+		width: 900px;
+	}
+</style>
+<div ng-controller="insideRoleView">
+	<div>
+		<div class="window-header" ng-show="!isEdit">
+			新增角色
+		</div>
+		<div class="window-header" ng-show="isEdit">
+			编辑角色
+		</div>
+		<div class="pt20">
+			<input type="hidden" ng-model="formData.roleCode">
+			<span>*角色名称：</span>
+			<input type="text" class="form-control disp-inline w190 mr10" ng-model="formData.roleName">
+			<span>角色类型描述：</span>
+			<input type="text" class="form-control disp-inline w190 mr10" ng-model="formData.memo">
+		</div>
+		<div>
+			<div class="pt20 pb20">
+				<span>权限列表(支持多个权限，最少选中一项)</span>
+			</div>
+			<div  style="background-color: #FAFAFA;border-top: 1px solid #DFDCD7;border-bottom: 1px solid #DFDCD7;height: 300px;overflow-y: scroll;">
+				<div recursion="treeNodes">
+				</div>
+			</div>
+		</div>
+		<div class="text-center mt20">
+			<a class='checkA' style='padding: 6px 37px;' ng-click='saveRole()'>确定</a>
+			<a class='checkA' style='padding: 6px 37px;' ng-click='closeThisDialog()'>取消</a>
+		</div>
+
+	</div>
+</div>

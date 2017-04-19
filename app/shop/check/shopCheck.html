@@ -1,0 +1,139 @@
+<div ng-controller="shopCheck">
+	<div class="main-header">
+		店铺审核管理
+	</div>
+	<div>
+		<form>
+			<div class="p10-0">
+				<span>店铺状态：</span>
+				<select class="w160 form-control disp-inline" ng-model="param.checkStatus">
+					<option value="">全部</option>
+					<option value="1">审核中</option>
+					<option value="3">审核未通过</option>
+				</select>
+			</div>
+			<div class="p10-0">
+				<span>店铺名称：</span>
+				<input type="text" class="w580 mr20 form-control disp-inline" ng-model="param.shopName" />
+				<span>申请渠道：</span>
+				<select class="w160 form-control disp-inline ml5" ng-model="param.channelType">
+					<option value="">全部</option>
+					<option value="0">PC</option>
+					<option value="1">WEBAPP</option>
+					<option value="2">APP</option>
+				</select>
+			</div>
+			<div class="p10-0">
+				<span>法人名称：</span>
+				<input type="text" class="w160 form-control disp-inline mr20" ng-model="param.legalPerson" />
+				<span>手机号码：</span>
+				<input type="number" class="w160 form-control disp-inline mr20" ng-model="param.phone" />
+				<span class="ml4">申请时间：</span>
+				<input type="text" class="w150 form-control disp-inline mr4 startApplyDate" max-date="param.endApplyDate" ng-model="param.startApplyDate" is-open="selectapplyStartTime" ng-click="selectapplyStartTime = !selectapplyStartTime"  />
+				<font class="mr4">-</font>
+				<input type="text" class="w150 form-control disp-inline endApplyDate" min-date="param.startApplyDate" ng-model="param.endApplyDate" is-open="selectapplyEndTime" ng-click="selectapplyEndTime = !selectapplyEndTime"  />
+			</div>
+			<div class="p10-0 mb10">
+				<span>处理时间：</span>
+				<input type="text" class="w150 form-control disp-inline mr4 startDealDate" max-date="param.endDealDate" ng-model="param.startDealDate" is-open="selectdealStartTime" ng-click="selectdealStartTime = !selectdealStartTime"  />
+				<font class="mr4">-</font>
+				<input type="text" class="w150 form-control disp-inline endDealDate" min-date="param.startDealDate" ng-model="param.endDealDate" is-open="selectdealEndTime" ng-click="selectdealEndTime = !selectdealEndTime"  />
+				<a class="ft-r checkA" ng-click="onSearch()">查询</a>
+			</div>
+		</form>
+	</div>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<td class="w200">店铺名称</td>
+					<td class="w135">法人名称</td>
+					<td class="w110">手机号</td>
+					<td class="w110">
+						申请时间
+						<img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun()" ng-show="applyDown" />
+						<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun()" ng-show="!applyDown" />
+					</td>
+					<td class="w80">申请渠道</td>
+					<td class="w110">处理时间</td>
+					<td class="w110">店铺状态</td>
+					<td class="w70">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="shopcheck in shopchecks">
+				<td>{{shopcheck.shopName}}</td>
+				<td>{{shopcheck.legalPerson}}</td>
+				<td>{{shopcheck.phone}}</td>
+				<td>{{shopcheck.applyTime | limitTo : 19}}</td>
+				<td>{{shopcheck.channelName}}</td>
+				<td>{{shopcheck.updateTime | limitTo : 19}}</td>
+				<td>{{shopcheck.checkStatusName}}</td>
+				<td><a class="col-57A2F0" href="#/shop/detail/{{shopcheck.shopOutCode}}/{{shopcheck.shopOutCode}}/1/check">查看</a></td>
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConf"></tm-pagination>
+		</div>
+	</div>
+<script type="text/javascript">
+	$(function(){
+	$(".startApplyDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endApplyDate").datetimepicker("setStartDate", $(".startApplyDate").val());
+		});
+	$(".endApplyDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startApplyDate").datetimepicker("setEndDate", $(".endApplyDate").val());
+		});
+
+	$(".startDealDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endDealDate").datetimepicker("setStartDate", $(".startDealDate").val());
+		});
+	$(".endDealDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startDealDate").datetimepicker("setEndDate", $(".endDealDate").val());
+		});
+
+    // 如果选项被手动清空，则需要重置开始和结束值
+    $('.startApplyDate').datetimepicker().on('show',function(ev){
+        if (!$('.endApplyDate').val()){
+            $(".startApplyDate").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endApplyDate').datetimepicker().on('show',function(ev){
+        if (!$('.startApplyDate').val()){
+            $(".endApplyDate").datetimepicker("setStartDate", null);
+        }       
+    });
+
+    $('.startDealDate').datetimepicker().on('show',function(ev){
+        if (!$('.endDealDate').val()){
+            $(".startDealDate").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endDealDate').datetimepicker().on('show',function(ev){
+        if (!$('.startDealDate').val()){
+            $(".endDealDate").datetimepicker("setStartDate", null);
+        }       
+    });
+    
+})
+</script>
+</div>

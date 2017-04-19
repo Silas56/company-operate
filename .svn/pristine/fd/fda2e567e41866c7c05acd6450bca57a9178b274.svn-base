@@ -1,0 +1,600 @@
+myApp.controller('showTribe',function($scope,$location,$rootScope, $http,ngDialog ,$timeout,$routeParams){
+	$scope.modifyTribe = {};
+	var tribeids=$routeParams.tribeid;
+	var tree_array={};
+  	var tree_arrayof=[];
+  	$scope.tree;
+      // 获取权限列表
+	  var url = "operateManage/api/tribe/queryTribePermission.json";
+	  $http.get(url).success(function(res){
+ console.log(res.children)
+	    $scope.tree =res.children;
+	  });
+
+  $scope.renderPermissionList=function(){
+  	var baseInfoUrl = "/operateManage/api/tribe/queryTribeInfo.json?tribeCode="+tribeids;
+	$http.get(baseInfoUrl).then(function(res){
+ // console.log(res,"renderPermissionList")
+
+		 $scope.permisssionId = res.data.permissions;
+		 var permisssionId = res.data.permissions;
+		// 运用递归方式
+		
+ console.log(permisssionId,"permisssionId")
+
+		var permisssionId = res.data.permissions;
+// console.log(permisssionId,"permisssionId")
+		var allInputs = angular.element(document.getElementsByTagName('input'));
+  		for(var k=0;k<allInputs.length;k++){
+  			for(var l = 0;l<permisssionId.length;l++){
+  				if(allInputs.eq(k).attr("id")==permisssionId[l]){
+  					allInputs.eq(k).prop("checked",true)
+  				}
+  			}
+  		}
+
+        $scope.permisssionId = res.data.permissions;
+
+     // ================dongge====================================================
+    function render(){
+      	var nodeTrees = $scope.tree;
+      	var allChoice = $scope.permisssionId;
+      	var buildTree=function(node){
+          	for(var j=0;j<allChoice.length;j++){
+          		if(node.resourceCode==allChoice[j]){
+          			node.$$isChecked=true;
+          			break;
+          		}
+          	}
+            var nodes=node.children;
+            for(var i=0;i<nodes.length;i++){
+             	buildTree(nodes[i]);
+            }
+       	}
+      		if(allChoice.length>0){
+      		for(var i=0;i<nodeTrees.length;i++){
+      			buildTree(nodeTrees[i]);
+      		}
+      	}else{
+      		return;
+      	}
+      	}
+
+    render();
+// ================================================================================
+// var allChoiceObj = {};
+// 	function render(){
+// 		var nodeTrees = $scope.tree;
+//     	var allChoice = $scope.permisssionId;
+    	
+//     	for(var i = 0;i<allChoice.length;i++){
+//     		var id = allChoice[i];
+//     		allChoiceObj[id]=i;
+//     	}
+//     	console.log(allChoiceObj,"var allChoiceObj = {};");
+//     	function getAllInput(node,match){
+// 	        if(node.length>0){
+// 	          for(var i=0;i<node.length;i++){
+//           		var id = node[i].resourceCode;
+//           		for(var j in match){
+//           			if(match[j] == id){
+//           				node[i].$$isChecked=true
+//           			}else{
+//           				node[i].$$isChecked=false
+//           			}
+//           		}
+	            
+// 	            if(node[i].children.length>0){
+// 	              nodeChild=node[i].children;
+// 	              getAllInput(nodeChild)
+// 	            }
+// 	          }
+// 	        }else{
+// // console.log("没有子节点")
+// 	        }
+//       }
+      
+//       getAllInput(nodeTrees,allChoiceObj)
+    	
+// 	}
+// 	render();
+	
+
+
+// 运用递归的方式解决问题
+        function render(){
+            var nodeTrees = $scope.tree;
+            var allChoice = $scope.permisssionId;
+            var buildTree=function(node){
+                for(var j=0;j<allChoice.length;j++){
+                    if(node.resourceCode==allChoice[j]){
+                        node.$$isChecked=true;
+                        break;
+                    }
+                }
+                var nodes=node.children;
+                for(var i=0;i<nodes.length;i++){
+                    buildTree(nodes[i]);
+                }
+            }
+            if(allChoice.length>0){
+                for(var i=0;i<nodeTrees.length;i++){
+                    buildTree(nodeTrees[i]);
+                }
+            }else{
+                return;
+            }
+        }
+
+        render();
+
+
+	},function(err){
+// console.log(err)
+	});
+  	
+  
+	
+  }
+
+
+	
+  $scope.itemCheckedChanged = function(item){
+    var buildSubTree=function(node){
+          if (node.children.length>0){
+            var nodes=node.children;
+            for(var i=0;i<nodes.length;i++){
+              nodes[i].$$isChecked=node.$$isChecked;
+              buildSubTree(nodes[i]);
+            }
+          }
+       }
+
+      var buidParentTree=function(node){
+        var currentNode=document.getElementById(node.resourceCode);
+        var parentNode=angular.element(currentNode).scope().$parent.$parent.$parent.$parent.$parent;
+        // 选中节点
+        if(item.$$isChecked==true){
+          if(parentNode.$parent
+          	&&parentNode.item
+            &&!parentNode.item.$$isChecked){
+            parentNode.item.$$isChecked=true;
+            buidParentTree(parentNode.item); 
+          }
+        }else{
+          if(parentNode.$parent
+          	&&parentNode.item){
+            var nodes=parentNode.item.children;
+            for(var i=0;i<nodes.length;i++){
+              if(nodes[i].$$isChecked){
+                return;
+              }
+            }
+            parentNode.item.$$isChecked=false;
+            buidParentTree(parentNode.item); 
+          }
+        }
+      };
+      buildSubTree(item);
+      buidParentTree(item);
+     
+    };
+   
+$scope.savaModifyData=function(){
+		
+        var allSavaTrue = [];
+        var allInputs = angular.element(document.getElementsByTagName('input'));
+            
+            for(var i=0;i<allInputs.length;i++){
+                if(allInputs[i].checked===true){
+               
+                var id = allInputs.eq(i).attr("id");
+                allSavaTrue.push(id);
+
+                }
+            }
+            $scope.modifyTribe.perCodeList =allSavaTrue;
+            
+            
+};
+
+
+// 分页设置
+	$scope.applyDesc = "desc";
+	$scope.applyDown = true;
+
+//配置分页基本参数默认设置
+	$scope.paginationConf = {
+		itemsPerPage: 10,
+		currentPage: 1
+	};
+
+// 查询部落基本信息
+// 获取当前部落的ld=====================================================
+// console.log($routeParams.tribeid)
+$scope.baseInfo;
+var tribeids=$routeParams.tribeid;
+$rootScope.tribeCodeId = tribeids;
+
+$rootScope.tribeids = tribeids;
+//==============================================================================
+
+// 基本信息接口获取成功=========================================================
+$scope.tribeParam = {};
+// 修改部落的参数数据包
+
+var queryBaseInfo = function(){
+	$scope.tribeParam.tribeCode =$routeParams.tribeid;
+	var url = "/operateManage/api/tribe/queryTribeInfo.json?tribeCode="+$scope.tribeParam.tribeCode
+	$http.get(url).then(
+		function(res){
+// console.log("请求基本信息接口成功",res);
+		$scope.baseInfo = res.data;
+// console.log($scope.baseInfo.chiefName,"$scope.baseInfo.chiefName")
+		$rootScope.chifeMan= $scope.baseInfo.chiefName;
+		$rootScope.mobile =$scope.baseInfo.defaultMobile;
+		$scope.tribeNames =$scope.baseInfo.tribeName;
+		$scope.modifyTribe.defaultMobile=$scope.baseInfo.defaultMobile;
+		$rootScope.tribeStatus = $scope.baseInfo.tribeStatus;
+		if($scope.baseInfo.tribeStatus===2){
+			$rootScope.tribeActiveStatus = true;
+			$rootScope.tribeFreezeStatus = false;
+		}else if($scope.baseInfo.tribeStatus===1){
+			$rootScope.tribeActiveStatus = false;
+			$rootScope.tribeFreezeStatus = true;
+		}
+	},
+		function(err){
+// console.log(err)
+		}
+	)
+}
+queryBaseInfo();
+// =====================================================
+$scope.getTribeName=function(tribeNames){
+// console.log(tribeNames)
+	$scope.getTribeNames = tribeNames;
+}
+// console.log(tribeids,1234)
+// 渲染申请部落申请
+// 把所有的需要post的参数放在一个对象中
+	$scope.param = {};
+// 添加属性
+// 启动函数
+// 申请加入接口============================================================ 
+	$scope.start=function(){
+		var url = "/operateManage/api/tribe/queryShopApplyList.json";
+		$scope.param.pageNum = $scope.paginationConf.currentPage;
+		$scope.param.pageSize = $scope.paginationConf.itemsPerPage;
+	    $scope.param.tribeCode = tribeids
+		$http.post(url,$scope.param).success(
+			function(res){
+				//console.log("申请加入列表接口读取成功",res)
+				$scope.applyUsers=res.tribeInfoPage.beans;
+				for(var i=0;i<$scope.applyUsers.length;i++){
+					var applyJoinType = $scope.applyUsers[i];
+                    if (applyJoinType.shopType == 1) {
+                        applyJoinType.shopTypeName = '酷鸟商家';
+                    } else if (applyJoinType.shopType == 2) {
+                        applyJoinType.shopTypeName = '酷鸟分销商';
+                    } else {
+                        applyJoinType.shopTypeName = '未知';
+                    }
+				}
+				if($scope.applyUsers.length==0){
+					$scope.applyUserfalse=true
+				}else{
+					$scope.applyUserfalse=false
+				}
+				$scope.paginationConf={
+					currentPage: $scope.param.pageNum,
+					totalItems: res.tribeInfoPage.total,
+					itemsPerPage: $scope.param.pageSize,
+					pagesLength: 8,
+					perPageOptions: [10, 20, 30, 40, 50],
+					onChange: function() {}
+				}
+
+			}
+
+		)
+	}
+
+	$scope.descFun = function() {
+		$scope.applyDown = !$scope.applyDown;
+		//		$scope.param.sortField = "createTime";
+		if ($scope.applyDesc == "asc") {
+			$scope.param.sortType = "desc";
+			$scope.applyDesc = "desc";
+		} else {
+			$scope.param.sortType = "asc";
+			$scope.applyDesc = "asc";;
+		}
+	     $scope.start();
+	}
+	$scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.start);
+// 拒绝加入=======================================================================
+$scope.param_refuse = {};
+$scope.start_refuse=function(){
+		var url = "/operateManage/api/tribe/queryShopRefuseList.json";
+
+		$scope.param_refuse.pageNum = $scope.paginationConf.currentPage;
+		$scope.param_refuse.pageSize = $scope.paginationConf.itemsPerPage;
+		$scope.param_refuse.tribeCode = tribeids
+		$http.post(url,$scope.param_refuse).success(
+			function(res){
+// ？？？控制台
+ //console.log("部落拒绝列表读取成功",res);
+				$scope.refuse_users=res.tribeInfoPage.beans;
+                for(var i=0;i<$scope.refuse_users.length;i++){
+                    var refuseJoinType = $scope.refuse_users[i];
+                    if (refuseJoinType.shopType == 1) {
+                        refuseJoinType.shopTypeName = '酷鸟商家';
+                    } else if (refuseJoinType.shopType == 2) {
+                        refuseJoinType.shopTypeName = '酷鸟分销商';
+                    } else {
+                        refuseJoinType.shopTypeName = '未知';
+                    }
+                }
+				if($scope.refuse_users.length==0){
+					$scope.refuse_userfalse = true;
+				}else{
+					$scope.refuse_userfalse = false;
+				}
+				$scope.paginationConf={
+					currentPage: $scope.param_refuse.pageNum,
+					totalItems: res.tribeInfoPage.total,
+					itemsPerPage: $scope.param_refuse.pageSize,
+					pagesLength: 8,
+					perPageOptions: [10, 20, 30, 40, 50],
+					onChange: function() {}
+				}
+
+			}
+
+		)
+	}
+
+	$scope.descFun = function() {
+		$scope.applyDown = !$scope.applyDown;
+		//		$scope.param.sortField = "createTime";
+		if ($scope.applyDesc == "asc") {
+			$scope.param.sortType = "desc";
+			$scope.applyDesc = "desc";
+		} else {
+			$scope.param.sortType = "asc";
+			$scope.applyDesc = "asc";;
+		}
+		$scope.start_refuse();
+	}
+	$scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.start_refuse);
+
+//渲染日志========================================================================
+	$scope.param_log = {};
+// 添加属性
+// 启动函数
+	$scope.start_log=function(){
+		var url = "/operateManage/api/tribe/queryTribeOptLog.json";
+		$scope.param_log.pageNum = $scope.paginationConf.currentPage;
+		$scope.param_log.pageSize = $scope.paginationConf.itemsPerPage;
+		$scope.param_log.tribeCode = tribeids
+		$http.post(url,$scope.param_log).success(
+			function(res){
+// console.log("部落日志列表读取成功",res)
+				$scope.logs=res.tribeInfoPage.beans;
+				
+				if($scope.logs.length==0){
+					$scope.logfalse=true
+				}else{
+					$scope.logfalse=false
+				}
+				$scope.paginationConf={
+					currentPage: $scope.param_log.pageNum,
+					totalItems: res.tribeInfoPage.total,
+					itemsPerPage: $scope.param_log.pageSize,
+					pagesLength: 8,
+					perPageOptions: [10, 20, 30, 40, 50],
+					onChange: function() {}
+				}
+
+			}
+
+		)
+	}
+    $scope.updataLogList=function () {
+        $scope.start_log();
+    }
+	$scope.descFun = function() {
+		$scope.applyDown = !$scope.applyDown;
+		//		$scope.param.sortField = "createTime";
+		if ($scope.applyDesc == "asc") {
+			$scope.param.sortType = "desc";
+			$scope.applyDesc = "desc";
+		} else {
+			$scope.param.sortType = "asc";
+			$scope.applyDesc = "asc";;
+		}
+		$scope.start_log();
+	}
+	$scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.start_log);
+
+// 页面切换===================================================================================
+	$scope.data={
+			current:"1",
+			childCurrent :"1",
+			child2Current:"1"
+		};
+	$scope.actions={
+			setCurrent:function(param){
+				$scope.data.current=param;
+			},
+			setChildCurrent:function(params){
+				$scope.data.childCurrent = params;
+				
+			},
+			setChild2Current:function(params){
+				$scope.data.child2Current = params
+			}
+	};
+// 激活和冻结==========================================================================
+
+// 弹框插件
+	$scope.active = function(){
+		if($rootScope.tribeActiveStatus===false){
+			return;
+		}
+		ngDialog.open({
+					template: 'app/tribe/showTribe/tribeActive.html',
+					scope: $scope,
+					closeByDocument:false
+			});
+// console.log("test active")
+	}
+	$scope.freeze=function(){
+		if($rootScope.tribeFreezeStatus === false){
+			return;
+		}
+		ngDialog.open({
+					template: 'app/tribe/showTribe/tribeFreeze.html',
+					scope: $scope,
+					closeByDocument:false
+			});
+	}
+	$scope.changeTribe=function(){
+		ngDialog.open({
+					template: 'app/tribe/showTribe/changeTribe.html',
+					scope: $scope,
+					closeByDocument:false
+			});
+		
+	}
+// 打通修改部落的接口==============================================================
+
+
+
+
+
+// ============================================================
+// 全局调用
+	$scope.changedChifeMans;
+	$scope.changedRemarks;
+	$scope.changeMobile;
+	$scope.changeChifeCode;
+	
+	
+	// $rootScope.chifeMan=$scope.baseInfo.chiefName;
+	$rootScope.changeRemarks ="";
+	//==========================================================
+    $scope.$watch('chifeCode', function(newValue,oldValue,scope){
+// console.log("newValue:"+newValue);
+        $scope.$broadcast('userUpdateChifeCode', newValue);
+
+// console.log("oldValue:"+oldValue);
+    });
+    $scope.$on('userUpdateChifeCode',function(d,data){
+        $scope.changeChifeCode = data;
+
+    })
+	//==========================================================
+	$scope.$watch('chifeMan', function(newValue,oldValue,scope){
+// console.log("newValue:"+newValue);
+		$scope.$broadcast('userUpdate', newValue);
+		
+// console.log("oldValue:"+oldValue);
+	});
+	$scope.$on('userUpdate',function(d,data){
+          $scope.changedChifeMans = data;
+          
+      })
+	// ==============================================================
+	$scope.$watch('mobile', function(newValue,oldValue,scope){
+// console.log("newValue:"+newValue);
+		$scope.$broadcast('userUpdateMobile', newValue);
+		
+// console.log("oldValue:"+oldValue);
+	});
+	$scope.$on('userUpdateMobile',function(d,data){
+          $scope.changeMobile = data;
+          
+      })
+	// =============================================================
+	
+	// ==============================================================
+	$scope.$watch('changeRemarks', function(newValue,oldValue){
+// console.log("newValue:"+newValue);
+		$scope.$broadcast('userUpdateRemarks', newValue);
+// console.log("oldValue:"+oldValue);
+	});
+	$scope.$on('userUpdateRemarks',function(d,data){
+          $scope.changedRemarks = data;
+// console.log($scope.changedRemarks,"修改后的remarks")
+      })
+
+	// =============================================================
+
+	 
+	 // console.log($scope.changedRemarks);
+// 监听所有修改后的权限数据=======================================
+
+$scope.savaModify =function(){
+	
+    $scope.modifyTribe.remark = $scope.changedRemarks;
+    $scope.modifyTribe.chiefName = $scope.changedChifeMans;
+    $scope.modifyTribe.chiefCode = $scope.changeChifeCode;
+    $scope.modifyTribe.tribeCode = tribeids;
+    $scope.modifyTribe.tribeName =$scope.getTribeNames;
+    $scope.modifyTribe.defaultMobile=$scope.changeMobile;
+// console.log($scope.modifyTribe)
+    // 发送修改部落数据===========================================================
+	var url = "/operateManage/api/tribe/updateTribeInfo.json"
+	$http.post(url,$scope.modifyTribe)
+		.then(
+			function(res){
+console.log("修改部落信息接口成功",res);
+				if(res.data.code==100){
+					showMessage(ngDialog,"修改部落成功");
+					$location.path('/tribe/tribeIndex');
+				}else {
+                    showMessage(ngDialog,"你没有权限，更新部落失败。");
+				}
+			},
+			function(err){
+// console.log(err)
+			}
+		)
+// 实现跳转
+	  // $location.path('/tribe/tribeIndex')
+	
+};
+    $scope.qrcode = function(index, link) {
+
+    	if(link == null){
+    		link = "";
+		}
+        var dom = document.getElementById('qrcode_' + index);
+        angular.element(dom).empty().qrcode({
+            render: "canvas", //table方式
+            width: 120, //宽度
+            height: 120, //高度
+            text: link //任意内容
+        });
+    };
+    $scope.qrcodeForsuccess = function(index, link) {
+        if(link == null){
+            link = "";
+        }
+        var dom = document.getElementById('qrcodeForsuccess_' + index);
+        angular.element(dom).empty().qrcode({
+            render: "canvas", //table方式
+            width: 120, //宽度
+            height: 120, //高度
+            text: link //任意内容
+        });
+    }
+
+
+
+
+
+	return $scope;
+})

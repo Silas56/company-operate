@@ -1,0 +1,223 @@
+<!-- CREATE BY JOY 2016-12-22 -->
+
+<div ng-controller="showTribe as demo" class="mainTribe">
+	<ul class="topMenu mb30">
+		<li ng-class="{'Jactive':data.current==1}" class="bo-left" ng-click="actions.setCurrent(1)" style="cursor: pointer;">管理部落</li>
+		<li ng-class="{'Jactive':data.current==2}" class="bo-left" ng-click="actions.setCurrent(2)" style="cursor: pointer;">店铺加入申请</li>
+		<li ng-class="{'Jactive1':data.current==3}" class="bo-left" ng-click="actions.setCurrent(3);updataLogList()" style="cursor: pointer;">部落日志</li>
+        <li class="hideLi"></li>
+	</ul>
+    <div  ng-if="data.current == 1" class="view-1" >
+        <ul class="secondMenu mb30">
+            <li ng-class="{'Jsactive':data.childCurrent==1}">基本信息</li>
+            <li ng-class="{'Jsactive':data.childCurrent==2}">设置权限</li>
+            <li ng-class="{'Jsactive':data.childCurrent==3}">设置酋长</li>
+        </ul>
+<!--  view1 > SHOW VIEW-->
+        <div  ng-if="data.childCurrent == 1" class="childView-1" >
+            <p>
+                <span> 部落名称:</span>          
+                <input class="ml20" type="text" name="" ng-model="tribeNames"/ ng-blur="getTribeName(tribeNames)"> 
+            </p>
+            <p>
+                <span class="pl_28"> 域名:</span>          
+                <input type="text" class="ml24"  name="" ng-model="baseInfo.domainName" disabled> 
+            </p>
+            <p>
+                <span> 部落编号:</span>          
+                <span class="ml20">{{baseInfo.tribeCode}}</span> 
+            </p>
+            <p>
+                <span> 创建时间:</span>          
+                <span class="ml20">{{baseInfo.createdTime}}</span> 
+            </p>
+            <p>
+                <span> 部落状态:</span>          
+                <span ng-class="{'tribeActive':tribeActiveStatus}" class="ml20" ng-click="active()">激活</span>
+                <span ng-class="{'tribeActive':tribeFreezeStatus}" ng-click="freeze()">冻结</span> 
+            </p>
+            <p>
+                <span> 联系电话:</span>          
+                <span class="ml20">{{baseInfo.defaultMobile}}</span> 
+            </p>
+            <p class="mb_98">
+                <span style="position: relative;bottom:83px"> 部落logo:</span>          
+                <span class="logoPic ml20" style="overflow: hidden;">
+                    {{baseInfo.tribeLogo}}
+                </span> 
+            </p>
+            <p class="mb_120">
+                <span style="position: relative;bottom: 100px"> 部落描述:</span>          
+                <span class="ml20 editSection">{{baseInfo.tribeDescription}}</span>
+            </p>
+            <p class="mb_120">
+                <span style="position: relative;bottom: 100px"> 部落协议:</span>          
+                <span class="ml20 editSection">{{baseInfo.tribeAgreement}}</span>
+            </p>
+            <button class="ml110" ng-click="actions.setChildCurrent(2);renderPermissionList()">下一步</button>
+
+        </div>
+<!--view1 > SHOW VIEW 2 -->
+        <div  ng-show="data.childCurrent == 2" class="childView-2" >
+        
+            <div class="pt20 pb20">
+                <span>权限列表(支持多个权限，最少选中一项)</span>
+            </div>
+            <div  style="background-color: #FAFAFA;border-top: 1px solid #DFDCD7;border-bottom: 1px solid #DFDCD7;height: 300px;overflow-y: scroll; margin-bottom: 20px">
+               <tree-view tree-data="demo.tree" text-field="resourceName" value-field='id' item-clicked="demo.itemClicked($item)" item-checked-changed="demo.itemCheckedChanged($item)"  can-checked="true" >
+                </tree-view>             
+                <script type="text/ng-template" id="/treeView.html">
+                    <ul class="tree-view">
+                           <li ng-repeat="item in treeData" ng-include="itemTemplateUrl || '/treeItem.html'" ></li>
+                    </ul>
+                </script>
+  
+                <script type="text/ng-template" id="/treeItem.html">
+
+                      <input type="checkbox" ng-model="item.$$isChecked" class="check-box {{item.resourceCode}}" id="{{item.resourceCode}}" ng-if="canChecked" ng-change="warpCallback('itemCheckedChanged',item, $event)">
+
+
+                        <span class='text-field'>{{item[textField]}}</span>
+                        <ul ng-if="!noChild(item)" class="tree-view">
+                           <li ng-repeat="item in item.children" ng-include="itemTemplateUrl || '/treeItem.html'">
+                           </li>
+                       </ul>
+                </script> 
+                
+            </div> 
+            <button class=" d-font bg-w d-b mr20" ng-click="actions.setChildCurrent(1)">上一步</button>
+            <button ng-click="actions.setChildCurrent(3);savaModifyData()">下一步</button>               
+        </div>
+<!--view1 > SHOW VIEW3 -->
+        <div  ng-if="data.childCurrent == 3" class="childView-3" >
+            <p>
+                <span style="padding-left: 32px;"> 酋长:</span>          
+                <input type="text" name="" value="{{chifeMan}}" class="pl12" disabled>
+                <span class="ft14 d-font ml10" style="cursor:pointer" ng-click="changeTribe()">更换</span> 
+            </p>
+            <p>
+               <span>联系电话:</span>
+               <input class="pl12" type="text" name="" value="{{mobile}}" disabled> 
+            </p>
+            
+            <p class="pr92">
+                
+                <button class="mr20 d-font bg-w d-b" ng-click="actions.setChildCurrent(2)">上一步</button>
+                <button ng-click="savaModify()">完成</button>
+            </p>
+            
+           </div>
+        </div>
+<!-- view2 -->
+    <div  ng-if="data.current == 2" class="view-2" >
+        <ul class="addMenu mb30">
+            <li ng-class="{'active_add':data.child2Current==1}"  ng-click="actions.setChild2Current(1)">新增加入</li>
+           
+            <li ng-class="{'active_add':data.child2Current==2}"  ng-click="actions.setChild2Current(2)">拒绝加入</li>
+        
+         </ul>
+<!-- view2 > SHOW VIEW1 -->
+        <div ng-if="data.child2Current == 1">
+            <table style="clear: both">
+                <thead>
+                    <tr>
+                        <td class="w120">申请时间</td>
+                        <td class="w270">店铺名称</td>
+                        <td class="w120">申请账户</td>
+                        <td class="w120">店铺类型</td>
+                        <td class="w100">店铺状态</td>
+                        <td class="w200">申请理由</td>
+
+                    </tr>
+                </thead>
+                <tr ng-repeat="applyUser in applyUsers">
+                   <td>{{applyUser.applyTime}}</td>
+                    <td style="background:url(../../../img/bg_addTribe.png) no-repeat right 0 top 0;position: relative" ng-mouseenter="qdCord=true;qrcodeForsuccess($index,applyUser.shopQrCode)" ng-mouseleave="qdCord=false" >
+                        {{applyUser.shopName}}
+                        <div class="qdCords" ng-show=qdCord style="position:absolute;top:0;left: 100%;width: 160px;height: 180px;padding-top: 10px;background-color: #fff;">
+                            <!--<img src="./../../../img/qdCord.png" >-->
+                            <div id='qrcodeForsuccess_{{$index}}' style='margin:6px auto;' ></div>
+                            <span>手机查看店铺信息</span>
+                        </div>
+                    </td>
+                    <td>{{applyUser.applyAccount}}</td>
+                    <td>{{applyUser.shopTypeName}}</td>
+                    <td>{{applyUser.shopStatus==2?"冻结":"激活"}}</td>
+                    <td>{{applyUser.applyReason}}</td>
+                    
+                </tr>
+                <tr ng-if="applyUserfalse">
+                    <td colspan="6">没有数据哦</td>
+                </tr>
+            </table>
+            <div class="pt10" style="height: 84px;margin-left: 181px;" ng-if="!applyUserfalse">
+                <tm-pagination conf="paginationConf"></tm-pagination>
+            </div>
+        </div>
+<!-- view2 > SHOWVIEW2 -->
+        <div ng-if="data.child2Current == 2">
+            <table style="clear: both">
+                <thead>
+                    <tr>
+                        <td class="w120">申请时间</td>
+                        <td class="w270">店铺名称</td>
+                        <td class="w120">申请账户</td>
+                        <td class="w120">店铺类型</td>
+                        <td class="w100">店铺状态</td>
+                        <td class="w200">拒绝理由</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="refuse_user in refuse_users">
+                    <td>{{refuse_user.optTime}}</td>
+                    <td style="background:url(../../../img/bg_addTribe.png) no-repeat right 0 top 0;position: relative" ng-mouseenter="qdCord=true;qrcode($index,refuse_user.shopQrCode)" ng-mouseleave="qdCord=false" >
+                        {{refuse_user.shopName}}
+                        <div class="qdCords" ng-show=qdCord style="position:absolute;top:0;left: 100%;width: 160px;height: 180px;padding-top: 10px;background-color: #fff;">
+                            <!--<img src="./../../../img/qdCord.png" >-->
+                            <div id='qrcode_{{$index}}' style='margin:6px auto;' ></div>
+                            <span>手机查看店铺信息</span>
+                        </div>
+                    </td>
+                    <td>{{refuse_user.applyAccount}}</td>
+                    <td>{{refuse_user.shopTypeName}}</td>
+                    <td>{{refuse_user.shopStatus==2?"冻结":"激活"}}</td>
+                    <td>{{refuse_user.refuseReason}}</td>
+                </tr>
+                <tr ng-if="refuse_userfalse">
+                    <td colspan="6">没有数据哦</td>
+                </tr>
+            </table>
+<!-- 分页设计的模板部分 -->
+            <div class="pt10" style="height: 84px;margin-left: 181px;" ng-if="!refuse_userfalse" >
+                <tm-pagination conf="paginationConf"></tm-pagination>
+            </div>
+        </div>
+    </div>
+<!-- view3 -->
+    <div  ng-if="data.current == 3" class="view-3" >
+        <table style="clear: both">
+            <thead>
+                <tr>
+                    <td class="w120">操作日志</td>
+                    <td class="w200">操作时间</td>
+                    <td class="w100">操作人员</td>
+                    <td class="w516">操作备注</td>                   
+                </tr>
+            </thead>
+            <tr ng-repeat="log in logs">
+                <td>{{log.optRecord}}</td>
+                <td>{{log.createdTime}}</td>
+                <td>{{log.createdBy}}</td>
+                <td>{{log.remark}}</td>
+            </tr>
+            <tr ng-if="logfalse">
+                <td colspan="4">没有数据哦</td>
+            </tr>
+        </table>
+<!-- 分页设计 -->
+        <div class="pt10" style="height: 84px;margin-left: 181px;" ng-if="!logfalse">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+
+    </div>
+
+</div>

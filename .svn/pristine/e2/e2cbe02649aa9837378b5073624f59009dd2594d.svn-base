@@ -1,0 +1,146 @@
+<div ng-controller="reconciliation" class="reconciliationDiv">
+	<div class="main-header">
+		财务对账
+	</div>
+	<div class="pt20">
+		<span>交易时间：</span>
+		<input type='text' class="w110 form-control disp-inline mr4 startBusinessTime" max-date="param.endBusinessTime" ng-model="param.startBusinessTime" is-open="selectStartBusinessTime" ng-click="selectStartBusinessTime = !selectStartBusinessTime"  />
+		<font class="mr4">至</font>
+		<input type='text' class="w110 form-control disp-inline mr20 endBusinessTime" min-date="param.startBusinessTime" ng-model="param.endBusinessTime" is-open="selectEndBusinessTime" ng-click="selectEndBusinessTime = !selectEndBusinessTime"  />
+		<span>交易渠道：</span>
+		<select ng-model="param.businessChannel" class="w150 form-control disp-inline mr20">
+			<option value="">全部</option>
+			<option value="ALIPAY">支付宝支付</option>
+			<option value="WXPAY">微信支付</option>
+			<option value="UIONPAY">银联支付</option>
+			<option value="JDPAY">京东支付</option>
+			<option value="OFFLINEPAY">线下支付</option>
+		</select>
+		<span>订单号：</span>
+		<input type="text" ng-model="param.orderCode" class="w150 form-control disp-inline mr20" />
+	</div>
+	<div class="pt20">
+		<span>业务流水号：</span>
+		<input ng-model="param.busiSN" type="text" class="w150 form-control disp-inline mr35" />
+		<a class="checkA" style="padding: 6px 25px;" ng-click="onSearch()">查询</a>
+	</div>
+	<a class="checkA mt60" style="padding: 6px 25px;float: right;" ng-click="export()">导出</a>
+	<div class="checkDetail ft-l mt60">
+		<ul class="border-b">
+			<li ng-class="{1: 'liActive', 0: 'liNotActive'}[showUndeal]" ng-click="liChangeCheck('undeal')"><a>新增入账</a></li>
+			<li ng-class="{1: 'liActive', 0: 'liNotActive'}[showUnchecked]" ng-click="liChangeCheck('unchecked')"><a>成功对账</a></li>
+			<li ng-class="{1: 'liActive', 0: 'liNotActive'}[showChecked]" ng-click="liChangeCheck('checked')"><a>对账不平</a></li>
+		</ul>
+	</div>
+	<div class="undeal" ng-class="{'disp-none':showUndeal===0}">
+		<table class="mt110">
+			<thead>
+				<tr>
+					<td class="w160">交易时间</td>
+					<td class="w160">业务流水号</td>
+					<td class="w160">订单号</td>
+					<td class="w160">交易渠道</td>
+					<td class="w160">交易金额</td>
+					<td class="w160">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="undeal in undeals">
+				<td>{{undeal.tradeTime}}</td>
+				<td>{{undeal.outTradeNo}}</td>
+				<td>{{undeal.orderCode}}</td>
+				<td>{{undeal.tradeMethodName}}</td>
+				<td>¥{{undeal.tradeAmount | number:2}}</td>
+				<td><a class="col-57A2F0" ng-click="deal(undeal.tradeTime,undeal.outTradeNo,undeal.orderCode,
+            		undeal.tradeMethod,undeal.tradeMethodName,undeal.tradeAmount,undeal.invoiceId,undeal.businessType,undeal.outTradeNo)">处理</a></td>
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConfUndeal"></tm-pagination>
+		</div>
+	</div>
+	<div class="unchecked" ng-class="{'disp-none':showUnchecked===0}">
+		<table class="mt110">
+			<thead>
+				<tr>
+					<td class="w160">交易时间</td>
+					<td class="w160">业务流水号</td>
+					<td class="w160">订单号</td>
+					<td class="w160">交易渠道</td>
+					<td class="w160">交易金额</td>
+					<td class="w160">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="accounted in accounteds">
+				<td>{{accounted.tradeTime}}</td>
+				<td>{{accounted.outTradeNo}}</td>
+				<td>{{accounted.orderCode}}</td>
+				<td>{{accounted.tradeMethodName}}</td>
+				<td>¥{{accounted.tradeAmount | number:2}}</td>
+				<td><a class="col-57A2F0" ng-click="checkResult(accounted.outTradeNo,accounted.orderCode,accounted.tradeTime,accounted.businessType,accounted.invoiceId)">
+            		 查看结果</a></td>
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConfUnchecked"></tm-pagination>
+		</div>
+	</div>
+	<div class="checked" ng-class="{'disp-none':showChecked===0}">
+		<table class="mt110">
+			<thead>
+				<tr>
+					<td class="w160">交易时间</td>
+					<td class="w160">业务流水号</td>
+					<td class="w160">订单号</td>
+					<td class="w160">交易渠道</td>
+					<td class="w160">交易金额</td>
+					<td class="w160">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="notAccounted in notAccounteds">
+				<td>{{notAccounted.tradeTime}}</td>
+				<td>{{notAccounted.outTradeNo}}</td>
+				<td>{{notAccounted.orderCode}}</td>
+				<td>{{notAccounted.tradeMethodName}}</td>
+				<td>¥{{notAccounted.tradeAmount | number:2}}</td>
+				<td><a class="col-57A2F0" ng-click="toUnfairDeal(notAccounted.tradeTime,notAccounted.outTradeNo,notAccounted.orderCode,
+            		notAccounted.tradeMethod,notAccounted.tradeMethodName,notAccounted.tradeAmount,notAccounted.invoiceId,notAccounted.businessType,notAccounted.outTradeNo,notAccounted.checkStatus)">处理</a></td>
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConfChecked"></tm-pagination>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+	$(".startBusinessTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endBusinessTime").datetimepicker("setStartDate", $(".startBusinessTime").val());
+		});;
+	$(".endBusinessTime").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startBusinessTime").datetimepicker("setEndDate", $(".endBusinessTime").val());
+		});
+
+	// 如果选项被手动清空，则需要重置开始和结束值
+    $('.startBusinessTime').datetimepicker().on('show',function(ev){
+        if (!$('.endBusinessTime').val()){
+            $(".startBusinessTime").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endBusinessTime').datetimepicker().on('show',function(ev){
+        if (!$('.startBusinessTime').val()){
+            $(".endBusinessTime").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

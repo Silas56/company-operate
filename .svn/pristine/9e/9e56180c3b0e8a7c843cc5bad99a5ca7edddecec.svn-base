@@ -1,0 +1,19 @@
+<div ng-controller="userStatusChange">
+	<div class="window-header" style="width: 450px;">
+		账号设置
+	</div>
+	<div class="pt20" ng-show="freeze">
+		<span>冻结用户后，将禁用该账号的登录功能，确认吗？</span>
+	</div>
+	<div class="pt20" ng-show="!freeze">
+		<span>激活用户后，将恢复该账号的登录功能，确认吗？</span>
+	</div>
+	<div class="pt20">
+		<div class="ft-l">备注：</div>
+		<textarea ng-model="formData.remarks" style="width: 370px;height: 100px;" maxlength="200" placeholder="输入限定200字数"></textarea>
+	</div>
+	<div class="pt20 text-center">
+		<a class='checkA' style='padding: 6px 37px;' ng-click='setUserStatus()'>确定</a>
+		<a class='checkA' style='padding: 6px 37px;' ng-click='closeThisDialog()'>取消</a>
+	</div>
+</div>

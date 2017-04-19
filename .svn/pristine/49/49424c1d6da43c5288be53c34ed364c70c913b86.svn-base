@@ -1,0 +1,188 @@
+myApp.controller('refund', function($scope, $http, ngDialog, $filter) {
+
+	//页面切换
+	$scope.data = {
+		current : 1
+	}
+	$scope.action={
+        setCurrent:function(param){
+            $scope.data.current=param;
+        },
+	}
+//	==================end===========================
+//	$scope.undeal = true;
+	$scope.accounted = true;
+	$scope.fail = false;
+	$scope.undealpaginationConf = {
+		itemsPerPage: 10,
+		currentPage: 1
+	};
+	$scope.cashEdpaginationConf = {
+		itemsPerPage: 10,
+		currentPage: 1
+	};
+	$scope.cashFailpaginationConf = {
+		itemsPerPage: 10,
+		currentPage: 1
+	};
+	var url = ctx + 'account/queryMoreShopDrawCashList.json'
+	$scope.param = {};
+	$scope.undealParam = {};
+	$scope.cashedParam = {};
+	$scope.cashFailParam = {};
+	$scope.onSearch = function() {
+		if ($scope.param.startTime) {
+			$scope.param.startTime = $filter('date')($scope.param.startTime, 'yyyy-MM-dd');
+		}
+		if ($scope.param.endTime) {
+			$scope.param.endTime = $filter('date')($scope.param.endTime, 'yyyy-MM-dd');
+		}
+		if (isBlankTime($scope.param.startTime, $scope.param.endTime)) {
+			showMessage(ngDialog, "时间的查询条件不能只选择开始时间或者结束时间！", function() {});
+			return;
+		}
+//		if ($scope.undeal) {
+//			$scope.onSearch1();
+//		}
+		if ($scope.accounted) {
+			$scope.onSearch2();
+		}
+		if ($scope.fail) {
+			$scope.onSearch3();
+		}
+	}
+//	$scope.onSearch1 = function() {
+//		$scope.undealParam.pageNum = $scope.undealpaginationConf.currentPage;
+//		$scope.undealParam.pageSize = $scope.undealpaginationConf.itemsPerPage;
+//		$scope.undealParam.shopName = $scope.param.shopName;
+//		$scope.undealParam.startTime = $scope.param.startTime;
+//		$scope.undealParam.endTime = $scope.param.endTime;
+//		$scope.undealParam.channelCode = $scope.param.channelCode;
+//		$scope.undealParam.bankTradeNo = $scope.param.bankTradeNo;
+//		$scope.undealParam.acceptId = $scope.param.acceptId;
+//		$scope.undealParam.status = 2;
+//
+//		$http.post(url, $scope.undealParam).success(function(data) {
+//			console.info(data);
+//			$scope.undeals = data.withDrawRecordPage.withDrawRecordBeans;
+//			$scope.undealpaginationConf = {
+//				currentPage: $scope.undealParam.pageNum,
+//				totalItems: data.withDrawRecordPage.total,
+//				itemsPerPage: $scope.undealParam.pageSize,
+//				pagesLength: 8,
+//				perPageOptions: [10, 20, 30, 40, 50],
+//				onChange: function() {}
+//			};
+//		});
+//	}
+
+	$scope.onSearch2 = function() {
+		$scope.cashedParam.pageNum = $scope.cashEdpaginationConf.currentPage;
+		$scope.cashedParam.pageSize = $scope.cashEdpaginationConf.itemsPerPage;
+		$scope.cashedParam.shopName = $scope.param.shopName;
+		$scope.cashedParam.startTime = $scope.param.startTime;
+		$scope.cashedParam.endTime = $scope.param.endTime;
+		$scope.cashedParam.channelCode = $scope.param.channelCode;
+		$scope.cashedParam.bankTradeNo = $scope.param.bankTradeNo;
+		$scope.cashedParam.acceptId = $scope.param.acceptId;
+		$scope.cashedParam.status = 4;
+
+		$http.post(url, $scope.cashedParam).success(function(data) {
+			console.info(data);
+			$scope.casheds = data.withDrawRecordPage.withDrawRecordBeans;
+			$scope.cashEdpaginationConf = {
+				currentPage: $scope.cashedParam.pageNum,
+				totalItems: data.withDrawRecordPage.total,
+				itemsPerPage: $scope.cashedParam.pageSize,
+				pagesLength: 8,
+				perPageOptions: [10, 20, 30, 40, 50],
+				onChange: function() {}
+			};
+		});
+	}
+
+	$scope.onSearch3 = function() {
+		$scope.cashFailParam.pageNum = $scope.cashFailpaginationConf.currentPage;
+		$scope.cashFailParam.pageSize = $scope.cashFailpaginationConf.itemsPerPage;
+		$scope.cashFailParam.shopName = $scope.param.shopName;
+		$scope.cashFailParam.startTime = $scope.param.startTime;
+		$scope.cashFailParam.endTime = $scope.param.endTime;
+		$scope.cashFailParam.channelCode = $scope.param.channelCode;
+		$scope.cashFailParam.bankTradeNo = $scope.param.bankTradeNo;
+		$scope.cashFailParam.acceptId = $scope.param.acceptId;
+		$scope.cashFailParam.status = 3;
+
+		$http.post(url, $scope.cashFailParam).success(function(data) {
+			console.info(data);
+			$scope.cashFails = data.withDrawRecordPage.withDrawRecordBeans;
+			$scope.cashFailpaginationConf = {
+				currentPage: $scope.cashFailParam.pageNum,
+				totalItems: data.withDrawRecordPage.total,
+				itemsPerPage: $scope.cashFailParam.pageSize,
+				pagesLength: 8,
+				perPageOptions: [10, 20, 30, 40, 50],
+				onChange: function() {}
+			};
+		});
+	}
+
+
+	$scope.openDetail = function(cardholder, shopName, settledAmt, bankCardName, bankCardNo, channelSource, accountId, remark, applicantName, failOrSuccess, bankTradeNo, counterFee,acceptId) {
+		$scope.openDetailParam = {};
+		$scope.openDetailParam.cardholder = cardholder;
+		$scope.openDetailParam.shopName = shopName;
+		$scope.openDetailParam.settledAmt = settledAmt;
+		$scope.openDetailParam.bankCardName = bankCardName;
+		$scope.openDetailParam.bankCardNo = bankCardNo;
+		$scope.openDetailParam.channelSource = channelSource;
+		$scope.openDetailParam.accountId = accountId;
+		$scope.openDetailParam.remark = remark;
+		$scope.openDetailParam.applicantName = applicantName;
+		$scope.openDetailParam.failOrSuccess = failOrSuccess;
+		$scope.openDetailParam.bankTradeNo = bankTradeNo;
+		$scope.openDetailParam.counterFee = counterFee;
+		$scope.openDetailParam.acceptId = acceptId;
+		ngDialog.open({
+			template: 'app/account/refund/refundDetail.html',
+			scope: $scope,
+			closeByDocument: false
+		});
+	}
+
+	$scope.openDeal = function(cardholder, shopName, settledAmt, bankCardName, bankCardNo, channelSource, accountId, settledAmt, remark, acceptId, applicantName) {
+		$scope.openDealParam = {};
+		$scope.openDealParam.cardholder = cardholder;
+		$scope.openDealParam.shopName = shopName;
+		$scope.openDealParam.settledAmt = settledAmt;
+		$scope.openDealParam.bankCardName = bankCardName;
+		$scope.openDealParam.bankCardNo = bankCardNo;
+		$scope.openDealParam.channelSource = channelSource;
+		$scope.openDealParam.accountId = accountId;
+		$scope.openDealParam.settledAmt = settledAmt;
+		$scope.openDealParam.remark = remark;
+		$scope.openDealParam.acceptId = acceptId;
+		$scope.openDealParam.applicantName = applicantName;
+		ngDialog.open({
+			template: 'app/account/refund/refundDeal.html',
+			scope: $scope,
+			closeByDocument: false
+		});
+	}
+
+	$scope.changeTab = function(value) {
+//		$scope.undeal = false;
+		$scope.accounted = false;
+		$scope.fail = false;
+//		if (value == "undeal") {
+//			$scope.undeal = true;
+//		}
+		if (value == "accounted") {
+			$scope.accounted = true;
+		}
+		if (value == "fail") {
+			$scope.fail = true;
+		}
+		$scope.onSearch();
+	}
+	$scope.$watch('cashEdpaginationConf.currentPage + cashEdpaginationConf.itemsPerPage+cashFailpaginationConf.currentPage + cashFailpaginationConf.itemsPerPage', $scope.onSearch);
+})

@@ -1,0 +1,81 @@
+<div ng-controller="shopFund">
+    <div class="pt20">
+    	<table>
+            <thead>
+            	<tr>
+                <td class="w180">可提现金额（已结算）</td>
+                <td class="w120">未结算订单</td>
+                <td class="w150">保证金</td>
+                <td class="w277">服务费率</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{funds.availableBalance}}</td>
+                    <td>{{funds.unFinishOrderNum}}</td>
+                    <td>￥{{funds.deposit}}</td>
+                    <td><font class="mr10">{{funds.servcieRate}}%</font>
+                    	<a class="col-57A2F0 mr10" ng-click="fundSet()">设置</a>
+                    	<a class="col-57A2F0" ng-click="fundChangeRecord()">变更记录</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+	
+	<div class="pt30" ng-show="hasChannel">
+		<div>
+			<span>【交易渠道】</span>
+		</div>
+		<div class="pt20">
+			<span>银行：</span>{{funds.accountInfo.openBank}}
+		</div>
+		<div class="pt20">
+			<span>卡号：</span>{{funds.accountInfo.accountNum}}
+		</div>
+		<div class="pt20">
+			<span>姓名：</span>{{funds.accountInfo.accountUserName}}
+		</div>
+	</div>
+	
+	<div class="pt30" ng-show="!hasChannel">
+		<div>
+			<span>【交易渠道】</span>
+		</div>
+		<div class="pt20 ml10">
+			暂未绑定
+		</div>
+	</div>
+	
+	<div class="pt20">
+        <span>【提现记录】</span>
+    </div>
+    <div class="pt20">
+    	<table>
+            <thead>
+            	<tr>
+                <td class="w210">流水号</td>
+                <td class="w210">申请人</td>
+                <td class="w135">提现金额</td>
+                <td class="w175">申请时间</td>
+                <td class="w100">交易渠道</td>
+                <td class="w175">收款人（银行卡用户名）</td>
+                <td class="w110">处理状态</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="record in records">
+                    <td>{{record.bankTradeNo}}</td>
+                    <td>{{record.applicantName}}</td>
+                    <td>{{record.settledAmt}}</td>
+                    <td>{{record.applicationTime}}</td>
+                    <td>{{record.channelSource}}</td>
+                    <td>{{record.cardholder}}</td>
+                    <td>{{record.statusName}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

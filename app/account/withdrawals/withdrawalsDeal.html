@@ -1,0 +1,45 @@
+<div ng-controller="withdrawalsDeal" class="withdrawalsDiv">
+	<div class="window-header" style="width:450px;">
+		退款处理
+	</div>
+	<div class="pt20">
+		<span>订单编号：</span>{{openDealParam.orderCode}}
+	</div>
+	<div class="pt15">
+		<span>订单状态：</span>{{openDealParam.orderStatusName}}
+	</div>
+	<div class="pt15">
+		<span>申请人：</span>{{openDealParam.applicant}}
+	</div>
+	<div class="pt15">
+		<span>申请时间：</span>{{openDealParam.applyTime}}
+	</div>
+	<div class="pt15">
+		<span>退款金额：</span>￥{{openDealParam.refundAmount | number:2}}
+	</div>
+	<div class="pt20">
+		<span>交易渠道：</span>
+		<select class="form-control disp-inline w160" ng-model="param.payMethod">
+			<!--<option value="0">未知</option>-->
+			<!--<option value="1">现金</option>-->
+			<option value="ALIPAY">支付宝</option>
+			<option value="WXPAY">微信</option>
+			<!--<option value="4">银行卡转账</option>-->
+			<!--<option value="5">银联</option>-->
+		</select>
+	</div>
+	<div class="pt15">
+		<span>业务流水号：</span><input type="text" ng-model="param.tradeCode" class="form-control disp-inline w160" />
+	</div>
+	<!--<div class="pt15">
+		<span>手续费：</span><input type="text" class="form-control disp-inline w160" />
+	</div>-->
+	<div class="pt15">
+		<div class="ft-l">备注说明：</div>
+		<textarea class="w330 h120" maxlength="200" ng-model="param.comment"></textarea>
+	</div>
+	<div class="pt15 text-center">
+		<a class="sureBtn" ng-click="sureSubmit()">确认退款</a>
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+	</div>
+</div>

@@ -1,0 +1,98 @@
+/**
+ * Created by JOY on 16/12/22.
+ */
+
+myApp.controller('tribeIndex', function($scope, $http, $filter, ngDialog ,$timeout) {
+	$scope.applyDesc = "desc";
+	$scope.applyDown = true;
+//配置分页基本参数
+	$scope.paginationConf = {
+		itemsPerPage: 10,
+		currentPage: 1
+	};
+// param 用来存储页码
+	$scope.param = {};
+//获取部落列表
+	$scope.onSearch = function() {
+//查询的url需要添加不同？+页码+当前页+，后期提供接口，可以直接修改这里！！！！！
+		var url = "/operateManage/api/tribe/queryTribeList";
+		$scope.param.pageNum = $scope.paginationConf.currentPage;
+		$scope.param.pageSize = $scope.paginationConf.itemsPerPage;
+		$http.post(url, $scope.param).success(function(data) {
+// ？？？控制台信息
+// 			console.info("查找部落列表接口获取成功",data);
+			$scope.tribes = data.tribeInfoPage.beans;
+// 重置分页
+			$scope.paginationConf = {
+				currentPage: $scope.param.pageNum,
+				totalItems: data.tribeInfoPage.total,
+				itemsPerPage: $scope.param.pageSize,
+				pagesLength: 8,
+				perPageOptions: [10, 20, 30, 40, 50],
+				onChange: function() {}
+			};
+		})
+	};
+	$scope.descFun = function() {
+		$scope.applyDown = !$scope.applyDown;
+		//		$scope.param.sortField = "createTime";
+		if ($scope.applyDesc == "asc") {
+			$scope.param.sortType = "desc";
+			$scope.applyDesc = "desc";
+		} else {
+			$scope.param.sortType = "asc";
+			$scope.applyDesc = "asc";;
+		}
+		$scope.onSearch();
+	}
+
+	$scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onSearch);
+//部落查询================================================================
+$scope.tribeSearch={};
+$scope.tribeOnSearch=function(){
+	var url = "/operateManage/api/tribe/queryTribeList";
+	$scope.tribeSearch.pageNum = $scope.paginationConf.currentPage;
+	$scope.tribeSearch.pageSize = $scope.paginationConf.itemsPerPage;
+	$scope.tribeSearch.tribeName =$scope.tribeSearch.tribeName;
+	$scope.tribeSearch.chiefName =$scope.tribeSearch.chiefName;
+	$scope.tribeSearch.tribeStatus = $scope.tribeSearch.tribeStatus;
+// console.info($scope.tribeSearch);
+	$http.post(url, $scope.tribeSearch).success(function(data) {
+		console.info("部落查询接口获取成功",data);
+		if(data.code != 100){
+            showMessage(ngDialog,data.msg);
+		}else{
+            $scope.tribes = data.tribeInfoPage.beans;
+// 重置分页
+            $scope.paginationConf = {
+                currentPage: $scope.param.pageNum,
+                totalItems: data.tribeInfoPage.total,
+                itemsPerPage: $scope.param.pageSize,
+                pagesLength: 8,
+                perPageOptions: [10, 20, 30, 40, 50],
+                onChange: function() {}
+            };
+		}
+
+	}).error(function(err){conosle.log(err)})
+
+	
+}
+$scope.descFun = function() {
+	$scope.applyDown = !$scope.applyDown;
+	//		$scope.param.sortField = "createTime";
+	if ($scope.applyDesc == "asc") {
+		$scope.param.sortType = "desc";
+		$scope.applyDesc = "desc";
+	} else {
+		$scope.param.sortType = "asc";
+		$scope.applyDesc = "asc";;
+	}
+	$scope.tribeOnSearch();
+}
+
+$scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.tribeOnSearch);
+	
+});
+	
+

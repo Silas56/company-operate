@@ -1,0 +1,29 @@
+.main-header{
+	border-left: 6px solid #0099c2;
+    padding-left: 20px;
+    margin-left: -20px;
+    height: 35px;
+    padding-top: 5px;
+    font-size: 18px;
+}
+.checkA{
+	background-color: white;
+	border: 1px solid #57A2F0;
+	color: #57A2F0 !important;
+	padding: 6px 0px;
+	font-size: 14px;
+	text-align: center;
+	width: 120px;
+	border-radius: 3px;
+}
+.filterIndex {
+	padding: 5px;
+    background-color: #eee;
+    cursor: pointer;
+}
+.filterIndex:hover {
+	background-color: #6cf;
+}
+.filterIndex.active {
+	background-color: #09c;
+}

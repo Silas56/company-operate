@@ -1,0 +1,35 @@
+<div ng-controller="supplier" class="pt20">
+	<table>
+		<thead>
+			<tr>
+				<td class="w150">供应商名称</td>
+				<td class="w150">
+					加入时间
+					<img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('timeDown')" ng-show="timeDown" />
+					<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('timeDown')" ng-show="!timeDown" />
+				</td>
+				<td class="w150">
+					已代销产品数
+					<img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('saleDown')" ng-show="saleDown" />
+					<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('saleDown')" ng-show="!saleDown" />
+				</td>
+				<td class="w150">
+					未代销产品数
+					<img style="width: 6px;" src="../../../img/down.png" class="descImg" ng-click="descFun('countDown')" ng-show="countDown" />
+					<img style="width: 6px;" src="../../../img/up.png" class="descImg" ng-click="descFun('countDown')" ng-show="!countDown" />
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="supplier in suppliers">
+				<td>{{supplier.supplierName}}</td>
+				<td>{{supplier.joinedTime}}</td>
+				<td>{{supplier.saleCount}}</td>
+				<td>{{supplier.unSaleCount}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="pt10" style="height: 84px;">
+		<tm-pagination conf="paginationConf"></tm-pagination>
+	</div>
+</div>

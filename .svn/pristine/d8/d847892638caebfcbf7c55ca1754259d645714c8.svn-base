@@ -1,0 +1,45 @@
+table.clear tbody td {
+    padding: 0;
+    height: 60px;
+}
+
+table.clear a.order-look {
+    color: #0cb9f2;
+}
+
+table.clear a.freeze {
+    color: #ea5902;
+}
+
+table td.productName {
+    position: relative;
+}
+
+table td.productName img.angle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+table td div.productCode {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 170px;
+    height: 200px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    text-align: center;
+}
+
+table td div.productCode img {
+    margin: 10px auto;
+}
+
+table td div.productCode a.copy_link {
+    display: inline-block;
+    padding: 2px 12px;
+    border: 1px solid #0cb9f2;
+    color: #0cb9f2;
+    border-radius: 4px;
+}

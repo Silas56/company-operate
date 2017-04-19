@@ -1,0 +1,41 @@
+<div ng-controller="dataAudit">
+	<div class="pt30">
+		<span>店铺状态：</span>{{authStatusBean.auditName}}
+	</div>
+	<div class="pt20">
+		<span>认证状态：</span>
+		<input type="radio" name="confirmWay" checked="checked" class="mr6" value="1" ng-model="param.status"/>未实名认证
+		<input type="radio" name="confirmWay" class="mr6" value="2"  ng-model="param.status"/>实名认证
+	</div>
+	<div class="pt20">
+		<div class="ft-l">审核备注：</div>
+		<textarea class="w750 h150" maxlength="100" ng-model="param.remark"></textarea>
+		<div class="pt30 text-center">
+			<a class="checkA" style="padding: 6px 25px;" ng-click="submit()">确认提交</a>
+		</div>
+
+		<div class="pt20">
+			<div class="pt20">
+				<table>
+					<thead>
+						<tr>
+							<td class="w150">审核记录</td>
+							<td class="w190">处理时间</td>
+							<td class="w130">操作人</td>
+							<td class="w450">备注</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="audit in audits">
+							<td>{{audit.statusName}}</td>
+							<td>{{audit.createLogTime | limitTo : 19}}</td>
+							<td>{{audit.createdByName}}</td>
+							<td>{{audit.remark}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="pt10" style="height: 84px;">
+					<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
+			</div>
+		</div>

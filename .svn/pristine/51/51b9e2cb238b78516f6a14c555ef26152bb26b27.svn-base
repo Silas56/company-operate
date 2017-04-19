@@ -1,0 +1,83 @@
+<!-- CREATE BY JOY 2016-12-22 -->
+<div ng-controller="addTribe as demo">   
+    <div class="main-header">
+    创建部落
+    </div>
+    <ul class="menus">
+        <li ng-class="{'addActive':data.current==1}">基本信息</li>
+        <li ng-class="{'addActive':data.current==2}">设置权限</li>
+        <li ng-class="{'addActive':data.current==3}">设置酋长</li>
+    </ul>
+<!-- view1================================================================ -->
+    <div  ng-if="data.current == 1" class="view-1" >
+        <p>
+            <span> 部落名称:</span>          
+            <input type="text" name="" ng-model="tribeParams.tribeName" style="padding-left: 10px;margin-right: 10px" ng-blur="checkTribeName()"> 
+            <span class="font_red" ng-if="checkName">请输入20个中英文字符</span>
+        </p>
+        <p>
+<!-- 域名不可修改，是由后台提供，方法可以ng-model -->
+            <span>设置域名:</span>
+            <input type="text" name="" ng-model="tribeParams.domainName" style="padding-left: 10px" ng-blur="checkDomainName()" >
+            <span class="ft14 default_color ml10" ng-if="checkDomainNames">设置成功后不可修改,请慎重填写!</span> 
+            <span class="font_red" ng-if="checkDomainNamesFalse">域名不能为空,且为数字或英文字符</span>
+        </p>
+        <p class="pr92">
+            <button class="border" ng-click="actions.setCurrent(2);checkFlag();renderAllList()" >下一步</button>
+        </p>
+    </div>
+<!-- view2================================================================ -->
+    <div  ng-show="data.current == 2" class="view-2" >
+      
+            <div class="pt20 pb20">
+                <span>权限列表(支持多个权限，最少选中一项)</span>
+            </div>
+            <div  style="background-color: #FAFAFA;border-top: 1px solid #DFDCD7;border-bottom: 1px solid #DFDCD7;height: 300px;overflow-y: scroll; margin-bottom: 20px">
+               <tree-view tree-data="demo.tree" text-field="resourceName" value-field='id' item-clicked="demo.itemClicked($item)" item-checked-changed="demo.itemCheckedChanged($item)"  can-checked="true" >
+                </tree-view>            
+                <script type="text/ng-template" id="/treeView.html">
+                    <ul class="tree-view">
+                           <li ng-repeat="item in treeData" ng-include="itemTemplateUrl || '/treeItem.html'" ></li>
+                    </ul>
+                </script>
+  
+                <script type="text/ng-template" id="/treeItem.html">
+
+                      <input type="checkbox" ng-model="item.$$isChecked" class="check-box {{item.resourceCode}}" id="{{item.resourceCode}}" ng-if="canChecked" ng-change="warpCallback('itemCheckedChanged',item, $event)">
+
+
+                        <span class='text-field'>{{item[textField]}}</span>
+                        <ul ng-if="!noChild(item)" class="tree-view">
+                           <li ng-repeat="item in item.children" ng-include="itemTemplateUrl || '/treeItem.html'">
+                           </li>
+                       </ul>
+                </script> 
+                
+            </div> 
+            <button class=" d-font bg-w d-b mr20 border" ng-click="actions.setCurrent(1)">上一步</button>
+            <button class="border" ng-click="actions.setCurrent(3);savaData()">下一步</button>
+    
+        
+
+
+
+       
+    </div>
+<!-- view3================================================================ -->
+    <div  ng-if="data.current == 3" class="view-1" >
+        <p>
+            <span> 查找用户:</span>          
+            <input style="padding-left: 10px;color: #ccc" type="text" name=""  ng-model="tribeParams.defaultMobile" ng-click="setTribe()"   value="123" >
+        </p>
+        <p ng-show="warmInfo" style="margin-left: 90px;color: red">
+            请输入11位酷鸟用户的手机号码
+        </p>
+        <p class="pr92">
+            <button class="mr20 d-font bg-w d-b border" ng-click="actions.setCurrent(2)">上一步</button>
+            <button class="mr20 warm border" ng-click="saveNewUser()">完成</button>
+        </p>
+    </div>
+</div>
+ 
+   
+     

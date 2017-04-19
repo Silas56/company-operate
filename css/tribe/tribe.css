@@ -1,0 +1,48 @@
+.createTribe{
+    color:#fff;
+    display: block;
+    width:120px;
+    height: 32px;
+    background: #ea5802;
+    font-size:14px;
+    text-align: center;
+    line-height: 32px;
+    position: absolute;
+    right:8px;
+    top:0px;
+  } 
+ .showTribe{
+    color:#fff;
+    display: block;
+    width:120px;
+    height: 32px;
+    background: #ea5802;
+    font-size:14px;
+    text-align: center;
+    line-height: 32px;
+    position: absolute;
+    right:165px;
+    top:0px;
+  } 
+
+  .createFont{
+    position: relative;
+    top:-5px;
+  }
+  .forAdd{
+    font-size: 30px;
+    margin-right: 6px;
+  } 
+  .main{
+    width: 100%;
+    position: relative;
+  }
+  .mb-20{
+    margin-bottom: 20px;
+  }
+  .w220{
+    width: 220px;
+  }
+  .font_red{
+    color: red;
+  }

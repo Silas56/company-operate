@@ -1,0 +1,28 @@
+<style>
+.ngdialog.ngdialog-theme-default .ngdialog-content{
+	width: 600px;
+}	
+</style>
+<div ng-controller="exportEdit">
+	<div>
+    	<div class="window-header" style="width:600px;">
+    		导出订单数据
+    	</div>
+        <div class="pt10">
+            <span style="margin-left: 35px;">时间范围：</span>
+            <div class="disp-inline">
+	            <select ng-model="selectedYears" ng-change="yChange()" class="form-control disp-inline mr6 ml-4" style="width:84px;">
+	                <option ng-repeat="y in years" >{{y}}</option>
+	            </select>
+	            <select ng-model="selectedMonths" ng-options="m for m in months" ng-change="mChange()" class="form-control disp-inline mr6 ml-4" style="width:68px;">
+	            </select>
+	            <span style="color:#f00;" class="noRecord" ng-show="code!=100">选定的月份暂无订单数据，请重新选择！</span>
+	        </div>
+        </div>
+        <div class="pt30 text-center">
+            <a class='checkA disabled' style='padding: 6px 37px;' ng-click='export()' ng-show="code==100">导出数据</a>
+            <a class='checkA' style='padding: 6px 37px;' ng-click='closeThisDialog()'>关闭按钮</a>
+        </div>
+
+    </div>
+</div>

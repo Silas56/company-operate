@@ -1,0 +1,69 @@
+<div class="basicInfoCheck" ng-controller="shopBaseInfo">
+	<div class="p20 ft-r mt20" style="background-color: #fafafa;" ng-show="editType == 'manage'">
+		<div class="text-center mb10">手机上查看店铺信息</div>
+		<img class=" w150 h150" ng-src={{basicInfo.shopQRCodePath}} />
+	</div>
+	<div class="pt20">
+		<span>申请账户：</span><span class="mr60">{{basicInfo.loginName}}</span><span>昵称：</span><span>{{basicInfo.nickName}}</span>
+	</div>
+	<div class="pt20">
+		<span>所属部落：</span><span class="mr12">{{basicInfo.tribeName}}</span>
+	</div>
+	<div class="pt20" ng-show="detail.editType == 'check'">
+		<span>申请时间：</span><span class="mr12">{{basicInfo.createdShopTime}}</span>
+	</div>
+	<div class="pt20" ng-show="detail.editType == 'manage'">
+		<span>开店时间：</span><span class="mr12">{{basicInfo.businessTime}}</span>
+	</div>
+	<!--<div class="pt20">-->
+		<!--<span>法人名称：</span><span class="mr12">{{basicInfo.legalName}}</span>-->
+	<!--</div>-->
+	<div class="pt20">
+		<span>冻结状态：</span><span>{{basicInfo.shopStatusName}}</span>
+		<a class="checkA ml30" style="padding: 6px 37px;" ng-show="detail.canFreeze == 'yes'" ng-click="openShopEditDialog()">冻结店铺</a>
+		<a class="checkA ml30" style="padding: 6px 37px;" ng-show="detail.canFreeze == 'no'" ng-click="openShopEditDialog()">激活店铺</a>
+	</div>
+	<div class="pt20">
+		<span>联系电话：</span>
+		<!--<span class="mr10">{{basicInfo.mobileList[0].mobile}}</span><span>{{basicInfo.mobileList[1].mobile}}</span>-->
+		<span ng-repeat="mobile in basicInfo.mobileList" class="mr10">{{mobile.mobile}};</span>
+	</div>
+	<div class="pt20">
+		<span>实体店地址：</span>
+		<span class="ml-4" ng-show="addressPShow">{{basicInfo.province}}</span>
+		<span class="ml-4" ng-show="addressCShow">-{{basicInfo.city}}</span>
+		<span class="ml-4" ng-show="addressZShow">-{{basicInfo.zone}}</span>
+		<span class="ml-4" ng-show="addressAShow">-{{basicInfo.address}}</span>
+	</div>
+	<div class="pt20">
+		<span>店铺logo：</span><img ng-class="{1: 'img100', 0: ''}[showImg]" src={{basicInfo.shopLogoImg}} />
+	</div>
+	<div class="pt20">
+		<span>店铺介绍：</span><span>{{basicInfo.shopIntroduction}}</span>
+	</div>
+	<div class="pt30" ng-show="detail.editType == 'manage'">
+		<div>店铺日志：</div>
+		<table class="mt20">
+			<thead>
+				<tr>
+					<td class="w200">操作日志</td>
+					<td class="w200">处理时间</td>
+					<td class="w200">操作人</td>
+					<td class="w200">备注</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="logRecord in logRecords">
+					<td>{{logRecord.statusName}}</td>
+					<td>{{logRecord.createLogTime | limitTo : 19}}</td>
+					<td>{{logRecord.createdByName}}</td>
+					<td>{{logRecord.remark}}</td>
+				</tr>
+			</tbody>
+
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConf"></tm-pagination>
+		</div>
+	</div>
+</div>

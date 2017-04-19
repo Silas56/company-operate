@@ -1,0 +1,12 @@
+myApp.controller('refundFailDetail', function($scope, $http, ngDialog,$rootScope) {
+    $rootScope.shopData = $rootScope.shopDatas;
+    if($rootScope.shopData.status==1){
+        $rootScope.shopData.status = "未处理";
+    }else if($rootScope.shopData.status==2){
+        $rootScope.shopData.status = "银行处理中";
+    }else if($rootScope.shopData.status==3){
+        $rootScope.shopData.status = "处理失败";
+    }else if($rootScope.shopData.status==4){
+        $rootScope.shopData.status = "处理成功";
+    }
+})

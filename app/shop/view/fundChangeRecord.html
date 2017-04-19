@@ -1,0 +1,32 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content{width: 700px;}
+</style>
+<div class="pt30" ng-controller="fundChangeRecord">
+	<div class="window-header" style="margin-top: -45px;width: 700px;">店铺费率</div>
+	<div class="mt30">
+	<table>
+            <thead>
+            	<tr>
+                <td class="w160">变更理由</td>
+                <td class="w160">变更</td>
+                <td class="w160">操作人</td>
+                <td class="w160">操作时间</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="shopLog in shopLogs">
+                    <td>{{shopLog.remark}}</td>
+                    <td>{{shopLog.record}}</td>
+                    <td>{{shopLog.createdByName}}</td>
+                    <td>{{shopLog.createLogTime}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+        <div class="text-center mt10"><a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">关闭</a></div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,59 @@
+<!-- 部落后台主页 create by JOY 2016-12-22 -->
+<div ng-controller="tribeIndex" style="padding-top:20px">
+    <div class="main">
+         <div class="main-header">
+          部落管理
+         </div>
+         <a class="createTribe" href="index.html#/tribe/addTribe"><span class="forAdd">+</span><span class="createFont">创建部落</span></a>
+         <!-- <a class="showTribe" href="#/tribe/showTribe">查看部落</a>  -->
+    </div>
+    <div>
+        <form>
+            
+            <div class="p10-0">
+                <span>部落名称:</span> 
+                <input type="text" class="w220 form-control disp-inline mr20" ng-model="tribeSearch.tribeName"> 
+                <span>酋长名称:</span> 
+                <input type="text" class="w220 form-control disp-inline mr20" ng-model="tribeSearch.chiefName"> 
+                <span>店铺状态：</span>
+                <select class="w220 form-control disp-inline ml5" ng-model="tribeSearch.tribeStatus">
+                    <option value="">全部</option>
+                    <option value="1">已激活</option>
+                    <option value="2">已冻结</option>
+                </select>
+            </div>
+            <div class="p10-0 mb10">
+                <a class="ft-r checkA mb-20 mr10" ng-click="tribeOnSearch()">查询</a>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table style="clear: both">
+            <thead>
+                <tr>
+                    <td class="w200">部落编号</td>
+                    <td class="w135">部落名称</td>
+                    <td class="w110">酋长名称</td>
+                    <td class="w110">联系电话</td>
+                    <td class="w80">店铺数量</td>
+                    <td class="w110">创建时间</td>
+                    <td class="w110">部落状态</td>
+                    <td class="w70">操作</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="tribe in tribes">
+                <td>{{tribe.tribeCode}}</td>
+                <td>{{tribe.tribeName}}</td>
+                <td>{{tribe.chiefName}}</td>
+                <td>{{tribe.defaultMobile}}</td>
+                <td>{{tribe.shopCount}}</td>
+                <td>{{tribe.createdTime | limitTo : 19}}</td>
+                <td ng-class="{font_red:tribe.tribeStatus==2}">{{tribe.tribeStatus==2?"冻结":"激活"}}</td>
+                <td><a class="col-57A2F0" href="index.html#/tribe/showTribe/{{tribe.tribeCode}}">管理</a></td>
+            </tr>
+        </table>
+        <div class="pt10" style="height: 84px;margin-left: 181px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

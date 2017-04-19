@@ -1,0 +1,32 @@
+<div ng-controller="withdrawalsResult" class="withdrawalsDiv">
+	<div class="window-header" style="width:450px;">
+		退款处理
+	</div>
+	<div class="pt20">
+		<span>订单编号：</span>{{checkResultParam.orderCode}}
+	</div>
+	<div class="pt15">
+		<span>订单状态：</span>{{checkResultParam.orderStatusName}}
+	</div>
+	<div class="pt15">
+		<span>申请人：</span>{{checkResultParam.applicant}}
+	</div>
+	<div class="pt15">
+		<span>申请时间：</span>{{checkResultParam.applyTime}}
+	</div>
+	<div class="pt15">
+		<span>退款金额：</span>￥{{checkResultParam.refundAmount | number:2}}
+	</div>
+	<div class="pt20">
+		<span>交易渠道：</span>{{checkResultParam.payMethodName}}
+	</div>
+	<div class="pt15">
+		<span>业务流水号：</span>{{checkResultParam.serialNum}}
+	</div>
+	<div class="pt15">
+		<span>备注说明：</span>{{checkResultParam.comment}}
+	</div>
+	<div class="pt15 text-center">
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+	</div>
+</div>

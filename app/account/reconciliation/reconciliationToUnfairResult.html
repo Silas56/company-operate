@@ -1,0 +1,35 @@
+<div ng-controller="reconciliationCheckToUnfairResult">
+	<div class="window-header" style="width: 450px;">
+        	对账处理
+    </div>
+    <div class="pt20">
+    	<div>
+    		<span>交易时间：</span>{{toUnfairDealParam.tradeTime}}
+    	</div>
+    	<div class="pt15">
+    		<span>业务流水号：</span>{{toUnfairDealParam.outTradeNo}}
+    	</div>	
+    	<div class="pt15">
+    		<span>订单编号：</span>{{toUnfairDealParam.orderCode}}
+    	</div>
+    	<div class="pt15">
+    		<span>订单状态：</span>交易成功
+    	</div>
+    	<div class="pt15">
+    		<span>交易类型：</span>订单支付
+    	</div>
+    	<div class="pt15">
+    		<span>交易渠道：</span>{{toUnfairDealParam.tradeMethod}}<a class="col-57A2F0"></a>
+    	</div>
+    	<div class="pt15">
+    		<span>交易金额：</span>{{toUnfairDealParam.tradeAmount}}<a class="col-57A2F0"></a>
+    	</div>
+    	<div class="pt15">
+    		<span>手续费：</span><input />{{toUnfairDealParam.tradeAmount}}
+    	</div>
+    </div>
+    <div class="pt30 text-center ">
+    	<a class="sureBtn" ng-click="closeThisDialog()">确认对账</a>
+    	<a class="sureBtn" ng-click="closeThisDialog()">关闭窗口</a>
+    </div>
+</div>

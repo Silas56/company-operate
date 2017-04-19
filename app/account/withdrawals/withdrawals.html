@@ -1,0 +1,139 @@
+<div ng-controller="withdrawals" class="withdrawalsDiv">
+	<div class="main-header">
+		用户退款
+	</div>
+	<div class="pt20">
+		<span>订单编号：</span>
+		<input type="text" ng-model="param.orderCode" class="form-control disp-inline w150 mr10" />
+		<span>业务流水号：</span>
+		<input type="text" ng-model="param.serialNum" class="form-control disp-inline w240 mr10" />
+		<span>交易渠道：</span>
+		<select class="w150 form-control disp-inline" ng-model="param.payMethod">
+			<option value="">全部</option>
+			<option value="ALIPAY">支付宝</option>
+			<option value="WXPAY">微信</option>
+		</select>
+	</div>
+	<div class="pt20 ml15">
+		<span>申请人：</span>
+		<input type="text" ng-model="param.applicant" class="form-control disp-inline w150 mr10" />
+		<span class="ml15">申请时间：</span>
+		<input type='text' ng-model="param.startApplyDate" max-date="param.endApplyDate" class="w110 form-control disp-inline startApplyDate" is-open="selectStartApplyDate" ng-click="selectStartApplyDate = !selectStartApplyDate"  />
+		<font class="mr4">~</font>
+		<input type='text' ng-model="param.endApplyDate" min-date="param.startApplyDate" class="w110 form-control disp-inline endApplyDate" is-open="selectEndApplyDate" ng-click="selectEndApplyDate = !selectEndApplyDate"  />
+		<span class="ml10">退款类型：</span>
+		<input type="radio" ng-model="param.refundType" value="0" name="refundType"/><span class="mr10">全部</span>
+		<input type="radio" ng-model="param.refundType" value="1"  name="refundType"/><span class="mr10">商家退款</span>
+		<input type="radio" ng-model="param.refundType" value="2"  name="refundType"/><span class="mr10">仲裁退款</span>
+	</div>
+	<div class="pt20">
+		<a class="checkA form-control disp-inline ft-r" style="padding: 6px 25px;" ng-click="onSearch()">查询</a>
+	</div>
+	<div class="checkDetail mt60">
+		<ul class="border-b">
+			
+			<li ng-class="{1: 'liActive', 0: 'liNotActive'}[showUndeal]" ng-click="liChangeCheck('undeal')"><a>未处理</a></li>
+			<li ng-class="{1: 'liActive', 0: 'liNotActive'}[showDeal]" ng-click="liChangeCheck('deal')"><a>已处理</a></li>
+		</ul>
+	</div>
+	<div class="undeal" ng-class="{'disp-none':showUndeal===0}">
+		<table class="mt110">
+			<thead>
+				<tr>
+					<td class="w160">订单编号</td>
+					<td class="w160">申请人</td>
+					<td class="w160">申请时间</td>
+					<td class="w160">退款金额</td>
+					<td class="w160">订单状态</td>
+					<td class="w160">退款类型</td>
+					<td class="w160">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="undeal in undeals">
+				<td><a class="col-57A2F0" href="#/order/view/{{undeal.orderCode}}/{{undeal.orderStatus}}/account/{{undeal.distributionOrder}}">{{undeal.orderCode}}</a></td>
+				<td>{{undeal.applicant}}</td>
+				<td>{{undeal.applyTime}}</td>
+				<td>￥{{undeal.refundAmount | number:2}}</td>
+				<td>{{undeal.orderStatusName}}</td>
+				<td>{{undeal.refundTypeName}}</td>
+				<td>
+					<a class="col-57A2F0" ng-click="openDeal(undeal.orderCode,undeal.applicant,undeal.applyTime,undeal.refundAmount,undeal.orderStatus,
+						 undeal.refundType,undeal.operator,undeal.payMethod,undeal.serialNum,undeal.paymentCode)">处理</a>
+				</td>
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConfUndeal"></tm-pagination>
+		</div>
+	</div>
+	<div class="deal" ng-class="{'disp-none':showDeal===0}">
+		<table class="mt110">
+			<thead>
+				<tr>
+					<td class="w110">订单编号</td>
+					<td class="w110">申请人</td>
+					<td class="w110">申请时间</td>
+					<td class="w110">退款金额</td>
+					<td class="w110">订单状态</td>
+					<td class="w110">退款类型</td>
+					<td class="w110">处理人</td>
+					<td class="w110">交易渠道</td>
+					<td class="w110">业务流水号</td>
+					<td class="w110">操作</td>
+				</tr>
+			</thead>
+			<tr ng-repeat="deal in deals">
+				<td><a class="col-57A2F0" href="#/order/view/{{deal.orderCode}}/{{deal.orderStatus}}/account/{{deal.distributionOrder}}">{{deal.orderCode}}</a></td>
+				<td>{{deal.applicant}}</td>
+				<td>{{deal.applyTime}}</td>
+				<td>￥{{deal.refundAmount | number:2}}</td>
+				<td>{{deal.orderStatusName}}</td>
+				<td>{{deal.refundTypeName}}</td>
+				<td>{{deal.operator}}</td>
+				<td>{{deal.payMethodName}}</td>
+				<td>{{deal.serialNum}}</td>
+				<td>
+					<a class="col-57A2F0" ng-click="checkResult(deal.orderCode,deal.applicant,deal.applyTime,deal.refundAmount,deal.orderStatusName,
+						 deal.refundType,deal.operator,deal.payMethodName,deal.serialNum,deal.comment)">
+						 查看结果</a>
+				</td>
+
+			</tr>
+		</table>
+		<div class="pt10" style="height: 84px;">
+			<tm-pagination conf="paginationConfdeal"></tm-pagination>
+		</div>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+	$(".startApplyDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){
+			$(".endApplyDate").datetimepicker("setStartDate", $(".startApplyDate").val());
+		});;
+	$(".endApplyDate").datetimepicker({
+		format: 'yyyy-mm-dd',
+		autoclose:true,
+		language: 'zh-CN',
+		minView:2
+	}).on('changeDate',function(ev){			
+			$(".startApplyDate").datetimepicker("setEndDate", $(".endApplyDate").val());
+		});
+
+	// 如果选项被手动清空，则需要重置开始和结束值
+    $('.startApplyDate').datetimepicker().on('show',function(ev){
+        if (!$('.endApplyDate').val()){
+            $(".startApplyDate").datetimepicker("setEndDate", null);
+        }       
+    });
+    $('.endApplyDate').datetimepicker().on('show',function(ev){
+        if (!$('.startApplyDate').val()){
+            $(".endApplyDate").datetimepicker("setStartDate", null);
+        }       
+    });
+})
+</script>
+</div>

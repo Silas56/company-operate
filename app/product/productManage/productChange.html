@@ -1,0 +1,22 @@
+<div ng-controller="productChange">
+	<div class="window-header" style="width: 450px;" ng-show="freeze">
+		冻结
+	</div>
+	<div class="window-header" style="width: 450px;" ng-show="!freeze">
+		解除冻结
+	</div>
+	<div class="pt20" ng-show="freeze">
+		<span>产品冻结后，店铺将不再展示该产品信息！</span>
+	</div>
+	<div class="pt20" ng-show="!freeze">
+		<span>产品解除冻结后，店铺将展示该产品信息！</span>
+	</div>
+	<div class="pt20">
+		<div class="ft-l">备注：</div>
+		<textarea ng-model="formData.optReason" style="width: 370px;height: 100px;" maxlength="200" placeholder="输入限定200字数"></textarea>
+	</div>
+	<div class="pt20 text-center">
+		<a class='checkA' style='padding: 6px 37px;' ng-click='setUserStatus()'>确定</a>
+		<a class='checkA' style='padding: 6px 37px;' ng-click='closeThisDialog()'>取消</a>
+	</div>
+</div>

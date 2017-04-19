@@ -1,0 +1,13 @@
+<style>
+	.ngdialog.ngdialog-theme-default .ngdialog-content{width: 500px;}
+</style>
+<div class="pt30" ng-controller="delFilterWord">
+	<div class="window-header" style="margin-top: -45px;width: 500px;">删除滤词</div>
+	<div class="mt20" style="text-align:center">
+        删除滤词[{{curDelWord}}]后将不再屏蔽该词语，是否确认?
+    </div>
+	<div class="pt30 text-center">
+		<a class="checkA" style="padding: 6px 37px;" ng-click="del()">删除滤词</a>
+		<a class="checkA" style="padding: 6px 37px;" ng-click="closeThisDialog()">关闭窗口</a>
+	</div>
+</div>

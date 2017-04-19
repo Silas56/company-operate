@@ -1,0 +1,85 @@
+<div ng-controller='productDetail'>
+    <tabset>
+        <tab heading="产品详情">
+            <div class="mt20 pro-detail">
+                <div>
+                    <span class='span_title'>产品名称：</span>
+                    <span>{{data.category}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>产品ID：</span>
+                    <span>{{data.productCode}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>发布时间：</span>
+                    <span>{{data.publishTime}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>产品状态：</span>
+                    <span style='color:#2599c6'>{{isUpDown(data.spuVisitStatus)}}</span>
+                    <a style='padding:2px 8px;border:1px solid #2599c6;border-radius:4px;color:#2599c6;margin-left:16px' ng-click='openwin(data,data.spuVisitStatus)'>{{isFreeze(data.spuVisitStatus)}}</a>
+                </div>
+                <div>
+                    <span class='span_title'>所属商家：</span>
+                    <span><!-- 熙门旅游网 -->{{data.ownShop}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>类型：</span>
+                    <span>{{data.category}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>价格：</span>
+                    <span>￥{{data.minPrice}} ~ {{data.maxPrice}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>库存：</span>
+                    <span>{{data.stock}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>销量：</span>
+                    <span>{{data.saleVolume}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>是否开启分销：</span>
+                    <span>{{isDistribute(data.distributeStatus)}}</span>
+                </div>
+                <div>
+                    <span class='span_title'>产品链接：</span>
+                    <span>{{data.spuaddr}}</span>
+                    <a class="ft-r copy_link" style='padding:0px 8px;border:1px solid #2599c6;border-radius:4px;color:#2599c6;margin:20px;' ng-click="copy()" data-clipboard-text="{{data.spuaddr}}" href="javascript:;">复制链接</a>
+                </div>
+                <img src="img/scenery.png" class='scenery' ng-src="data.img">
+                <div class="picCode">
+                    <!-- <img src="img/picCode.png"> -->
+                    <div id="qrcode" style="margin: 12px auto"></div>
+                    <p>手机查看产品信息</p>
+                </div>
+            </div>
+        </tab>
+        <tab heading="产品日志">
+            <table style="width:calc(100% - 20px);">
+                <thead>
+                    <tr>
+                        <td style='width:10%;'>序号</td>
+                        <td style='width:20%;'>操作时间</td>
+                        <td style='width:10%;'>操作人</td>
+                        <td style='width:10%;'>操作类型</td>
+                        <td style='width:50%;'>操作备注</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="operate in operateDatas">
+                        <td>{{$index+1}}</td>
+                        <td>{{operate.createTime}}</td>
+                        <td>{{operate.createName}}</td>
+                        <td>{{operate.optType}}</td>
+                        <td>{{operate.optRecord}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pt10" style="height: 84px;">
+                <tm-pagination conf="paginationConf"></tm-pagination>
+            </div>
+        </tab>
+    </tabset>
+</div>

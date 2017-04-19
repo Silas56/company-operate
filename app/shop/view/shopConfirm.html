@@ -1,0 +1,54 @@
+<div ng-controller="shopConfirm">
+    <div class="pt20">
+        <span>当前状态：</span><span>{{authStatusBean.auditName}}</span>
+    </div>
+    <div class="pt20">
+        <span>店铺状态：</span><select ng-model="param.auditStatus" ng-disabled="isThrough" class="w160 form-control disp-inline" ng-change="changeAudit()">
+        <option value="">请选择</option>
+        <option value="2">审核通过</option>
+        <option value="3">审核未通过</option>
+    </select>
+    </div>
+    <div class="pt20" ng-show="audit.show">
+        <span>认证状态：</span><select ng-model="param.isAuthentication" class="w160 form-control disp-inline">
+        <option value="">请选择</option>
+        <option value="false">未实名认证</option>
+        <option value="true">已实名认证</option>
+    </select>
+    </div>
+    <div class="pt20">
+        <div class="ft-l">
+            <span class="col-red">*</span><span>审核备注：</span>
+        </div>
+        <textarea ng-model="param.remark" maxlength="300" class="w750 h150"></textarea>
+    </div>
+    <div class="pt30 textalign-c">
+        <a class="checkA" style="padding: 6px 37px;" ng-click="update()">提交更新</a>
+    </div>
+    <div class="pt20">
+        <span>审核记录：</span>
+    </div>
+    <div class="pt20">
+        <table>
+            <thead>
+            <tr>
+                <td class="w200">处理时间</td>
+                <td class="w130">店铺状态</td>
+                <td class="w130">操作人</td>
+                <td class="w450">备注</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="auditRecord in auditRecords.shopAuditRecordsList">
+                <td>{{auditRecord.auditCreateTime | limitTo : 19}}</td>
+                <td>{{auditRecord.auditStatusName}}</td>
+                <td>{{auditRecord.createdByName}}</td>
+                <td>{{auditRecord.remark}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pt10" style="height: 84px;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div ng-controller="commentDetail">
+	<div class="main-header">订单评价详情</div>
+	<div>
+    	<a class="checkA ft-r" style="padding: 6px 25px;margin-top: -30px;" ng-href="#order/comment" >返回</a>
+    </div>
+    <div>
+    	<div style="margin-top: 50px;"><span class="mr50">订单编号：{{commentDetail.orderCode}}</span><span class="mr50">评价人：{{commentDetail.userName}}</span><span class="mr50">商家名称：{{commentDetail.shopName}}</span></div>
+    	<div style="margin-top: 50px;" class="star">
+    		<span ng-repeat="comment in commentDetail.evaluateCommentScores" class="mr50">
+    			{{comment.itemName}}：
+    		<img ng-src="../../../img/start.png" ng-show="comment.score > 0">
+    		<img ng-src="../../../img/start.png" ng-show="comment.score > 1">
+    		<img ng-src="../../../img/start.png" ng-show="comment.score > 2">
+    		<img ng-src="../../../img/start.png" ng-show="comment.score > 3">
+    		<img ng-src="../../../img/start.png" ng-show="comment.score > 4">
+    		</span>
+    	</div>
+    	<div style="margin-top: 50px;border: 1px solid gainsboro;">
+    		<div>
+                <span>买家评价：{{commentDetail.commentTime}}</span>
+                <a class="ft-r col-red" ng-if="commentDetail.status == 1" ng-click="setUnable()">设置失效</a>
+                <span class="ft-r col-red" ng-if="commentDetail.status == 2" >已失效</span>
+            </div>
+    		<div style="margin-top: 20px; white-space: normal; word-break: break-all;">{{commentDetail.content}}</div>
+    	</div>
+    </div>
+</div>

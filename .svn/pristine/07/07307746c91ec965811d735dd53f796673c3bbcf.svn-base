@@ -1,0 +1,12 @@
+myApp.controller('refundDetail', function($scope, $http, ngDialog) {
+	if($scope.openDetailParam.failOrSuccess == 'fail'){
+		$scope.fail = true;
+		$scope.success = false;
+	}else{
+		$scope.fail = false;
+		$scope.success = true;
+	}
+//	if($scope.openDetailParam.counterFee == 0){
+//		$scope.success = false;
+//	}
+})

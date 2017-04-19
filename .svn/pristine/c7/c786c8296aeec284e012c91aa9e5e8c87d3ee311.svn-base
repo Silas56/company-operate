@@ -1,0 +1,35 @@
+
+myApp.controller('tribeActive', function($scope,$rootScope, $http, ngDialog,$rootScope) {
+	$scope.activeRemarks = "输入限定200字数";
+	$scope.editActiveRemarks = function(){
+		$scope.activeRemarks = "";
+	}
+	 $scope.setTribeStatus=function(){
+// console.log($rootScope.tribeids);
+ 		$scope.activeRemarks = $scope.activeRemarks==="输入限定200字数"?"":$scope.activeRemarks;
+		if (isBlank($scope.activeRemarks)) {
+			showMessage(ngDialog, "激活理由不能为空！");
+			return;
+		}
+
+		var tribeids = $rootScope.tribeids;
+		var url = "/operateManage/api/tribe/changeTribeStatus.json"
+		var tribeFreezeParams={};
+			tribeFreezeParams.tribeCode=tribeids;
+			tribeFreezeParams.tribeStatus = 1;
+			tribeFreezeParams.remark = $scope.activeRemarks;
+// console.log(tribeFreezeParams)
+			
+		$http.post(url,tribeFreezeParams).then(function(res){
+// console.log(res.data.code)
+			if(res.data.code ==100){
+				showMessage(ngDialog,"激活成功")
+			}
+		},function(err){
+// console.log(err)
+		})
+	 		$rootScope.tribeActiveStatus = false;
+			$rootScope.tribeFreezeStatus = true;
+	 		$scope.closeThisDialog();
+	 }
+});
